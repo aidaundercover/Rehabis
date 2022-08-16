@@ -1,25 +1,31 @@
-// class Traning {
-//   final String date;
-//   final String bodyPart;
-//   final int count;
-//   final DateTime to;
+import 'package:flutter/material.dart';
 
+class Training {
+  final String title;
+  final String skill;
+  final int minutes;
+  final int level;
+  final Widget page;
+  final String instruction;
+  final String img ;
 
-//   const Traning({
-//     required this.date,
-//     required this.to,
-//     this.bc = Colors.purple,
-//     this.isAllday = false,
-//     required this.title,
-//     required this.desc,
-//   });
+  Training(
+      { required this.instruction,
+      required this.level,
+      required this.img,
+      required this.skill,
+      required this.title,
+      required this.minutes,
+      required this.page});
 
-//   factory Traing.fromMap(map) {
-//     return Event(
-//       : map['title'],
-//       desc: map['desc'],
-//       from: map['from'],
-//       to: map['to']
-//     );
-//   }
-// }
+  factory Training.fromMap(map) {
+    return Training(
+        title: map['title'],
+        level: map['level'],
+        skill: map['skill'],
+        page: map['page'],
+        minutes: map["minutes"],
+        instruction: map["instruction"],
+        img: map["img"]);
+  }
+}

@@ -15,7 +15,7 @@ class Event {
     this.bc = Colors.purple,
     this.isAllday = false,
     required this.title,
-    required this.desc,
+     required this.desc,
   });
 
   factory Event.fromMap(map) {

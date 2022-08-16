@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rehabis/globalVars.dart';
+import 'package:rehabis/views/auth/sign_in.dart';
 import 'package:rehabis/views/auth/sign_up.dart';
 
 class FirstView extends StatelessWidget {
@@ -7,40 +8,62 @@ class FirstView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('assets/logo.png', width: 800,),
-            const Text(
-              "Востанавливайся где угодно,\nкогда угодно!",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey, fontSize: 24),
+            Stack(
+              alignment: Alignment.topCenter,
+              children:[
+              //   Container(
+              //     height: height*0.76,
+              //     width: width*0.8,
+              //     decoration: BoxDecoration(
+              //       image: DecorationImage(
+              //         image: AssetImage("assets/first_bc.png"),
+              //         fit: BoxFit.fill
+              //       )
+              //     ),
+              //   ),
+              //   SizedBox(
+              //   child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       crossAxisAlignment: CrossAxisAlignment.center,
+              //       children: [
+              //         Image.asset('assets/logo.png', width: 800,),
+              //         const Text(
+              //           "Start your recovery\nwith Rehabis!",
+              //           textAlign: TextAlign.center,
+              //           style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+              //         ),
+              //       ]),
+              // ),
+              ]
             ),
-            const SizedBox(height: 200),
-            TextButton(
-                onPressed: () {
+            GestureDetector(
+                onTap: () {
                   Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => const SignUp()));
+                      .push(MaterialPageRoute(builder: (context) => SignUp()));
                 },
                 child: Container(
-                  width: 200,
-                  height: 45,
+                  width: width*0.15,
+                  height: 40,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                        primaryColor,
-                        primaryColor.withOpacity(0.6),
-                        Colors.purpleAccent.shade200
-                    ]),
-                    borderRadius: BorderRadius.circular(20),
+                    color: primaryColor,
+                    borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
                   ),
                   alignment: Alignment.center,
-                  child: const Text("Начать сейчас!",
-                      style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)),
+                  child: const Icon(Icons.arrow_forward_ios, color: Colors.white,)
                 ))
-          ]),
+          ],
+        ),
+      ),
     );
   }
 }

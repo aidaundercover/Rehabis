@@ -7,6 +7,8 @@ double value = 0.01;
 String nameGlobal = "Имя Фамилия";
 String iinGlobal = "";
 
+List<String> selected = [];
+
 /// Medical data ///
 String bornDate = "";
 String gender = "";
@@ -14,11 +16,9 @@ String strokeType = "";
 int height = 0;
 int weight = 0;
 
-
-
-
 // COLOR SCHEME //
 Color primaryColor = const Color.fromRGBO(204, 101, 255, 1.0);
+Color secondPrimaryColor = const Color.fromRGBO(188, 73, 255, 1.0);
 Color secondaryColor = const Color.fromARGB(255, 172, 111, 202);
 Color yellowSecondary = const Color.fromARGB(255, 255, 247, 172);
 Color orange = Color.fromARGB(255, 255, 178, 0);

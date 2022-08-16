@@ -27,20 +27,7 @@ class _ExercisesChartState extends State<ExercisesChart> {
   final ref = FirebaseDatabase.instance.ref();
 
   Widget colorShow(Color color, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 30,
-          height: 30,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: color
-          ),
-        ),
-        SizedBox(width: 7,),
-        Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,))
-      ],
-    );
+    return Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: color));
   }
 
 
@@ -48,16 +35,12 @@ class _ExercisesChartState extends State<ExercisesChart> {
   Widget build(BuildContext context) {
 
     var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
 
 
     return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        backgroundColor: primaryColor,
-        title: Text("Динамика упражнений"),
-        centerTitle: true,
-      ),
-      body: Column(
+        child: Column(
         children: [
           StreamBuilder(
               stream: ref.child('Users/$iinGlobal/Trainings/').onValue,
@@ -94,7 +77,8 @@ class _ExercisesChartState extends State<ExercisesChart> {
                   return Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: SizedBox(
-                      height: height*0.7,
+                      height: height*0.6,
+                      width: width*0.82,
                       child: SfCartesianChart(
                         tooltipBehavior: _tooltipBehavior,
                         primaryXAxis: CategoryAxis(),
@@ -104,7 +88,7 @@ class _ExercisesChartState extends State<ExercisesChart> {
                               color: deepPurple,
                               xAxisName: "Дата выполнения",
                               yAxisName: "Количество выполнений",
-                              name: "Кепка",
+                              name: "Cap",
                               enableTooltip: true,
                               xValueMapper: (Exercise exercises, _) =>
                                   exercises.time,
@@ -140,18 +124,21 @@ class _ExercisesChartState extends State<ExercisesChart> {
           SizedBox(
             height:10,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              colorShow(deepPurple, "Кепка"),
-              colorShow(deepPink, "Перчатка"),
-          colorShow(orange, "Кубики")
-            ],
+          SizedBox(
+            width: width*0.6,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                colorShow(deepPurple, "Cap"),
+                colorShow(deepPink, "Gloves"),
+            colorShow(orange, "Cubes")
+              ],
+            ),
           ),
           
         ],
       ),
-    ));
+    );
   }
 }
 
