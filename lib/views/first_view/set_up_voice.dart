@@ -28,25 +28,28 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => Main()));
         },
-        child: Container(
-          width: width * 0.3,
-          height: 40,
-          decoration: BoxDecoration(
-            color: primaryColor,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Complete",
-                style: TextStyle(color: Colors.white, fontSize: 15),
-              ),
-              Icon(
-                Icons.done_rounded,
-                color: Colors.white,
-              )
-            ],
+        child: SingleChildScrollView(
+          reverse: true,
+          child: Container(
+            width: width * 0.3,
+            height: 40,
+            decoration: BoxDecoration(
+              color: primaryColor,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Complete",
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                ),
+                Icon(
+                  Icons.done_rounded,
+                  color: Colors.white,
+                )
+              ],
+            ),
           ),
         ),
       ),
