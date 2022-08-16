@@ -26,7 +26,7 @@ class _SelectWeaknessState extends State<SelectWeakness> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 240, 240, 240),
+      backgroundColor: backgroundColor,
       floatingActionButton: GestureDetector(
         onTap: () {
           setState(() {
@@ -42,7 +42,7 @@ class _SelectWeaknessState extends State<SelectWeakness> {
         child: Padding(
           padding: EdgeInsets.only(right: width*0.04),
           child: Container(
-            width: width*0.37,
+            width: width*0.33,
             height: 45,
             decoration: BoxDecoration(
               color: primaryColor,
@@ -121,6 +121,7 @@ class _SelectWeaknessState extends State<SelectWeakness> {
                                   ),
                                 ),
                               ))),
+                  SizedBox(height: 40,)
                 ]),
           ),
         ),

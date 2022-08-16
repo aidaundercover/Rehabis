@@ -94,15 +94,13 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
         // register case
         if (_nameController.text.isEmpty || _iinController.text.isEmpty) {
           Fluttertoast.showToast(msg: "Fill every textfield!");
-        } else if(_iinController.text.length != 12) { 
+        } else if (_iinController.text.length != 12) {
           Fluttertoast.showToast(msg: "IIN consists of 12 digits");
         }
         // else if (_iinController.text.contains(RegExp(r'(\w+)'))) {
         //   Fluttertoast.showToast(msg: "IIN consists of ONLY digits");
         // }
-        else{
-
-
+        else {
           nameGlobal = _nameController.text;
           iinGlobal = _iinController.text;
 
@@ -112,7 +110,7 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
           await ref.set({
             "Name": nameGlobal,
             "Iin": iinGlobal,
-            "Photo" : LocalDB.getUserArray(),
+            "Photo": LocalDB.getUserArray(),
             // "Password": password.text,
             "MedicalData": {
               "Born": DateTime.now().toString(),
@@ -310,7 +308,7 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
                         text: "SIGN UP",
                         context: context,
                         isClickable: true,
-                        width: width*0.8,
+                        width: width * 0.8,
                         onTap: () {
                           bool canProcess = false;
                           _cameraController
@@ -338,5 +336,5 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
 }
 
 void getBornDate(String iin) {
-  
+  List nn = iin.split("");
 }

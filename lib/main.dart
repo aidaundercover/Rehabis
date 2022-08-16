@@ -31,7 +31,7 @@ Future<void> main( ) async {
   await Hive.initFlutter();
   await HiveBoxes.initialize();
 
-  runApp(const MaterialApp(home:FirstView()));
+  runApp(const MaterialApp(home:SelectWeakness()));
 }
 
 

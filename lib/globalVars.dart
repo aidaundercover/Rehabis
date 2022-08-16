@@ -18,6 +18,7 @@ int weight = 0;
 
 // COLOR SCHEME //
 Color primaryColor = const Color.fromRGBO(204, 101, 255, 1.0);
+Color backgroundColor = const Color.fromRGBO(248, 235, 255, 1.0);
 Color secondPrimaryColor = const Color.fromRGBO(188, 73, 255, 1.0);
 Color secondaryColor = const Color.fromARGB(255, 172, 111, 202);
 Color yellowSecondary = const Color.fromARGB(255, 255, 247, 172);

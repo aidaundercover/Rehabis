@@ -5,7 +5,6 @@ import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/main.dart';
 import 'package:rehabis/utils/speech_api.dart';
 import 'package:rehabis/utils/utils.dart';
-import 'package:rehabis/views/main/home.dart';
 import 'package:rehabis/widgets/slider_fv.dart';
 
 class SetVoiceAssistant extends StatefulWidget {
@@ -31,24 +30,53 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
         },
         child: SingleChildScrollView(
           reverse: true,
-          child: Container(
-            width: width * 0.3,
-            height: 40,
-            decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
+          child: SizedBox(
+            width: width*0.5+30,
+            height: 60,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Complete",
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                AvatarGlow(
+                animate: isListening,
+                glowColor: secondPrimaryColor,
+                endRadius: 50,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: secondPrimaryColor,
+                    shape: BoxShape.circle,
+
+                  ),
+                  child: IconButton(
+                      color: Colors.white,
+                      splashRadius: 30,
+                      onPressed: () {
+                        toggleRecording;
+                      },
+                      icon: isListening ? Icon(Icons.mic) : Icon(Icons.mic_none)),
                 ),
-                Icon(
-                  Icons.done_rounded,
-                  color: Colors.white,
-                )
+              ),
+                Container(
+                  width: width * 0.3,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(width: 2, color:secondPrimaryColor)
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Complete",
+                        style: TextStyle(color: secondPrimaryColor, fontSize: 15),
+                      ),
+                      Icon(
+                        Icons.done_rounded,
+                        color: secondPrimaryColor,
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -70,19 +98,13 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
               ),
             ),
             SizedBox(
-                width: width * 0.4, child: Lottie.asset('assets/voice.json')),
-            AvatarGlow(
-              animate: isListening,
-              glowColor: secondPrimaryColor,
-              endRadius: 70,
-              child: IconButton(
-                  color: secondPrimaryColor,
-                  splashRadius: 30,
-                  onPressed: () {
-                    toggleRecording;
-                  },
-                  icon: isListening ? Icon(Icons.mic) : Icon(Icons.mic_none)),
-            )
+              height: 30,
+            ),
+            SizedBox(
+                width: width * 0.35, child: Lottie.asset('assets/voice.json')),
+            SizedBox(height: 15,),
+            Text(text, style: TextStyle(fontFamily: "Inter",fontSize: 22),),
+            
           ],
         ),
       ),

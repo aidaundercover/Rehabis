@@ -46,6 +46,7 @@ class _AddDataViewState extends State<AddDataView> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: backgroundColor,
       floatingActionButton: GestureDetector(
         onTap: () {
         
@@ -55,7 +56,7 @@ class _AddDataViewState extends State<AddDataView> {
         child: Padding(
           padding: EdgeInsets.only(right: width*0.04),
           child: Container(
-            width: width*0.37,
+            width: width*0.33,
             height: 45,
             decoration: BoxDecoration(
               color: primaryColor,
