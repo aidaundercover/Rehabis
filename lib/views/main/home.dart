@@ -6,7 +6,7 @@ import 'package:rehabis/views/exercises/cube/hands.dart';
 import 'package:rehabis/views/main/progress.dart';
 import 'package:rehabis/widgets/audio_player.dart';
 import 'package:rehabis/views/exercises/exercises_main.dart';
-import 'package:rehabis/views/exercises/find_third_whhel.dart';
+import 'package:rehabis/views/exercises/speech/find_third_whhel.dart';
 import 'package:rehabis/views/exercises/memory/similiar_words.dart';
 import 'package:rehabis/views/exercises/motorics/findiandh.dart';
 import 'package:rehabis/views/prediction/test_for_prediction.dart';

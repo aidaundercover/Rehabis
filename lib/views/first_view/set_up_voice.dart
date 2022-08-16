@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/main.dart';
 import 'package:rehabis/utils/speech_api.dart';
+import 'package:rehabis/utils/utils.dart';
 import 'package:rehabis/views/main/home.dart';
 import 'package:rehabis/widgets/slider_fv.dart';
 
@@ -80,7 +81,7 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
                   onPressed: () {
                     toggleRecording;
                   },
-                  icon:isListening ? Icon(Icons.mic) : Icon(Icons.mic_none)),
+                  icon: isListening ? Icon(Icons.mic) : Icon(Icons.mic_none)),
             )
           ],
         ),
@@ -90,5 +91,13 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
 
   Future toggleRecording() => SpeechApi.toggleRecording(
       onResult: (text) => setState(() => text = text),
-      onListening: (isListening) => setState(() => isListening = isListening));
+      onListening: (isListening) {
+        setState(() => isListening = isListening);
+
+        if (!isListening) {
+          Future.delayed(Duration(seconds: 1), () {
+            Utils.scanText(text);
+          });
+        }
+      });
 }

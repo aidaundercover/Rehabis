@@ -5,12 +5,6 @@ import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/views/exercises/exerciseWidgets.dart';
 
 
-import 'dart:async';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
-import 'package:rehabis/globalVars.dart';
-import 'package:rehabis/widgets/audio_player.dart';
-import 'package:rehabis/views/exercises/exerciseWidgets.dart';
 
 class ExerciseThree extends StatefulWidget {
   const ExerciseThree({Key? key}) : super(key: key);
