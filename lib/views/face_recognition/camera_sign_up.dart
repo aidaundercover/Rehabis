@@ -110,7 +110,7 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
           await ref.set({
             "Name": nameGlobal,
             "Iin": iinGlobal,
-            "Photo": LocalDB.getUserArray(),
+            // "Photo": LocalDB.getUserArray(),
             // "Password": password.text,
             "MedicalData": {
               "Born": DateTime.now().toString(),

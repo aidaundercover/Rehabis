@@ -439,8 +439,9 @@ class _HomePageState extends State<HomePage> {
                   fontSize: 20,
                   fontFamily: 'Inter'),
             ),
-
+            SizedBox(height: 20,),
             ListView.builder(
+              padding: EdgeInsets.zero,
               itemCount: listRecomends.length,
               shrinkWrap: true,
               itemBuilder: (context, index) => tile(

@@ -21,29 +21,29 @@ class FirstView extends StatelessWidget {
             Stack(
               alignment: Alignment.topCenter,
               children:[
-              //   Container(
-              //     height: height*0.76,
-              //     width: width*0.8,
-              //     decoration: BoxDecoration(
-              //       image: DecorationImage(
-              //         image: AssetImage("assets/first_bc.png"),
-              //         fit: BoxFit.fill
-              //       )
-              //     ),
-              //   ),
-              //   SizedBox(
-              //   child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       crossAxisAlignment: CrossAxisAlignment.center,
-              //       children: [
-              //         Image.asset('assets/logo.png', width: 800,),
-              //         const Text(
-              //           "Start your recovery\nwith Rehabis!",
-              //           textAlign: TextAlign.center,
-              //           style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-              //         ),
-              //       ]),
-              // ),
+              Container(
+              height: height*0.76,
+                  width: width*0.8,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/first_bc.png"),
+                      fit: BoxFit.fill
+                    )
+                  ),
+                ),
+                SizedBox(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/logo.png', width: 800,),
+                      const Text(
+                        "Start your recovery\nwith Rehabis!",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+              ),
               ]
             ),
             GestureDetector(

@@ -32,7 +32,7 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
           reverse: true,
           child: SizedBox(
             width: width*0.5+30,
-            height: 60,
+            height: 70,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -56,11 +56,11 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
                 ),
               ),
                 Container(
-                  width: width * 0.3,
+                  width: width * 0.31,
                   height: 40,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(30),
                     border: Border.all(width: 2, color:secondPrimaryColor)
                   ),
                   child: Row(

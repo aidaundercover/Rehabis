@@ -11,7 +11,7 @@ List<String> selected = [];
 
 /// Medical data ///
 String bornDate = "";
-String gender = "";
+String gender = "male";
 String strokeType = "";
 int height = 0;
 int weight = 0;

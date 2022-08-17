@@ -56,8 +56,8 @@ class _AddDataViewState extends State<AddDataView> {
         child: Padding(
           padding: EdgeInsets.only(right: width*0.04),
           child: Container(
-            width: width*0.33,
-            height: 45,
+            width: width*0.31,
+            height: 40,
             decoration: BoxDecoration(
               color: primaryColor,
               borderRadius: BorderRadius.circular(30),
