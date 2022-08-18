@@ -1,212 +1,253 @@
 import 'package:flutter/material.dart';
 import 'package:rehabis/globalVars.dart';
-import 'package:rehabis/views/exercises/logic/whats_more_expensive.dart';
-import 'package:rehabis/views/exercises/motorics/findiandh.dart';
+import 'package:rehabis/views/exercises/exerciseWidgets.dart';
 
-class ExerciseMain extends StatelessWidget {
+class ExerciseMain extends StatefulWidget {
   const ExerciseMain({Key? key}) : super(key: key);
+
+  @override
+  State<ExerciseMain> createState() => _ExerciseMainState();
+}
+
+List tagsList = [
+  {
+    "title": "Memory",
+    "selected": false,
+    "one": oneMemory,
+    "two": twoMemory,
+    "three": threeMemory
+  },
+  {
+    "title": "Speaking",
+    "selected": false,
+    "one": oneSpeaking,
+    "two": twoSpeaking,
+    "three": threeSpeaking
+  },
+  {
+    "title": "Arm mobility",
+    "selected": false,
+    "one": oneArm,
+    "two": twoArm,
+    "three": threeArm
+  },
+  {
+    "title": "Problem Solving",
+    "selected": false,
+    "one": oneProblem,
+    "two": twoProblem,
+    "three": threeProblem
+  },
+  {
+    "title": "Leg Mobility",
+    "selected": false,
+    "one": oneLeg,
+    "two": twoLeg,
+    "three": threeLeg
+  },
+  {
+    "title": "Core",
+    "selected": false,
+    "one": oneCore,
+    "two": twoCore,
+    "three": threeCore
+  },
+  {
+    "title": "Attention",
+    "selected": false,
+    "one": oneAttention,
+    "two": twoAttention,
+    "three": threeAttention
+  },
+];
+
+List one = [];
+List two = [];
+List three = [];
+
+class _ExerciseMainState extends State<ExerciseMain> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    List tagTitles = [];
+
+    setState(() {
+      for (int i = 0; i < selectedWeakneases.length; i++) {
+        tagTitles.add(selectedWeakneases[i]);
+      }
+
+      for (int i = 0; i < tagTitles.length; i++) {
+        if (tagTitles[i] == tagsList[i]["title"]) {
+        } else {
+          String tempTitle = tagTitles[i];
+
+          var tempElementOne;
+
+          for (int j = 0; j < tagsList.length; j++) {
+            if (tagTitles[i] == tagsList[j]["title"]) {
+              tempElementOne = tagsList[j];
+            }
+          }
+
+          tagsList = tagsList
+              .where((element) => element["title"] != tempTitle)
+              .toList();
+
+          var tempElementTwo = tagsList[i];
+          tagsList[i] = tempElementOne;
+
+          tagsList.add(tempElementTwo);
+        }
+      }
+
+      for (int r = 0; r < tagTitles.length; r++) {
+        tagsList[r]["selected"] = true;
+
+        one += tagsList[r]["one"];
+        two += tagsList[r]["two"];
+        three += tagsList[r]["three"];
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     TextStyle titleStyle = TextStyle(
         fontWeight: FontWeight.bold,
-        fontSize: 18,
-        color: Colors.black.withOpacity(0.9));
+        fontFamily: "Inter",
+        fontSize: 19,
+        color: Colors.grey.shade500);
     TextStyle styleSmall = const TextStyle(fontSize: 14, color: Colors.white);
-
-
-   List one = [
-      {
-        'title' : "Запомни цифры",
-        "minutes" : 4,
-        "page" : ExercizeOne(),
-        "skill" : "Память"
-      },
-      {
-        'title' : "Танцы пальцев",
-        "skill" : "Моторика",
-        "minutes" : 7,
-        "page" : ExercizeOne(),
-      },
-      {
-        'title' : "Похожие звуки",
-        "skill" : "Речь/Слух",
-        "minutes" : 3,
-        "page" :  ExercizeOne(),
-      },
-      {
-        "title" : "Шерлок Холмс: Кто украл морковку?",
-        'skill' : "Логика",
-        "page" : ExercizeOne(),
-        "minutes" : 10
-      },
-    ];
-
-    List two = [
-      {
-        'title' : "Запомни цифры",
-        "minutes" : 4,
-        "page" : ExercizeOne(),
-        "skill" : "Память"
-      },
-      {
-        'title' : "Танцы пальцев",
-        "skill" : "Моторика",
-        "minutes" : 7,
-        "page" : ExercizeOne(),
-      },
-      {
-        'title' : "Похожие звуки",
-        "skill" : "Речь/Слух",
-        "minutes" : 3,
-        "page" :  ExercizeOne(),
-      },
-      {
-        "title" : "Шерлок Холмс: Кто украл морковку?",
-        'skill' : "Логика",
-        "page" : ExercizeOne(),
-        "minutes" : 10
-      },
-    ];
-
-   List three = [
-      {
-        'title' : "Что дороже?",
-        "minutes" : 4,
-        "page" : ExercizeFour(),
-        "skill" : "Логика"
-      },
-      {
-        'title' : "Танцы пальцев",
-        "skill" : "Моторика",
-        "minutes" : 7,
-        "page" : ExercizeOne(),
-      },
-      {
-        'title' : "Похожие звуки",
-        "skill" : "Речь/Слух",
-        "minutes" : 3,
-        "page" :  ExercizeOne(),
-      },
-      {
-        "title" : "Шерлок Холмс: Кто украл морковку?",
-        'skill' : "Логика",
-        "page" : ExercizeOne(),
-        "minutes" : 10
-      },
-    ];
 
     var width = MediaQuery.of(context).size.width;
 
-
-    Widget workouts(String title, List exercises, int level) {
-
+    Widget workouts(List exercises, int level) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 23.0),
             child: Text(
-              title,
+              "Level $level",
               style: titleStyle,
             ),
           ),
-          Container(
-            height: 150,
+          SizedBox(height: 14,),
+          SizedBox(
+            height: 80,
+            //might implenet GridView
             child: ListView(
+              padding: EdgeInsets.all(0),
               scrollDirection: Axis.horizontal,
-              children: List.generate(exercises.length, (index) {
-                return InkWell(
-                    onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder:(context) => exercises[index]["page"] ));
-                      },
-                    child: Column(
-                      children: [
-                        SizedBox(height: 17),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: width * 0.7,
-                            height: 110,
-                            decoration: BoxDecoration(
-                              color: secondaryColor,
-                              boxShadow: [
-                                BoxShadow(
-                                    blurRadius: 4,
-                                    color: Colors.black.withOpacity(0.25),
-                                    offset: Offset(2, 2))
-                              ],
-                              
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            alignment: Alignment.center,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 12.0, left: 20),
-                              child: Text(
-                                exercises[index]['title'],
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20.0),
-                              child: SizedBox(
-                                width: width*0.4,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      exercises[index]["skill"],
-                                      style: styleSmall,
-                                    ),
-                                  
-                                    const Text(
-                                      "·",
-                                      style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    ),
-                                    Text(
-                                      "${exercises[index]['minutes']} минут",
-                                      style: styleSmall,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left:20.0),
-                                  child: Text(
-                                    "Уровень $level",
-                                    style: styleSmall,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right:20.0),
-                                  child: Icon(Icons.arrow_forward_ios, color: Colors.white,),
-                                )
-                              ],
-                            ),
-                            SizedBox(height: 10,)
-                          ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ));
+              children: List.generate(exercises.length, (i) {
+                return exerciseWidget(
+                    exercises[i]["title"],
+                    exercises[i]["skill"],
+                    exercises[i]["minutes"],
+                    exercises[i]["page"],
+                    "instruction",
+                    "img",
+                    width,
+                    context);
               }),
             ),
           ),
+          SizedBox(
+            height: 25,
+          ),
+        ],
+      );
+    }
+
+    Widget tags() {
+      return Column(
+        children: [
+          SizedBox(height: 10),
+          SizedBox(
+            height: 35,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.all(0),
+                itemCount: tagsList.length,
+                itemBuilder: (BuildContext context, x) => GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          tagsList[x]["selected"] = !tagsList[x]["selected"];
+                          if (tagsList[x]["selected"]) {
+                            one += tagsList[x]["one"];
+                            two += tagsList[x]["two"];
+                            three += tagsList[x]["three"];
+                          } else {
+                            for (int i = 0;
+                                i < tagsList[x]["one"].length;
+                                i++) {
+                              one.remove(tagsList[x]["one"][i]);
+                              two.remove(tagsList[x]["two"][i]);
+                              three.remove(tagsList[x]["three"][i]);
+                            }
+                          }
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Container(
+                          height: 30,
+                          decoration: BoxDecoration(
+                              color: tagsList[x]["selected"]
+                                  ? secondPrimaryColor.withOpacity(0.3)
+                                  : backgroundColor,
+                              borderRadius: BorderRadius.circular(20),
+                              border: tagsList[x]["selected"]
+                                  ? Border.all(
+                                      width: 2, color: secondPrimaryColor)
+                                  : Border.all(
+                                      width: 1, color: secondPrimaryColor),
+                              boxShadow: [
+                                tagsList[x]["selected"]
+                                    ? BoxShadow(
+                                        color: Colors.black.withOpacity(0.02),
+                                        offset: Offset(3, 3),
+                                        spreadRadius: 10,
+                                        blurRadius: 5)
+                                    : BoxShadow(
+                                        color: Colors.transparent,
+                                        offset: Offset(0, 0),
+                                        spreadRadius: 0,
+                                        blurRadius: 0)
+                              ]),
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                tagsList[x]["selected"]
+                                    ? Icon(
+                                        Icons.check,
+                                        color: secondPrimaryColor,
+                                        size: 20,
+                                      )
+                                    : SizedBox(),
+                                Text(
+                                  tagsList[x]["title"],
+                                  style: TextStyle(
+                                      color: secondPrimaryColor,
+                                      fontWeight: tagsList[x]["selected"]
+                                          ? FontWeight.bold
+                                          : FontWeight.w400,
+                                      fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )),
+          ),
+          SizedBox(height: 30),
         ],
       );
     }
@@ -217,15 +258,16 @@ class ExerciseMain extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         toolbarHeight: 60,
-        title: Text("Все упражнения",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        title: Text("All exercises",
+            style: TextStyle(
+                fontFamily: "Inter", color: Colors.grey, fontSize: 22)),
         centerTitle: true,
         leading: Builder(
           builder: (context) => IconButton(
             icon: Icon(
               Icons.arrow_back_ios_outlined,
               size: 25,
-              color: Colors.grey.shade600,
+              color: Colors.grey.shade400,
             ),
             onPressed: () {
               Navigator.of(context).pop();
@@ -245,9 +287,10 @@ class ExerciseMain extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            workouts("1 уровень", one, 1),
-            workouts("2 уровень", two, 2),
-            workouts("3 уровень", three, 3)
+            tags(),
+            workouts(one, 1),
+            workouts(two, 2),
+            workouts(three, 3)
           ],
         ),
       ),

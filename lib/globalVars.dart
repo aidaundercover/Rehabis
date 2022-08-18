@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+// ignore: file_names
+import 'package:flutter/material.dart' show Color;
 
 String prediction = "None";
 double value = 0.01;
@@ -7,7 +8,7 @@ double value = 0.01;
 String nameGlobal = "Имя Фамилия";
 String iinGlobal = "";
 
-List<String> selected = [];
+List<String> selectedWeakneases = [];
 
 /// Medical data ///
 String bornDate = "";

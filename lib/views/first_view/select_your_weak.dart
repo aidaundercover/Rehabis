@@ -32,7 +32,7 @@ class _SelectWeaknessState extends State<SelectWeakness> {
           setState(() {
             for (int i = 0; i < _selected.length; i++) {
               if (_selected[i]["selected"]) {
-                selected.add(_selected[i]["title"]);
+                selectedWeakneases.add(_selected[i]["title"]);
               }
             }
           });
