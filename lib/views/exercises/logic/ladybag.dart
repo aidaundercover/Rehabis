@@ -10,6 +10,16 @@ class LadyBag extends StatefulWidget {
 class _LadyBagState extends State<LadyBag> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    
+    return Scaffold(
+      body: Column(
+        children: [
+
+        ],
+      ),
+    );
   }
 }

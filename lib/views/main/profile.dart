@@ -179,7 +179,7 @@ class _ProfileMainState extends State<ProfileMain> {
           children: [
             appBar(),
             SizedBox(
-              width: width * 0.84,
+              width: width * 0.9,
               child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: profileCards.length,
@@ -192,7 +192,7 @@ class _ProfileMainState extends State<ProfileMain> {
                               builder: (context) => profileCards[i]["page"]));
                         },
                         child: Container(
-                          width: width * 0.84,
+                          width: width * 0.89,
                           height: 50,
                           decoration: BoxDecoration(
                               color: Colors.white,

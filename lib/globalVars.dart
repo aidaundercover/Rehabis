@@ -14,8 +14,8 @@ List<String> selectedWeakneases = [];
 String bornDate = "";
 String gender = "male";
 String strokeType = "";
-int height = 0;
-int weight = 0;
+int heightUser = 0;
+int weightUser = 0;
 
 // COLOR SCHEME //
 Color primaryColor = const Color.fromRGBO(204, 101, 255, 1.0);

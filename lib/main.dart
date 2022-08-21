@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabis/provider/event_provider.dart';
 import 'package:rehabis/utils/local_db.dart';
 import 'package:rehabis/views/face_recognition/camera_sign_in.dart';
 import 'package:rehabis/views/first_view/fisrt_view.dart';
@@ -14,10 +16,9 @@ import 'package:rehabis/views/main/home.dart';
 import 'package:rehabis/views/main/profile.dart';
 import 'package:rehabis/views/main/progress.dart';
 
-
 List<CameraDescription>? cameras;
 
-Future<void> main( ) async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -25,15 +26,14 @@ Future<void> main( ) async {
     if (kReleaseMode) exit(1);
   };
 
-
-
   cameras = await availableCameras();
   await Hive.initFlutter();
   await HiveBoxes.initialize();
 
-  runApp(const MaterialApp(home:SelectWeakness()));
+  runApp(ChangeNotifierProvider<EventProvider>(
+      create: (context) => EventProvider(),
+      child: const MaterialApp(home: SelectWeakness())));
 }
-
 
 class Main extends StatefulWidget {
   const Main({key}) : super(key: key);
@@ -54,7 +54,6 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -81,8 +80,7 @@ class _MainState extends State<Main> {
               icon: Icon(Icons.person),
               label: "Profile",
             ),
-          ]
-      ),
+          ]),
     );
   }
 

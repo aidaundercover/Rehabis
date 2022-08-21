@@ -122,6 +122,7 @@ class _ExerciseMainState extends State<ExerciseMain> {
     TextStyle styleSmall = const TextStyle(fontSize: 14, color: Colors.white);
 
     var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
 
     Widget workouts(List exercises, int level) {
       return Column(
@@ -134,7 +135,9 @@ class _ExerciseMainState extends State<ExerciseMain> {
               style: titleStyle,
             ),
           ),
-          SizedBox(height: 14,),
+          SizedBox(
+            height: 14,
+          ),
           SizedBox(
             height: 80,
             //might implenet GridView
@@ -147,9 +150,10 @@ class _ExerciseMainState extends State<ExerciseMain> {
                     exercises[i]["skill"],
                     exercises[i]["minutes"],
                     exercises[i]["page"],
-                    "instruction",
-                    "img",
+                    "",
+                    "",
                     width,
+                    height,
                     context);
               }),
             ),

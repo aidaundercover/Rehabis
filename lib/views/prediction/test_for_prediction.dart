@@ -13,7 +13,7 @@ TextEditingController bp = TextEditingController(text: "");
 String isSmoker = 'unknown';
 TextEditingController cholesterol = TextEditingController(text: "");
 bool isDiabetes = false;
-TextEditingController bmi = TextEditingController(text: height==0 ? "${weight/height/height}" : "");
+TextEditingController bmi = TextEditingController(text: heightUser ==0 ? "${weightUser/heightUser/heightUser}" : "");
 
 late FixedExtentScrollController controller;
 int selectedAge = bornDate.isEmpty
@@ -186,7 +186,7 @@ class _TestForPredictionState extends State<TestForPrediction> {
                           isSmoker = 'unknown';
                           cholesterol = TextEditingController(text: "");
                           isDiabetes = false;
-                          bmi = TextEditingController(text: height==0 ? "${weight/height/height}" : "");
+                          bmi = TextEditingController(text: heightUser ==0 ? "${weightUser/heightUser/heightUser}" : "");
                           isMPressed = false;
                           isFPressed = false;
                           isSYPressed = false;
@@ -932,7 +932,7 @@ Future predict(BuildContext context) async {
                           isSmoker = 'unknown';
                           cholesterol = TextEditingController(text: "");
                           isDiabetes = false;
-                          bmi = TextEditingController(text: height==0 ? "${weight/height/height}" : "");
+                          bmi = TextEditingController(text: heightUser==0 ? "${weightUser /heightUser /heightUser}" : "");
                           isMPressed = false;
                           isFPressed = false;
                           isSYPressed = false;

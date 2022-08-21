@@ -205,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                       lastExercises[index].minutes,
                       lastExercises[index].page,
                       lastExercises[index].instruction,
-                      lastExercises[index].img, width,
+                      lastExercises[index].img, width, height,
                       context),
                       
                 );

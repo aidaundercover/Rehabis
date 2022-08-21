@@ -1,7 +1,13 @@
 import "package:flutter/material.dart";
 import 'package:rehabis/globalVars.dart';
+import 'package:rehabis/views/exercises/logic/3d_thinking.dart';
+import 'package:rehabis/views/exercises/logic/ladybag.dart';
+import 'package:rehabis/views/exercises/logic/patterns.dart';
+import 'package:rehabis/views/exercises/logic/sentence_based.dart';
+import 'package:rehabis/views/exercises/logic/sorting.dart';
 import 'package:rehabis/views/exercises/logic/whats_more.dart';
 import 'package:rehabis/views/exercises/motorics/findiandh.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 
 //Data for ALL exercises
@@ -67,7 +73,7 @@ List threeMemory = [
   {
     'title': "Что дороже?",
     "minutes": 4,
-    "page": ExercizeFour(),
+    "page": ExercizeOne(),
     "skill": "Логика"
   },
   {
@@ -150,7 +156,7 @@ List threeSpeaking = [
   {
     'title': "Что дороже?",
     "minutes": 4,
-    "page": ExercizeFour(),
+    "page": ExercizeOne(),
     "skill": "Логика"
   },
   {
@@ -234,7 +240,7 @@ List threeArm = [
   {
     'title': "Что дороже?",
     "minutes": 4,
-    "page": ExercizeFour(),
+    "page": ExercizeOne(),
     "skill": "Логика"
   },
   {
@@ -262,82 +268,49 @@ List threeArm = [
 
 List oneProblem = [
   {
-    'title': "Memorise цифры",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Memory"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Memory",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
+    'title': "What's More?",
     "minutes": 3,
-    "page": ExercizeOne(),
+    "page": WhatsMore(),
+    "skill": "Problem Solving",
+    "instruction" : "",
+    "img" : "",
+
   },
   {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    'title': "Find Ladybag",
+    "skill": "Problem Solving",
+    "minutes": 2,
+    "page": LadyBag(),
   },
 ];
 
 List twoProblem = [
   {
-    'title': "Запомни цифры",
+    'title': "3D Thinking",
+    "minutes": 2,
+    "page": SpaceThinking(),
+    "skill": "Problem Solving"
+  },
+  {
+    'title': "Sorting and Ordering",
+    "skill": "Problem Solving",
     "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Память"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    "page": SortingExercise(),
   },
 ];
 
 List threeProblem = [
   {
-    'title': "Что дороже?",
+    'title': "Word-based puzzle",
     "minutes": 4,
-    "page": ExercizeFour(),
-    "skill": "Логика"
+    "page": SentencedQuiz(),
+    "skill": "Problem Solving"
   },
   {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
+    'title': "Patterns",
+    "skill": "Problem Solving",
     "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    "page": WhatComesNext(),
   },
 ];
 
@@ -402,7 +375,7 @@ List threeLeg = [
   {
     'title': "Что дороже?",
     "minutes": 4,
-    "page": ExercizeFour(),
+    "page": ExercizeOne(),
     "skill": "Логика"
   },
   {
@@ -486,7 +459,7 @@ List threeCore = [
   {
     'title': "Что дороже?",
     "minutes": 4,
-    "page": ExercizeFour(),
+    "page": ExercizeOne(),
     "skill": "Логика"
   },
   {
@@ -570,7 +543,7 @@ List threeAttention = [
   {
     'title': "Что дороже?",
     "minutes": 4,
-    "page": ExercizeFour(),
+    "page": ExercizeOne(),
     "skill": "Логика"
   },
   {
@@ -596,7 +569,7 @@ List threeAttention = [
 
 
 Widget exerciseWidgetMain(String title, int level, String skill, int minutes,
-    Widget page, String instruction, String img, double width, BuildContext context) {
+    Widget page, String instruction, String img, double width,double height, BuildContext context) {
   TextStyle styleSmall = const TextStyle(fontSize: 12, color: Colors.white);
 
   return Container(
@@ -761,13 +734,19 @@ Widget exerciseWidget(
     String instruction,
     String img,
     double width,
+    double height,
     BuildContext context) {
   TextStyle styleSmall = const TextStyle(fontSize: 12, color: Colors.white);
+
+  void nothing() {
+    
+  }
 
   return GestureDetector(
     onTap: () {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => page));
+      instruction.isEmpty ? nothing() :
       showDialog(
           context: context,
           builder: (_) {
