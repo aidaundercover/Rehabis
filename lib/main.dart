@@ -54,33 +54,42 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
+
     return Scaffold(
       body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          onTap: onTabTapped,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.grey,
-          iconSize: 32,
-          showUnselectedLabels: true,
-          selectedLabelStyle: TextStyle(fontFamily: 'Inter'),
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _currentIndex,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Home",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.map_sharp),
-              label: "Calendar",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "Profile",
-            ),
-          ]),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20)
+        ),
+        width: width*0.88,
+        child: BottomNavigationBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            onTap: onTabTapped,
+            selectedItemColor: Colors.black,
+            unselectedItemColor: Colors.grey,
+            iconSize: 32,
+            showUnselectedLabels: true,
+            selectedLabelStyle: TextStyle(fontFamily: 'Inter'),
+            type: BottomNavigationBarType.fixed,
+            currentIndex: _currentIndex,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: "Home",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.map_sharp),
+                label: "Calendar",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: "Profile",
+              ),
+            ]),
+      ),
     );
   }
 

@@ -444,6 +444,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                                     onTap: () {
                                       setState(() {
                                         pressed++;
+                                        
                                         if (isRunning) {
                                           for (int indexBtn = 0;
                                               indexBtn < isSelected.length;

@@ -25,6 +25,21 @@ List<DropdownMenuItem<String>> items = [
   ),
 ];
 
+List<DropdownMenuItem<String>> rolea = [
+  const DropdownMenuItem(
+    child: Text("Patient"),
+    value: "1",
+  ),
+  const DropdownMenuItem(
+    child: Text("Doctor"),
+    value: "2",
+  ),
+  const DropdownMenuItem(
+    child: Text("Relative"),
+    value: "3",
+  ),
+];
+
 String _value = "1";
 TextEditingController _weightController = TextEditingController(text: "");
 TextEditingController _heightController = TextEditingController(text: "");
@@ -85,7 +100,7 @@ class _AddDataViewState extends State<AddDataView> {
             children: [
               slider(2, width),
               const Text(
-                "Personalized trainings by adding data",
+                "Personalize trainings by adding data",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
@@ -107,6 +122,40 @@ class _AddDataViewState extends State<AddDataView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // SizedBox(
+                        //   width: width * 0.6,
+                        //   child: DropdownButtonFormField<String>(
+                        //     value: _value,
+                        //     items: items,
+                        //     borderRadius: BorderRadius.circular(25),
+                        //     icon: const Icon(Icons.arrow_drop_down_sharp),
+                        //     iconDisabledColor: Colors.black,
+                        //     iconEnabledColor: primaryColor,
+                            
+                        //     onChanged: (String? value) {
+                        //       setState(() {
+                        //         _value = value!;
+                        //       });
+                        //     },
+                        //     decoration: InputDecoration(
+                        //       label: const Text(
+                        //         "Role",
+                        //       ),
+                        //       focusedBorder: OutlineInputBorder(
+                        //           borderRadius: BorderRadius.circular(20),
+                        //           borderSide: BorderSide(
+                        //               color: primaryColor, width: 2)),
+                        //       enabledBorder: OutlineInputBorder(
+                        //           borderRadius: BorderRadius.circular(20),
+                        //           borderSide: BorderSide(
+                        //               color: primaryColor, width: 2)),
+                        //       disabledBorder: OutlineInputBorder(
+                        //           borderRadius: BorderRadius.circular(20),
+                        //           borderSide:
+                        //               BorderSide(color: Colors.grey, width: 1)),
+                        //     ),
+                        //   ),
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

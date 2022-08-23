@@ -1,268 +1,98 @@
 import "package:flutter/material.dart";
 import 'package:rehabis/globalVars.dart';
+import 'package:rehabis/views/exercises/attention/find_third_whhel.dart';
+import 'package:rehabis/views/exercises/attention/similiar_words.dart';
+import 'package:rehabis/views/exercises/cube/hands.dart';
+import 'package:rehabis/views/exercises/exercises_main.dart';
 import 'package:rehabis/views/exercises/logic/3d_thinking.dart';
 import 'package:rehabis/views/exercises/logic/ladybag.dart';
 import 'package:rehabis/views/exercises/logic/patterns.dart';
 import 'package:rehabis/views/exercises/logic/sentence_based.dart';
 import 'package:rehabis/views/exercises/logic/sorting.dart';
 import 'package:rehabis/views/exercises/logic/whats_more.dart';
+import 'package:rehabis/views/exercises/memory/matcing_game.dart';
 import 'package:rehabis/views/exercises/motorics/findiandh.dart';
+import 'package:rehabis/views/exercises/speech/breathe.dart';
+import 'package:rehabis/views/exercises/speech/smile.dart';
+import 'package:rehabis/views/exercises/speech/tongue_one.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
 
 //Data for ALL exercises
 
 //Memory
 
 List oneMemory = [
-  {
-    'title': "Memorise цифры",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Memory"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Memory",
-    "minutes": 7,
-    "page": ExercizeOne(),
-    "instruction": ""
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
-  },
+  // {
+  //   'title': "Memorise",
+  //   "minutes": 4,
+  //   "page": ExercizeOne(),
+  //   "skill": "Memory"
+  // },
 ];
 
-List twoMemory = [
-  {
-    'title': "Запомни цифры",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Память"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
-  },
-];
+List twoMemory = [];
 
 List threeMemory = [
   {
-    'title': "Что дороже?",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Логика"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    'title': "Matching Game",
+    "minutes": 5,
+    "page": MatchingGame(),
+    "skill": "Memory"
   },
 ];
 
 //Speaking
 
 List oneSpeaking = [
-  {
-    'title': "Memorise цифры",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Memory"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Memory",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
-  },
+  {'title': "Smiley", "minutes": 4, "page": Smiley(), "skill": "Speaking"},
 ];
 
 List twoSpeaking = [
   {
-    'title': "Запомни цифры",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Память"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    'title': "Tongue Actions",
+    "minutes": 6,
+    "page": TongueActions(),
+    "skill": "Speaking"
   },
 ];
 
 List threeSpeaking = [
   {
-    'title': "Что дороже?",
+    'title': "Breathing",
     "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Логика"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    "page": Breathing(),
+    "skill": "Speaking"
   },
 ];
-
 
 //Arm mobility
 
 List oneArm = [
   {
-    'title': "Memorise цифры",
+    'title': "Wrists",
     "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Memory"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Memory",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    "page": HandsOneExrcise(),
+    "skill": "Arm mobility"
   },
 ];
 
 List twoArm = [
   {
-    'title': "Запомни цифры",
+    'title': "Hands",
     "minutes": 4,
     "page": ExercizeOne(),
-    "skill": "Память"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    "skill": "Arm mobility"
   },
 ];
 
 List threeArm = [
   {
-    'title': "Что дороже?",
+    'title': "Palms",
     "minutes": 4,
     "page": ExercizeOne(),
-    "skill": "Логика"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    "skill": "Arm mobility"
   },
 ];
-
 
 //Problem solving
 
@@ -272,9 +102,8 @@ List oneProblem = [
     "minutes": 3,
     "page": WhatsMore(),
     "skill": "Problem Solving",
-    "instruction" : "",
-    "img" : "",
-
+    "instruction": "",
+    "img": "",
   },
   {
     'title': "Find Ladybag",
@@ -306,14 +135,7 @@ List threeProblem = [
     "page": SentencedQuiz(),
     "skill": "Problem Solving"
   },
-  {
-    'title': "Patterns",
-    "skill": "Problem Solving",
-    "minutes": 7,
-    "page": WhatComesNext(),
-  },
 ];
-
 
 //Leg mobility
 
@@ -322,25 +144,7 @@ List oneLeg = [
     'title': "Memorise цифры",
     "minutes": 4,
     "page": ExercizeOne(),
-    "skill": "Memory"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Memory",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    "skill": "Leg mobility"
   },
 ];
 
@@ -349,25 +153,7 @@ List twoLeg = [
     'title': "Запомни цифры",
     "minutes": 4,
     "page": ExercizeOne(),
-    "skill": "Память"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    "skill": "Leg mobility"
   },
 ];
 
@@ -376,200 +162,51 @@ List threeLeg = [
     'title': "Что дороже?",
     "minutes": 4,
     "page": ExercizeOne(),
-    "skill": "Логика"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    "skill": "Leg mobility"
   },
 ];
-
 
 //Core
 
-List oneCore = [
-  {
-    'title': "Memorise цифры",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Memory"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Memory",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
-  },
-];
+List oneCore = [];
 
-List twoCore = [
-  {
-    'title': "Запомни цифры",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Память"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
-  },
-];
+List twoCore = [];
 
-List threeCore = [
-  {
-    'title': "Что дороже?",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Логика"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
-  },
-];
-
+List threeCore = [];
 
 //Attention
 
 List oneAttention = [
   {
-    'title': "Memorise цифры",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Memory"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Memory",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    'title': "Finger Dancing",
+    "skill": "Attention",
+    "minutes": 2,
+    "page": ExerciseThree(),
   },
 ];
 
-List twoAttention = [
-  {
-    'title': "Запомни цифры",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Память"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
-  },
-];
+List twoAttention = [];
 
 List threeAttention = [
   {
-    'title': "Что дороже?",
+    'title': "Similiar sounds",
     "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Логика"
-  },
-  {
-    'title': "Танцы пальцев",
-    "skill": "Моторика",
-    "minutes": 7,
-    "page": ExercizeOne(),
-  },
-  {
-    'title': "Похожие звуки",
-    "skill": "Речь/Слух",
-    "minutes": 3,
-    "page": ExercizeOne(),
-  },
-  {
-    "title": "Шерлок Холмс: Кто украл морковку?",
-    'skill': "Логика",
-    "page": ExercizeOne(),
-    "minutes": 10
+    "page": ExerciseTwo(),
+    "skill": "Attention"
   },
 ];
 
-
-
-Widget exerciseWidgetMain(String title, int level, String skill, int minutes,
-    Widget page, String instruction, String img, double width,double height, BuildContext context) {
+Widget exerciseWidgetMain(
+    String title,
+    int level,
+    String skill,
+    int minutes,
+    Widget page,
+    String instruction,
+    String img,
+    double width,
+    double height,
+    BuildContext context) {
   TextStyle styleSmall = const TextStyle(fontSize: 12, color: Colors.white);
 
   return Container(
@@ -738,84 +375,84 @@ Widget exerciseWidget(
     BuildContext context) {
   TextStyle styleSmall = const TextStyle(fontSize: 12, color: Colors.white);
 
-  void nothing() {
-    
-  }
+  void nothing() {}
 
   return GestureDetector(
     onTap: () {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => page));
-      instruction.isEmpty ? nothing() :
-      showDialog(
-          context: context,
-          builder: (_) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              child: Container(
-                height: 350,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(width: 4, color: Colors.purple)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Инструкция по выполнению!",
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          fontFamily: "Ruberoid",
-                          fontWeight: FontWeight.bold,
-                          color: secondaryColor,
-                          fontSize: 18),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        instruction,
-                        style: const TextStyle(
-                            fontFamily: "Inter", fontSize: 20),
-                      ),
-                    ),
-                    Image.asset(
-                      img,
-                      height: height * 0.15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
+      instruction.isEmpty
+          ? nothing()
+          : showDialog(
+              context: context,
+              builder: (_) {
+                return Dialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Container(
+                    height: 350,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(width: 4, color: Colors.purple)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Инструкция по выполнению!",
+                          style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontFamily: "Ruberoid",
+                              fontWeight: FontWeight.bold,
+                              color: secondaryColor,
+                              fontSize: 18),
+                        ),
                         Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Container(
-                            width: 70,
-                            height: 35,
-                            decoration:
-                                BoxDecoration(color: Colors.grey.shade300),
-                            child: TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text(
-                                  "OK",
-                                  style: TextStyle(color: Colors.black),
-                                )),
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            instruction,
+                            style: const TextStyle(
+                                fontFamily: "Inter", fontSize: 20),
                           ),
                         ),
-                        // TextButton(onPressed: () {}, child: Text("Не показывать больше")),
+                        Image.asset(
+                          img,
+                          height: height * 0.15,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Container(
+                                width: 70,
+                                height: 35,
+                                decoration:
+                                    BoxDecoration(color: Colors.grey.shade300),
+                                child: TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text(
+                                      "OK",
+                                      style: TextStyle(color: Colors.black),
+                                    )),
+                              ),
+                            ),
+                            // TextButton(onPressed: () {}, child: Text("Не показывать больше")),
+                          ],
+                        )
                       ],
-                    )
-                  ],
-                ),
-              ),
-            );
-          });
+                    ),
+                  ),
+                );
+              });
     },
     child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal:11.0,),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 11.0,
+      ),
       child: Container(
           height: 60,
           alignment: Alignment.center,
@@ -842,9 +479,7 @@ Widget exerciseWidget(
                 Text(
                   title,
                   style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontFamily: "Inter"),
+                      fontSize: 18, color: Colors.white, fontFamily: "Inter"),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -866,31 +501,93 @@ Widget exerciseWidget(
   );
 }
 
-
-
 Widget buildTimeCard(String time, String header) {
-      return Column(
+  return Column(
+    children: [
+      Container(
+        width: 55,
+        height: 55,
+        decoration: BoxDecoration(
+            color: deepPurple, borderRadius: BorderRadius.circular(10)),
+        alignment: Alignment.center,
+        child: Text(
+          time,
+          style: TextStyle(fontSize: 40, color: Colors.white),
+        ),
+      ),
+      const SizedBox(
+        height: 2,
+      ),
+      Text(
+        header,
+        style: TextStyle(
+          fontSize: 11,
+        ),
+      ),
+    ],
+  );
+}
+
+Widget headerExercise(double width, String text, int score) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      SizedBox(
+        width: width * 0.6,
+        child: Text(
+          text,
+          style: TextStyle(color: Colors.grey.shade400, fontFamily: "Inter"),
+        ),
+      ),
+      Column(
         children: [
-          Container(
-            width: 55,
-            height: 55,
-            decoration: BoxDecoration(
-                color: deepPurple, borderRadius: BorderRadius.circular(10)),
-            alignment: Alignment.center,
-            child: Text(
-              time,
-              style: TextStyle(fontSize: 40, color: Colors.white),
+          Text(
+            "SCORE",
+            style: TextStyle(
+              color: secondaryColor,
+              fontSize: 27,
             ),
           ),
-          const SizedBox(
-            height: 2,
-          ),
           Text(
-            header,
+            '$score',
             style: TextStyle(
-              fontSize: 11,
+              color: secondaryColor,
+              fontSize: 29,
             ),
           ),
         ],
-      );
-    }
+      )
+    ],
+  );
+}
+
+Widget textHeader(double width, String text) {
+  return SizedBox(
+    width: width * 0.9,
+    child: Text(
+      text,
+      style: TextStyle(color: Colors.grey.shade400, fontFamily: "Inter"),
+    ),
+  );
+}
+
+PreferredSizeWidget exerciseAppbar(String title, BuildContext context) {
+  return AppBar(
+    title: Text(
+      title,
+      style: TextStyle(
+          color: Colors.grey, fontFamily: "Inter", fontWeight: FontWeight.bold),
+    ),
+    centerTitle: true,
+    backgroundColor: Colors.transparent,
+    elevation: 0.0,
+    leading: IconButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: Colors.grey,
+        )),
+  );
+}

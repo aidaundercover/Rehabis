@@ -2,7 +2,9 @@ import 'package:firebase_database/firebase_database.dart';
 import "package:flutter/material.dart";
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/views/auth/sign_in.dart';
-import 'package:rehabis/views/profile/med_card.dart';
+import 'package:rehabis/views/profile/about.dart';
+import 'package:rehabis/views/profile/settings.dart';
+import 'package:rehabis/views/profile/support.dart';
 
 class ProfileMain extends StatefulWidget {
   const ProfileMain({Key? key}) : super(key: key);
@@ -22,10 +24,10 @@ class _ProfileMainState extends State<ProfileMain> {
         fontFamily: "Inter", fontSize: 14, color: Colors.grey.shade500);
 
     List profileCards = [
-      {"title": "Goals", "page": MedicalCard()},
-      {"title": "Settings", "page": MedicalCard()},
-      {"title": "About Rehabis", "page": MedicalCard()},
-      {"title": "Suport", "page": MedicalCard()},
+      {"title": "Goals", "page": Goals()},
+      {"title": "Settings", "page": Settings()},
+      {"title": "About Rehabis", "page": AboutRehabis()},
+      {"title": "Support", "page": Support()},
     ];
 
     final ref = FirebaseDatabase.instance.ref();
@@ -65,7 +67,7 @@ class _ProfileMainState extends State<ProfileMain> {
                     radius: width * 0.1,
                     child: Image.asset(
                       "assets/robot_neutral.png",
-                      height: width*0.18,
+                      height: width * 0.18,
                     ),
                   ),
                 )
@@ -253,3 +255,5 @@ class _ProfileMainState extends State<ProfileMain> {
     );
   }
 }
+
+class Goals {}
