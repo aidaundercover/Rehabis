@@ -11,10 +11,9 @@ class HandsOneExrcise extends StatefulWidget {
 }
 
 class _HandsOneExrciseState extends State<HandsOneExrcise> {
-
   var ref = FirebaseDatabase.instance.ref().child("Users");
 
- @override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -41,12 +40,11 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
               SizedBox(
                 height: 15,
               ),
-              StreamBuilder(
+              StreamBuilder<DatabaseEvent>(
                   stream: ref.onValue,
-                  builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
+                  builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      final myData = Map<String, dynamic>.from(
-                          snapshot.data! as Map<dynamic, dynamic>);
+                      final myData = snapshot.data!;
                       bool isPressed =
                           int.parse(myData.toString()) % 2 == 0 ? true : false;
 
@@ -104,7 +102,6 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
                       );
                     } else if (snapshot.hasError)
                       return Text("ERROR");
-
                     else
                       return CircularProgressIndicator();
                   })
@@ -113,5 +110,3 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
     );
   }
 }
-
-

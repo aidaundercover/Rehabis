@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -30,9 +29,18 @@ Future<void> main() async {
   await Hive.initFlutter();
   await HiveBoxes.initialize();
 
-  runApp(ChangeNotifierProvider<EventProvider>(
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
       create: (context) => EventProvider(),
-      child: const MaterialApp(home: SelectWeakness())));
+      child: MaterialApp(home: SelectWeakness()));
+  }
 }
 
 class Main extends StatefulWidget {
@@ -56,14 +64,11 @@ class _MainState extends State<Main> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        width: width*0.88,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+        width: width * 0.88,
         child: BottomNavigationBar(
             backgroundColor: Colors.white,
             elevation: 0,

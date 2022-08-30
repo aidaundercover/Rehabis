@@ -4,6 +4,7 @@ import 'package:rehabis/views/exercises/attention/find_third_whhel.dart';
 import 'package:rehabis/views/exercises/attention/similiar_words.dart';
 import 'package:rehabis/views/exercises/cube/hands.dart';
 import 'package:rehabis/views/exercises/exercises_main.dart';
+import 'package:rehabis/views/exercises/gloves/glove_one.dart';
 import 'package:rehabis/views/exercises/logic/3d_thinking.dart';
 import 'package:rehabis/views/exercises/logic/ladybag.dart';
 import 'package:rehabis/views/exercises/logic/patterns.dart';
@@ -41,6 +42,28 @@ List threeMemory = [
   },
 ];
 
+//Motorics
+
+List oneMotorics = [
+  {
+    "title" : "Fingers exercise",
+    "minutes" : 5,
+    "skill" : "Motorics",
+    "page" : GloveOne()
+  } 
+];
+
+List twoMotorics = [
+  {
+    "title" : "Find I and J",
+    "minutes" : 5,
+    "skill" : "Motorics",
+    "page" : ExercizeOne()
+  } 
+];
+List threeMotorics = [
+  
+];
 //Speaking
 
 List oneSpeaking = [
@@ -48,12 +71,12 @@ List oneSpeaking = [
 ];
 
 List twoSpeaking = [
-  {
-    'title': "Tongue Actions",
-    "minutes": 6,
-    "page": TongueActions(),
-    "skill": "Speaking"
-  },
+  // {
+  //   'title': "Tongue Actions",
+  //   "minutes": 6,
+  //   "page": TongueActions(),
+  //   "skill": "Speaking"
+  // },
 ];
 
 List threeSpeaking = [

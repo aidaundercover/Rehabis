@@ -1,42 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:rehabis/globalVars.dart';
-import 'package:rehabis/models/event_datasource.dart';
-import 'package:rehabis/notification_api.dart';
+import 'package:rehabis/models/Event.dart';
 import 'package:rehabis/provider/event_provider.dart';
+import 'package:rehabis/views/calendar/event_datasource.dart';
 import 'package:rehabis/views/calendar/event_editing_view.dart';
 import 'package:rehabis/views/calendar/tasks_widget.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import '../../main.dart';
 
 
-class SCalendar extends StatelessWidget {
+class SCalendar extends StatefulWidget {
   const SCalendar({Key? key}) : super(key: key);
 
   @override
+  State<SCalendar> createState() => _SCalendarState();
+}
+
+class _SCalendarState extends State<SCalendar> {
+  @override
   Widget build(BuildContext context) {
 
-    final events = Provider.of<EventProvider>(context).events;
-    
+    final List<Event> events = Provider.of<EventProvider>(context).events;
+
     return SfCalendar(
       //backgroundColor: Colors.white,
       initialSelectedDate: DateTime.now(),
       view: CalendarView.month,
-      headerStyle: CalendarHeaderStyle(
-        textStyle: TextStyle(fontFamily: "Inter")
-      ),
+      dataSource: EventDataSource(events),
+      headerStyle:
+          const CalendarHeaderStyle(textStyle: TextStyle(fontFamily: "Inter")),
       todayHighlightColor: primaryColor,
       cellBorderColor: deepPurple,
+      
       selectionDecoration: BoxDecoration(
           color: Colors.transparent,
           border: Border.all(color: primaryColor, width: 2),
           borderRadius: const BorderRadius.all(Radius.circular(4)),
           shape: BoxShape.rectangle),
-      dataSource: EventDataSource(events),
-      onTap: (details) {
+      
+      showCurrentTimeIndicator: true,
+
+      onLongPress: (details) {
         final provider =
-            Provider.of<EventProvider>(context, listen: true);
+            Provider.of<EventProvider>(context, listen: false);
         provider.setDate(details.date!);
         showModalBottomSheet(
             context: context, builder: (context) => const TasksWidget());
@@ -45,39 +51,16 @@ class SCalendar extends StatelessWidget {
   }
 }
 
-class Schedule extends StatefulWidget {
-  const Schedule({Key? key}) : super(key: key);
+class MyWidget extends StatefulWidget {
+  const MyWidget({Key? key}) : super(key: key);
 
   @override
-  State<Schedule> createState() => _ScheduleState();
+  State<MyWidget> createState() => _MyWidgetState();
 }
 
-class _ScheduleState extends State<Schedule> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // NotificationApi.init();
-    listenNotificatons();
-  }
-
-  void listenNotificatons() {
-    // NotificationApi.onNotification.stream.listen(onClickedNotification);
-  }
-
-  void onClickedNotification(String? payload) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: ((context) => const Main())));
-  }
-
-  TextEditingController days = TextEditingController(text: "1");
-  TimeOfDay time = TimeOfDay.now();
-
+class _MyWidgetState extends State<MyWidget> {
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
@@ -96,7 +79,7 @@ class _ScheduleState extends State<Schedule> {
             IconButton(
                 onPressed: () {
                   Scaffold.of(context)
-                      .showBottomSheet((context) => EventCreate());
+                      .showBottomSheet((context) => const EventCreate());
                 },
                 icon: Icon(
                   Icons.add,
@@ -104,6 +87,24 @@ class _ScheduleState extends State<Schedule> {
                 ))
           ],
         ),
-        body: SCalendar());
+        body: const SCalendar());
+  }
+}
+
+class Schedule extends StatefulWidget {
+  const Schedule({Key? key}) : super(key: key);
+
+  @override
+  State<Schedule> createState() => _ScheduleState();
+}
+
+class _ScheduleState extends State<Schedule> {
+
+  @override
+  Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
+    return MyWidget();
   }
 }

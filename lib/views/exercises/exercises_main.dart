@@ -65,12 +65,17 @@ List one = [];
 List two = [];
 List three = [];
 
+
+
 class _ExerciseMainState extends State<ExerciseMain> {
+
+  
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    
     List tagTitles = [];
 
     setState(() {
@@ -110,7 +115,11 @@ class _ExerciseMainState extends State<ExerciseMain> {
         three += tagsList[r]["three"];
       }
     });
+
+    
   }
+
+  
 
   @override
   Widget build(BuildContext context) {

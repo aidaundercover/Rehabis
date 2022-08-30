@@ -30,8 +30,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  syncfusion_flutter_calendar:
-  syncfusion_flutter_core:
+  syncfusion_flutter_calendar: ^19.1.59
+  just_audio: ^0.9.28
   firebase_database: ^9.0.6
   firebase_core: ^1.7.0
   firebase_messaging: 
@@ -39,9 +39,9 @@ dependencies:
   rxdart: ^0.27.4
   flip_card: ^0.6.0
 
-  # flutter_local_notifications: ^9.4.0
-  # flutter_local_notifications_platform_interface: ^5.0.1
-  # path_provider: ^1.6.5
+  flutter_local_notifications: 9.8.0+1
+  flutter_native_timezone: ^2.0.0
+
   percent_indicator: ^4.2.2
   audioplayers: ^1.0.1 # needed for audio_player_url.dart and audio_player_local_asset.dart
   syncfusion_flutter_charts:
@@ -49,6 +49,11 @@ dependencies:
   shared_preferences: ^2.0.11
   speech_to_text: ^5.6.1
   provider: ^6.0.3
+  
+
+
+  confetti: ^0.7.0
+
 
 
 

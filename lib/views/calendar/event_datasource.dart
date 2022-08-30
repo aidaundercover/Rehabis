@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 class EventDataSource extends CalendarDataSource {
 
   EventDataSource(List<Event> appointemnts) {
-    this.appointments = appointments;
+    appointments = appointments;
   }
 
   Event getEvent(int index) => appointments![index] as Event;

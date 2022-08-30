@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rehabis/models/event_datasource.dart';
+import 'package:rehabis/views/calendar/event_datasource.dart';
 import 'package:rehabis/provider/event_provider.dart';
 import 'package:rehabis/views/calendar/event_viewng_page.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +16,7 @@ class TasksWidget extends StatefulWidget {
 class _TasksWidgetState extends State<TasksWidget> {
   @override
   Widget build(BuildContext context) {
+
     final provider = Provider.of<EventProvider>(context);
     final selectedEvents = provider.eventsOfSelectedDate;
 
@@ -26,7 +27,6 @@ class _TasksWidgetState extends State<TasksWidget> {
     return SfCalendarTheme(
       data: SfCalendarThemeData(),
       child: SfCalendar(
-        headerHeight: 0,
         view: CalendarView.timelineDay,
         todayHighlightColor: Colors.black,
         selectionDecoration:
@@ -48,7 +48,9 @@ class _TasksWidgetState extends State<TasksWidget> {
 
   Widget appointmentBuilder(
       BuildContext context, CalendarAppointmentDetails details) {
+        
     final event = details.appointments.first;
+
 
     return Container(
         width: details.bounds.width,

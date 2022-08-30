@@ -7,8 +7,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:rehabis/utils/utils.dart';
 
 class EventCreate extends StatefulWidget {
-  const EventCreate({Key? key, this.event}) : super(key: key);
   final Event? event;
+  const EventCreate({Key? key, this.event}) : super(key: key);
 
   @override
   State<EventCreate> createState() => _EventCreateState();
@@ -18,7 +18,7 @@ class _EventCreateState extends State<EventCreate> {
   late DateTime from;
   late DateTime to;
   final GlobalKey<FormState> _key = GlobalKey();
-  final titleController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
   final ref = FirebaseDatabase.instance.ref();
 
   bool isChecked = false;
@@ -30,14 +30,23 @@ class _EventCreateState extends State<EventCreate> {
 
     if (widget.event == null) {
       from = DateTime.now();
-      to = DateTime.now().add(const Duration(hours: 1));
-    } else {
-      final event = widget.event!;
-
-      titleController.text = event.title;
-      from = event.from;
-      to = event.to;
+      to = DateTime.now().add(const Duration(hours: 2));
     }
+    // else {
+    //   final event = widget.event!;
+
+    //   titleController.text = event.title;
+    //   from = event.from;
+    //   to = event.to;
+    // }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    titleController.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,21 +70,27 @@ class _EventCreateState extends State<EventCreate> {
           child: SingleChildScrollView(
               child: Column(
             children: [
-              Row(
-                children: [const CloseButton(), saveButton()],
-              ),
+              AppBar(
+                  leading: CloseButton(),
+                  backgroundColor: secondaryColor,
+                  actions: buildEditingActions()),
               Form(
                   key: _key,
                   child: Column(
-                    children: [buildTile(), buildDateTimePickers(), checkBox()],
+                    children: [buildTitle(), buildDateTimePickers(), checkBox()],
                   )),
             ],
           ))),
     );
   }
 
-  Widget checkBox() {
+  List<Widget> buildEditingActions() {
+    return [
+      saveButton()
+    ];
+  }
 
+  Widget checkBox() {
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -91,28 +106,34 @@ class _EventCreateState extends State<EventCreate> {
     return Row(
       children: [
         Checkbox(
-            fillColor: MaterialStateProperty.resolveWith((states) => getColor(states)),
+            fillColor:
+                MaterialStateProperty.resolveWith((states) => getColor(states)),
             value: isChecked,
             onChanged: (bool? x) {
               setState(() {
                 isChecked = x!;
               });
             }),
-        Text("All-day", style: TextStyle(fontFamily: "Inter"),)
+        Text(
+          "All-day",
+          style: TextStyle(fontFamily: "Inter"),
+        )
       ],
     );
   }
 
-  Widget saveButton() => ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(primary: Colors.transparent),
-      onPressed: saveForm,
-      icon: const Icon(Icons.save),
-      label: Text("SAVE"));
+  Widget saveButton() {
+    return ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(primary: Colors.transparent),
+        onPressed: saveForm,
+        icon: const Icon(Icons.save),
+        label: const Text("SAVE"));
+  }
 
-  Widget buildTile() => Padding(
-        padding: const EdgeInsets.all(8.0),
+  Widget buildTitle() => Padding(
+        padding: const EdgeInsets.all(12.0),
         child: TextFormField(
-            onFieldSubmitted: (_) => saveForm(),
+            enableInteractiveSelection: false,
             validator: (title) => title != null && titleController.text.isEmpty
                 ? "Title can not be empty"
                 : null,
@@ -172,7 +193,7 @@ class _EventCreateState extends State<EventCreate> {
                 child: buildDropdownFiled(
                     text: Utils.toTime(to),
                     onClicked: () {
-                      pickToDateTime(pickDate: true);
+                      pickToDateTime(pickDate: false);
                     }))
           ],
         ),
@@ -239,7 +260,7 @@ class _EventCreateState extends State<EventCreate> {
     if (isValid) {
       setState(() {
         final event =
-            Event(title: titleController.text, from: from, to: to, desc: "ff");
+            Event(title: titleController.text, from: from, to: to, desc: "ff", isAllday: false);
 
         final isEditing = widget.event != null;
         final provider = Provider.of<EventProvider>(context, listen: false);
@@ -251,8 +272,6 @@ class _EventCreateState extends State<EventCreate> {
         // }
 
         provider.addEvent(event);
-        print("3");
-
         Navigator.of(context).pop();
       });
 

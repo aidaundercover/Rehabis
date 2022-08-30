@@ -18,6 +18,7 @@ List _selected = [
   {"title": "Leg Mobility", "selected": false},
   {"title": "Core", "selected": false},
   {"title": "Attention", "selected": false},
+  {"title": "Motorics", "selected": false}
 ];
 
 class _SelectWeaknessState extends State<SelectWeakness> {
@@ -40,24 +41,24 @@ class _SelectWeaknessState extends State<SelectWeakness> {
               .push(MaterialPageRoute(builder: (context) => AddDataView()));
         },
         child: Padding(
-          padding: EdgeInsets.only(right: width*0.04),
+          padding: EdgeInsets.only(right: width * 0.04),
           child: Container(
-            width: width*0.31,
+            width: width * 0.31,
             height: 40,
             decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10
-                )
-              ]
-            ),
+                color: primaryColor,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.1), blurRadius: 10)
+                ]),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Next", style: TextStyle(color: Colors.white, fontSize: 20),),
+                Text(
+                  "Next",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
                 Icon(Icons.arrow_forward_ios, color: Colors.white)
               ],
             ),
@@ -68,61 +69,65 @@ class _SelectWeaknessState extends State<SelectWeakness> {
         child: SizedBox(
           width: width * 0.86,
           child: SingleChildScrollView(
-            child: Column(
-                children: [
-                  slider(1, width),
-                  SizedBox(
-                    width: width * 0.8,
-                    child: Text(
-                      "Select your weak points.",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
-                          fontFamily: "Ruberoid",
-                          color: Color.fromARGB(255, 50, 50, 50)),
-                    ),
-                  ),
-                  SizedBox(
-                      child: ListView.builder(
-                          itemCount: _selected.length,
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) => 
+            child: Column(children: [
+              slider(1, width),
+              SizedBox(
+                width: width * 0.8,
+                child: Text(
+                  "Select your weak points.",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                      fontFamily: "Ruberoid",
+                      color: Color.fromARGB(255, 50, 50, 50)),
+                ),
+              ),
+              SizedBox(
+                  child: ListView.builder(
+                      itemCount: _selected.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) =>
                           Container(
                             height: 70,
                             margin: EdgeInsets.only(bottom: 10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: _selected[index]["selected"] ? Colors.black.withOpacity(0.15) : Colors.black.withOpacity(0.07),
-                                      offset: Offset(4,3),
-                                      blurRadius: 10
-                                    )
-                                  ]
-                                ),
-                                alignment: Alignment.center,
-                                child: ListTile(
-                                  title: Padding(
-                                    padding:  EdgeInsets.only(left: width*0.03),
-                                    child: Text(_selected[index]["title"]),
-                                  ),
-                                  trailing: IconButton(
-                                    icon: _selected[index]["selected"]
-                                        ? Icon(Icons.check_circle, color: primaryColor,)
-                                        : Icon(Icons.circle_outlined),
-                                    onPressed: () {
-                                      setState(() {
-                                        _selected[index]["selected"] =
-                                            !_selected[index]["selected"];
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ))),
-                  SizedBox(height: 40,)
-                ]),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: _selected[index]["selected"]
+                                          ? Colors.black.withOpacity(0.15)
+                                          : Colors.black.withOpacity(0.07),
+                                      offset: Offset(4, 3),
+                                      blurRadius: 10)
+                                ]),
+                            alignment: Alignment.center,
+                            child: ListTile(
+                              title: Padding(
+                                padding: EdgeInsets.only(left: width * 0.03),
+                                child: Text(_selected[index]["title"]),
+                              ),
+                              trailing: IconButton(
+                                icon: _selected[index]["selected"]
+                                    ? Icon(
+                                        Icons.check_circle,
+                                        color: primaryColor,
+                                      )
+                                    : Icon(Icons.circle_outlined),
+                                onPressed: () {
+                                  setState(() {
+                                    _selected[index]["selected"] =
+                                        !_selected[index]["selected"];
+                                  });
+                                },
+                              ),
+                            ),
+                          ))),
+              SizedBox(
+                height: 40,
+              )
+            ]),
           ),
         ),
       ),

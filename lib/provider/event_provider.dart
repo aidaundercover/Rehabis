@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rehabis/models/Event.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
+
+
 
 class EventProvider extends ChangeNotifier {
 
-
-  List<Event> _events = [];
+  final List<Event> _events = [];
 
   List<Event> get events => _events;
 
@@ -21,7 +21,6 @@ class EventProvider extends ChangeNotifier {
     _events.add(event);
 
     notifyListeners();
-    print(_events[0].title.toString());
   }
 
   void deleteEvent(Event event) {
