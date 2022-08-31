@@ -30,7 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  syncfusion_flutter_calendar: ^19.1.59
+  syncfusion_flutter_calendar: ^20.2.46
   just_audio: ^0.9.28
   firebase_database: ^9.0.6
   firebase_core: ^1.7.0
@@ -38,9 +38,12 @@ dependencies:
   fluttertoast: 
   rxdart: ^0.27.4
   flip_card: ^0.6.0
-
+  firebase_auth: ^3.7.0
   flutter_local_notifications: 9.8.0+1
   flutter_native_timezone: ^2.0.0
+  url_launcher: ^6.1.5
+  flutter_phone_direct_caller: ^2.1.1
+
 
   percent_indicator: ^4.2.2
   audioplayers: ^1.0.1 # needed for audio_player_url.dart and audio_player_local_asset.dart

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/models/Training.dart';
 import 'package:rehabis/utils/local_db.dart';
-import 'package:rehabis/views/exercises/cube/hands.dart';
+import 'package:rehabis/views/exercises/hands/hands.dart';
 import 'package:rehabis/views/exercises/exerciseWidgets.dart';
 import 'package:rehabis/views/main/progress.dart';
 import 'package:rehabis/widgets/audio_player.dart';
 import 'package:rehabis/views/exercises/exercises_main.dart';
 import 'package:rehabis/views/exercises/attention/find_third_whhel.dart';
 import 'package:rehabis/views/exercises/attention/similiar_words.dart';
-import 'package:rehabis/views/exercises/motorics/findiandh.dart';
+import 'package:rehabis/views/exercises/hands/findiandh.dart';
 import 'package:rehabis/views/prediction/test_for_prediction.dart';
 
 class HomePage extends StatefulWidget {

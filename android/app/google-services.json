@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "750846452590-cu3tad8lhmqljfrcpbnubcruc8b24lbs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.undercover.rehabis",
+            "certificate_hash": "b93450c35ae5d7f409a62a607294743db7b8e1de"
+          }
+        },
+        {
           "client_id": "750846452590-1ovvkcl1elkdfistgtfgb14130tblo50.apps.googleusercontent.com",
           "client_type": 3
         }

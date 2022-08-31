@@ -18,7 +18,6 @@ List _selected = [
   {"title": "Leg Mobility", "selected": false},
   {"title": "Core", "selected": false},
   {"title": "Attention", "selected": false},
-  {"title": "Motorics", "selected": false}
 ];
 
 class _SelectWeaknessState extends State<SelectWeakness> {

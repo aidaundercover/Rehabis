@@ -24,29 +24,29 @@ class _BreathingState extends State<Breathing> {
 
     player = AudioPlayer();
 
-    void nothing() {}
-
-    isStarted
-        ? Timer.periodic(const Duration(milliseconds: 3600), (timer) {
-            setState(() async {
-              isInhale = !isInhale;
-
-              if(isInhale){
-                await player.setAsset('assets/inhale.mp3');
-                player.play();
-              } else {
-                await player.setAsset('assets/exhale.mp3');
-                player.play();
-              }
-            });
-          })
-        : nothing;
     super.initState();
+  }
+
+  void startVoiceOver() {
+    Timer.periodic(const Duration(milliseconds: 7500), (timer) {
+      setState(() async {
+        isInhale = !isInhale;
+
+        if (isInhale) {
+          await player.setAsset('assets/inhale.mp3');
+          player.play();
+        } else {
+          await player.setAsset('assets/exhale.mp3');
+          player.play();
+        }
+      });
+    });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
+    isInhale = true;
     player.dispose();
     super.dispose();
   }
@@ -56,6 +56,7 @@ class _BreathingState extends State<Breathing> {
     var width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      floatingActionButton: TextButton(child: Container(), onPressed: () {}),
       appBar: exerciseAppbar("Breathing exercise", context),
       body: Column(
         children: [
@@ -65,69 +66,82 @@ class _BreathingState extends State<Breathing> {
           Stack(
             alignment: Alignment.center,
             children: [
-              isStarted ? Lottie.asset("assets/breathe.json"): Image.asset('asset/female.png'),
-              isStarted ? Text(
-                isInhale ? "Inhale" : "Exhale",
-                style: TextStyle(
-                    fontFamily: "Inter",
-                    fontSize: 17,
-                    color: Colors.black.withOpacity(0.8)),
-              ) : Container()
+              isStarted
+                  ? Lottie.asset("assets/breathe.json")
+                  : Image.asset('asset/female.png'),
+              isStarted
+                  ? Text(
+                      isInhale ? "Inhale" : "Exhale",
+                      style: TextStyle(
+                          fontFamily: "Inter",
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    )
+                  : Container()
             ],
           ),
-          SizedBox(height: 20,),
-           !isStarted ? TextButton(
-              onPressed: () {
-                setState(() {
-                  isStarted = !isStarted;
-                });
-              },
-              child: Container(
-                width: width * 0.4,
-                height: 45,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: secondPrimaryColor.withOpacity(0.2),
-                    boxShadow: [
-                      BoxShadow(
-                          offset: Offset(4, 4),
-                          color: secondPrimaryColor.withOpacity(0.01)),
-                      BoxShadow(
-                          offset: Offset(-4, -4),
-                          color: secondPrimaryColor.withOpacity(0.01))
-                    ]),
-                alignment: Alignment.center,
-                child: Text(
-                 "Start",
-                  style: TextStyle(
-                      color: secondPrimaryColor.withOpacity(0.8),
-                      fontFamily: 'Inter',
-                      fontSize: 16),
-                ),
-              )) : Container(
-                width: width*0.9,
-                height: 90,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(22),
-                  color : secondPrimaryColor.withOpacity(0.14),
-                  boxShadow: [
+          SizedBox(
+            height: 20,
+          ),
+          !isStarted
+              ? TextButton(
+                  onPressed: () {
+                    setState(() {
+                      isStarted = true;
+                      startVoiceOver();
+                    });
+                  },
+                  child: Container(
+                    width: width * 0.4,
+                    height: 45,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: secondPrimaryColor.withOpacity(0.2),
+                        boxShadow: [
+                          BoxShadow(
+                              offset: Offset(4, 4),
+                              color: secondPrimaryColor.withOpacity(0.01)),
+                          BoxShadow(
+                              offset: Offset(-4, -4),
+                              color: secondPrimaryColor.withOpacity(0.01))
+                        ]),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Start",
+                      style: TextStyle(
+                          color: secondPrimaryColor.withOpacity(0.8),
+                          fontFamily: 'Inter',
+                          fontSize: 16),
+                    ),
+                  ))
+              : Container(
+                  width: width * 0.88,
+                  height: 90,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: secondPrimaryColor.withOpacity(0.14),
+                      boxShadow: [
                         BoxShadow(
                             offset: Offset(4, 4),
                             color: secondPrimaryColor.withOpacity(0.01)),
                         BoxShadow(
                             offset: Offset(-4, -4),
                             color: secondPrimaryColor.withOpacity(0.01))
-                      ]
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                  Icon(Icons.tips_and_updates, color: secondPrimaryColor.withOpacity(0.4),),
-                  SizedBox(
-                    // width: width*0.5,
-                    child: Text("Practice this exercise at least 10 -times in the morning and evening. Breathing exercises will strengthen your diaphragm. It will help you remain calm. Working on your breathing will allow you to automatically regulate breathing and speaking."))
-                ]),
-              )
+                      ]),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(Icons.tips_and_updates,
+                            color: secondPrimaryColor.withOpacity(0.4),
+                            size: width * 0.1),
+                        SizedBox(
+                            width: width * 0.75,
+                            child: Text(
+                                "Practice this exercise at least 10 -times in the morning and evening. Breathing exercises will strengthen your diaphragm.",
+                                style: TextStyle(color: Colors.black38)))
+                      ]),
+                )
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/main.dart';
@@ -15,14 +16,31 @@ class SetVoiceAssistant extends StatefulWidget {
   State<SetVoiceAssistant> createState() => _SetVoiceAssistantState();
 }
 
-
-
 class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
-
   String text = "Press mic and say hi";
   bool isListening = false;
 
+  late AudioPlayer player;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    player = AudioPlayer();
+    welcome();
+
+    super.initState();
+  }
+
+  void welcome() async {
+    await player.setAsset("assets/welcome.mp3");
+    player.play();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,37 +53,35 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
               .push(MaterialPageRoute(builder: (context) => Main()));
         },
         child: SizedBox(
-          width: width*0.5+30,
+          width: width * 0.5 + 30,
           height: 70,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AvatarGlow(
-              animate: isListening,
-              glowColor: secondPrimaryColor,
-              endRadius: 50,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: secondPrimaryColor,
-                  shape: BoxShape.circle,
-
+                animate: isListening,
+                glowColor: secondPrimaryColor,
+                endRadius: 50,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: secondPrimaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                      color: Colors.white,
+                      splashRadius: 30,
+                      onPressed: toggleRecording,
+                      icon:
+                          isListening ? Icon(Icons.mic) : Icon(Icons.mic_none)),
                 ),
-                child: IconButton(
-                    color: Colors.white,
-                    splashRadius: 30,
-                    onPressed: toggleRecording,
-                    
-                    icon: isListening ? Icon(Icons.mic) : Icon(Icons.mic_none)),
               ),
-            ),
               Container(
                 width: width * 0.31,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(width: 2, color:secondPrimaryColor)
-                ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(width: 2, color: secondPrimaryColor)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -105,26 +121,28 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
                 height: 30,
               ),
               SizedBox(
-                  width: width * 0.35, child: Lottie.asset('assets/voice.json')),
-              SizedBox(height: 15,),
-              SubstringHighlight(
-              text: text,
-              terms: Command.all,
-              textStyle: TextStyle(
-                fontSize: 27.0,
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontFamily: "Inter"
+                  width: width * 0.35,
+                  child: Lottie.asset('assets/voice.json')),
+              SizedBox(
+                height: 15,
               ),
-              textStyleHighlight: TextStyle(
-                fontSize: 27.0,
-                color: secondPrimaryColor,
-                fontWeight: FontWeight.w400,
-                fontFamily: "Inter"
+              SizedBox(
+                width: width * 0.8,
+                child: SubstringHighlight(
+                  text: text,
+                  terms: Command.all,
+                  textStyle: TextStyle(
+                      fontSize: 27.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Inter"),
+                  textStyleHighlight: TextStyle(
+                      fontSize: 27.0,
+                      color: secondPrimaryColor,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Inter"),
+                ),
               ),
-            ),
-          
-              
             ],
           ),
         ),

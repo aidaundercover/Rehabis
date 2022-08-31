@@ -652,7 +652,7 @@ class _TestForPredictionState extends State<TestForPrediction> {
                 const SizedBox(
                   height: 18,
                 ),
-                Row(
+                heightUser==0 && weightUser==0 ? Row(
                   children: [
                     Text("BMI", style: titleStyle),
                     SizedBox(width: 6,),
@@ -669,12 +669,15 @@ class _TestForPredictionState extends State<TestForPrediction> {
                       message: "Body mass index - is a measure of body fat based",
                     )
                   ],
-                ),
+                ) : Container(),
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
+                heightUser==0 && weightUser==0 ? TextFormField(
                   controller: bmi,
+                  onSaved: (text) {
+                    
+                  },
                   keyboardType: TextInputType.number,
                   decoration:  InputDecoration(
                     filled: true,
@@ -686,7 +689,7 @@ class _TestForPredictionState extends State<TestForPrediction> {
                     hintText: 'For instance: 25.3',
                     hintStyle: TextStyle(fontFamily: 'Arial', fontSize: 14),
                   ),
-                ),
+                ) : Container(),
                 const SizedBox(
                   height: 10,
                 ),

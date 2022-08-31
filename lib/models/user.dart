@@ -1,4 +1,4 @@
-class User {
+class UserRehabis {
   static const String iinKey = "user_iin";
   static const String nameKey = "user_name";
   static const String arrayKey = "user_array";
@@ -7,9 +7,9 @@ class User {
   String? name;
   List? array;
 
-  User({this.iin, this.name, this.array});
+  UserRehabis({this.iin, this.name, this.array});
 
-  factory User.fromJson(Map<dynamic, dynamic> json) => User(
+  factory UserRehabis.fromJson(Map<dynamic, dynamic> json) => UserRehabis(
         iin: json[iinKey],
         name: json[nameKey],
         array: json[arrayKey],

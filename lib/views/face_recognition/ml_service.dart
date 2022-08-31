@@ -14,7 +14,7 @@ class MLService {
   late Interpreter interpreter;
   List? predictedArray;
 
-  Future<User?> predict(
+  Future<UserRehabis?> predict(
       CameraImage cameraImage, Face face, bool loginUser, String name) async {
     List input = _preProcess(cameraImage, face);
     input = input.reshape([1, 112, 112, 3]);
@@ -29,10 +29,10 @@ class MLService {
     predictedArray = List.from(output);
 
     if (!loginUser) {
-      LocalDB.setUserDetails(User(name: name, array: predictedArray!));
+      LocalDB.setUserDetails(UserRehabis(name: name, array: predictedArray!));
       return null;
     } else {
-      User? user = LocalDB.getUser();
+      UserRehabis? user = LocalDB.getUser();
       List userArray = user.array!;
       int minDist = 999;
       double threshold = 1.5;

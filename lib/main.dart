@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -32,14 +34,39 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  late StreamSubscription<User?> user;
+
+  void initState() {
+    super.initState();
+    user = FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    user.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => EventProvider(),
-      child: MaterialApp(home: SelectWeakness()));
+      child: MaterialApp(
+        home: FirebaseAuth.instance.currentUser == null ? FirstView() : Main()));
   }
 }
 

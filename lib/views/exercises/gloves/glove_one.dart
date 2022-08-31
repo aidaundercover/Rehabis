@@ -13,10 +13,23 @@ class _GloveOneState extends State<GloveOne> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
 
+    Widget circle(Color color) {
+      return Container(
+        decoration: BoxDecoration(
+          color: color
+        )
+      );
+    }
+
     return Scaffold(
         appBar: exerciseAppbar("Fingers exercise", context),
         body: Column(
-          children: [textHeader(width, "This exercise is created to enhance finger flexibility and reduce bone tremor")],
+          children: [
+            textHeader(width,
+                "This exercise is created to enhance finger flexibility and reduce bone tremor"),
+            Stack(
+                children: [Image.asset("assets/glove.png"), Row(children: [])])
+          ],
         ));
   }
 }

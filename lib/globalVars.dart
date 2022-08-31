@@ -6,7 +6,7 @@ double value = 0.01;
 
 /// Personal data ///
 String nameGlobal = "Имя Фамилия";
-String iinGlobal = "";
+String iinGlobal = "060114651689";
 
 List<String> selectedWeakneases = [];
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rehabis/globalVars.dart';
-import 'package:rehabis/views/auth/sign_in.dart';
 import 'package:rehabis/views/auth/sign_up.dart';
 
 class FirstView extends StatelessWidget {

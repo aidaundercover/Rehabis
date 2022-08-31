@@ -15,7 +15,7 @@ import '../../widgets/common_widgets.dart';
 import 'ml_service.dart';
 
 class FaceScanScreenSignIn extends StatefulWidget {
-  final User user;
+  final UserRehabis user;
 
   const FaceScanScreenSignIn({Key? key, required this.user}) : super(key: key);
 
@@ -81,7 +81,7 @@ class _FaceScanScreenSignInState extends State<FaceScanScreenSignIn> {
   Future<void> _predictFacesFromImage({required CameraImage image}) async {
     await detectFacesFromImage(image);
     if (facesDetected.isNotEmpty) {
-      User? user = await _mlService.predict(
+      UserRehabis? user = await _mlService.predict(
           image, facesDetected[0], false, widget.user.name!);
       if (widget.user == null) {
         // register case
@@ -91,13 +91,8 @@ class _FaceScanScreenSignInState extends State<FaceScanScreenSignIn> {
         if (user == null) {
           Fluttertoast.showToast(msg: "Unknown User");
         } else {
-          FirebaseDatabase.instance
-              .ref()
-              .child("Users/${LocalDB.getUser().iin}/Name")
-              .onValue
-              .listen(
-                  (value) => {nameGlobal = value.snapshot.value.toString()});
-          iinGlobal = LocalDB.getUser().iin.toString();
+          Auth.signIn();
+          
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const SelectWeakness()));
         }

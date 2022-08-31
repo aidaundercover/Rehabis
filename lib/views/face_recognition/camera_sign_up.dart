@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:rehabis/api/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -12,9 +13,10 @@ import 'package:rehabis/views/first_view/select_your_weak.dart';
 import '../../models/user.dart';
 import '../../widgets/common_widgets.dart';
 import 'ml_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FaceScanScreenSignUp extends StatefulWidget {
-  final User? user;
+  final UserRehabis? user;
 
   const FaceScanScreenSignUp({Key? key, this.user}) : super(key: key);
 
@@ -84,7 +86,7 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
     await detectFacesFromImage(image);
 
     if (facesDetected.isNotEmpty) {
-      User? user = await _mlService.predict(
+      UserRehabis? user = await _mlService.predict(
           image,
           facesDetected[0],
           widget.user != null,
@@ -101,34 +103,7 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
         //   Fluttertoast.showToast(msg: "IIN consists of ONLY digits");
         // }
         else {
-          nameGlobal = _nameController.text;
-          iinGlobal = _iinController.text;
-
-          DatabaseReference ref =
-              FirebaseDatabase.instance.ref().child("Users/$iinGlobal/");
-
-          await ref.set({
-            "Name": nameGlobal,
-            "Iin": iinGlobal,
-            // "Photo": LocalDB.getUserArray(),
-            // "Password": password.text,
-            "MedicalData": {
-              "Born": DateTime.now().toString(),
-              "Gender": "Unknown",
-              "Height": 0,
-              "Weight": 0,
-              "StrokeType": "Unknown",
-            },
-            "Trainings": {
-              "registration_time": {
-                "BodyPart": "Cube",
-                "Count": 0,
-                "Date": DateTime.now().toString(),
-                "Type": "Type1"
-              }
-            }
-          });
-          Fluttertoast.showToast(msg: "User registered successfully");
+          Auth.signUp(_nameController, _iinController);
 
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const SelectWeakness()));
@@ -256,6 +231,13 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
                     width: width * 0.9,
                     child: TextField(
                       controller: _iinController,
+                      maxLength: 12,
+                      onChanged: (input) {
+                        _iinController.text = input;
+                        if (_iinController.text.contains(RegExp(r'[A-Z]'))) {
+                          throw "IIN consists of only numbers";
+                        }
+                      },
                       decoration: InputDecoration(
                           hintText: "TIP: IIN contains 12 digits",
                           focusedBorder: OutlineInputBorder(

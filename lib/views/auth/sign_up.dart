@@ -206,29 +206,29 @@ class _SignUpState extends State<SignUp> {
                             //   nameGlobal = name.text;
                             //   iinGlobal = iin.text;
 
-                            //   DatabaseReference ref = FirebaseDatabase.instance
-                            //       .ref().child("Users/$iinGlobal/");
+                              // DatabaseReference ref = FirebaseDatabase.instance
+                              //     .ref().child("Users/$iinGlobal/");
 
-                            //   await ref.set({
-                            //     "Name": nameGlobal,
-                            //     "Iin": iinGlobal,
-                            //     "Password": password.text,
-                            //     "MedicalData": {
-                            //       "Born" : DateTime.now().toString(),
-                            //       "Gender" : "Unknown",
-                            //       "Height" : 0,
-                            //       "Weight" : 0,
-                            //       "StrokeType" : "Unknown",
-                            //     },
-                            //     "Trainings" : {
-                            //       "registration_time" : {
-                            //         "BodyPart" : "Cube",
-                            //         "Count" : 0,
-                            //         "Date" : DateTime.now().toString(),
-                            //         "Type" : "Type1"
-                            //       }
-                            //     }
-                            //   });
+                              // await ref.set({
+                              //   "Name": nameGlobal,
+                              //   "Iin": iinGlobal,
+                              //   "Password": password.text,
+                              //   "MedicalData": {
+                              //     "Born" : DateTime.now().toString(),
+                              //     "Gender" : "Unknown",
+                              //     "Height" : 0,
+                              //     "Weight" : 0,
+                              //     "StrokeType" : "Unknown",
+                              //   },
+                              //   "Trainings" : {
+                              //     "registration_time" : {
+                              //       "BodyPart" : "Cube",
+                              //       "Count" : 0,
+                              //       "Date" : DateTime.now().toString(),
+                              //       "Type" : "Type1"
+                              //     }
+                              //   }
+                              // });
 
 //                               // ignore: use_build_context_synchronously
 //                               Navigator.of(context).push(

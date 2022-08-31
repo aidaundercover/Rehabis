@@ -2,7 +2,8 @@ import "package:flutter/material.dart";
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/views/exercises/attention/find_third_whhel.dart';
 import 'package:rehabis/views/exercises/attention/similiar_words.dart';
-import 'package:rehabis/views/exercises/cube/hands.dart';
+import 'package:rehabis/views/exercises/hands/diaganole.dart';
+import 'package:rehabis/views/exercises/hands/hands.dart';
 import 'package:rehabis/views/exercises/exercises_main.dart';
 import 'package:rehabis/views/exercises/gloves/glove_one.dart';
 import 'package:rehabis/views/exercises/logic/3d_thinking.dart';
@@ -12,7 +13,7 @@ import 'package:rehabis/views/exercises/logic/sentence_based.dart';
 import 'package:rehabis/views/exercises/logic/sorting.dart';
 import 'package:rehabis/views/exercises/logic/whats_more.dart';
 import 'package:rehabis/views/exercises/memory/matcing_game.dart';
-import 'package:rehabis/views/exercises/motorics/findiandh.dart';
+import 'package:rehabis/views/exercises/hands/findiandh.dart';
 import 'package:rehabis/views/exercises/speech/breathe.dart';
 import 'package:rehabis/views/exercises/speech/smile.dart';
 import 'package:rehabis/views/exercises/speech/tongue_one.dart';
@@ -91,28 +92,28 @@ List threeSpeaking = [
 //Arm mobility
 
 List oneArm = [
-  {
-    'title': "Wrists",
-    "minutes": 4,
-    "page": HandsOneExrcise(),
-    "skill": "Arm mobility"
-  },
+  // {
+  //   'title': "Wrists",
+  //   "minutes": 4,
+  //   "page": HandsOneExrcise(),
+  //   "skill": "Arm mobility"
+  // },
 ];
 
 List twoArm = [
   {
     'title': "Hands",
     "minutes": 4,
-    "page": ExercizeOne(),
+    "page": HandsOneExrcise(),
     "skill": "Arm mobility"
   },
 ];
 
 List threeArm = [
   {
-    'title': "Palms",
+    'title': "Flexing elbow",
     "minutes": 4,
-    "page": ExercizeOne(),
+    "page": DiagonalHands(),
     "skill": "Arm mobility"
   },
 ];

@@ -16,16 +16,16 @@ class HiveBoxes {
 }
 
 class LocalDB {
-  static User getUser() => User.fromJson(HiveBoxes.userDetailsBox().toMap());
+  static UserRehabis getUser() => UserRehabis.fromJson(HiveBoxes.userDetailsBox().toMap());
 
-  static String getUserIin() => HiveBoxes.userDetailsBox().toMap()[User.iinKey];
+  static String getUserIin() => HiveBoxes.userDetailsBox().toMap()[UserRehabis.iinKey];
 
   static String getUserName() =>
-      HiveBoxes.userDetailsBox().toMap()[User.nameKey];
+      HiveBoxes.userDetailsBox().toMap()[UserRehabis.nameKey];
 
   static String getUserArray() =>
-      HiveBoxes.userDetailsBox().toMap()[User.arrayKey];
+      HiveBoxes.userDetailsBox().toMap()[UserRehabis.arrayKey];
 
-  static setUserDetails(User user) =>
+  static setUserDetails(UserRehabis user) =>
       HiveBoxes.userDetailsBox().putAll(user.toJson());
 }
