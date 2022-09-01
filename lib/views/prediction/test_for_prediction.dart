@@ -13,12 +13,16 @@ TextEditingController bp = TextEditingController(text: "");
 String isSmoker = 'unknown';
 TextEditingController cholesterol = TextEditingController(text: "");
 bool isDiabetes = false;
-TextEditingController bmi = TextEditingController(text: heightUser ==0 ? "${weightUser/heightUser/heightUser}" : "");
+TextEditingController bmi = TextEditingController(
+    text: heightGlobal == 0
+        ? "${weightGlobal / heightGlobal / heightGlobal}"
+        : "");
 
 late FixedExtentScrollController controller;
-int selectedAge = bornDate.isEmpty
+int selectedAge = bornDateGlobal.isEmpty
     ? 50
-    : DateTime.now().year - int.parse(bornDate.substring(bornDate.length - 4));
+    : DateTime.now().year -
+        int.parse(bornDateGlobal.substring(bornDateGlobal.length - 4));
 
 //buttons//
 bool isMPressed = false;
@@ -180,22 +184,23 @@ class _TestForPredictionState extends State<TestForPrediction> {
             icon: const Icon(Icons.arrow_back_ios_outlined,
                 size: 32, color: Colors.black),
             onPressed: () {
-              gender = "none";
-                          selectedAge = 50;
-                          bp = TextEditingController(text: "");
-                          isSmoker = 'unknown';
-                          cholesterol = TextEditingController(text: "");
-                          isDiabetes = false;
-                          bmi = TextEditingController(text: heightUser ==0 ? "${weightUser/heightUser/heightUser}" : "");
-                          isMPressed = false;
-                          isFPressed = false;
-                          isSYPressed = false;
-                          isSNPressed = false;
-                          isSFPressed = false;
-                          isSmokerPressed = false;
-                          diabetesHas = false;
-                          diabetesHasNot = false;
-                          Navigator.of(context).pop();
+              selectedAge = 50;
+              bp = TextEditingController(text: "");
+              isSmoker = 'unknown';
+              cholesterol = TextEditingController(text: "");
+              isDiabetes = false;
+              bmi = TextEditingController(
+                  text: heightGlobal == 0
+                      ? "${weightGlobal / heightGlobal / heightGlobal}"
+                      : "");
+              isMPressed = false;
+              isFPressed = false;
+              isSYPressed = false;
+              isSNPressed = false;
+              isSFPressed = false;
+              isSmokerPressed = false;
+              diabetesHas = false;
+              diabetesHasNot = false;
               Navigator.of(context).pop();
             },
           ),
@@ -243,7 +248,7 @@ class _TestForPredictionState extends State<TestForPrediction> {
                             GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    gender = 'male';
+                                    genderGlobal = 'male';
                                     isMPressed = !isMPressed;
 
                                     if (isMPressed == true) {
@@ -276,7 +281,7 @@ class _TestForPredictionState extends State<TestForPrediction> {
                             GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    gender = 'female';
+                                    genderGlobal = 'female';
                                     isFPressed = !isFPressed;
 
                                     if (isFPressed == true) {
@@ -579,17 +584,16 @@ class _TestForPredictionState extends State<TestForPrediction> {
                     renderBorder: false,
                     onPressed: (i) {
                       setState(() {
-                         if (i == 0) {
-                        diabetesList[0] = !diabetesList[0];
-                        diabetesList[1] = false;
-                      }
+                        if (i == 0) {
+                          diabetesList[0] = !diabetesList[0];
+                          diabetesList[1] = false;
+                        }
 
-                      if (i == 1) {
-                        diabetesList[1] = !diabetesList[1];
-                        diabetesList[0] = false;
-                      }
+                        if (i == 1) {
+                          diabetesList[1] = !diabetesList[1];
+                          diabetesList[0] = false;
+                        }
                       });
-
                     },
                     children: [
                       Container(
@@ -629,10 +633,10 @@ class _TestForPredictionState extends State<TestForPrediction> {
                       Container(
                         decoration: BoxDecoration(
                             border: diabetesList[1]
-                              ? Border.all(width: 3, color: secondPrimaryColor)
-                              : Border.all(width: 0),
-                            color: backgroundColor
-                        ),
+                                ? Border.all(
+                                    width: 3, color: secondPrimaryColor)
+                                : Border.all(width: 0),
+                            color: backgroundColor),
                         width: width * 0.42,
                         height: 50,
                         alignment: Alignment.center,
@@ -643,7 +647,8 @@ class _TestForPredictionState extends State<TestForPrediction> {
                               fontFamily: "Intel",
                               fontSize: 18,
                               color: diabetesList[1]
-                              ? primaryColor : primaryColor.withOpacity(0.4),
+                                  ? primaryColor
+                                  : primaryColor.withOpacity(0.4),
                               fontWeight: FontWeight.bold),
                         ),
                       )
@@ -652,57 +657,65 @@ class _TestForPredictionState extends State<TestForPrediction> {
                 const SizedBox(
                   height: 18,
                 ),
-                heightUser==0 && weightUser==0 ? Row(
-                  children: [
-                    Text("BMI", style: titleStyle),
-                    SizedBox(width: 6,),
-                    Tooltip(
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blueGrey.shade100
-                        ),
-                        child: Icon(Icons.question_mark, color: Colors.blueGrey.shade400, size: 17)),
-                      message: "Body mass index - is a measure of body fat based",
-                    )
-                  ],
-                ) : Container(),
+                heightGlobal == 0 && weightGlobal == 0
+                    ? Row(
+                        children: [
+                          Text("BMI", style: titleStyle),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Tooltip(
+                            child: Container(
+                                alignment: Alignment.center,
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.blueGrey.shade100),
+                                child: Icon(Icons.question_mark,
+                                    color: Colors.blueGrey.shade400, size: 17)),
+                            message:
+                                "Body mass index - is a measure of body fat based",
+                          )
+                        ],
+                      )
+                    : Container(),
                 const SizedBox(
                   height: 10,
                 ),
-                heightUser==0 && weightUser==0 ? TextFormField(
-                  controller: bmi,
-                  onSaved: (text) {
-                    
-                  },
-                  keyboardType: TextInputType.number,
-                  decoration:  InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey.shade100,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(0)),
-                    ),
-                    hintText: 'For instance: 25.3',
-                    hintStyle: TextStyle(fontFamily: 'Arial', fontSize: 14),
-                  ),
-                ) : Container(),
+                heightGlobal == 0 && weightGlobal == 0
+                    ? TextFormField(
+                        controller: bmi,
+                        onSaved: (text) {},
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey.shade100,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.all(Radius.circular(0)),
+                          ),
+                          hintText: 'For instance: 25.3',
+                          hintStyle:
+                              TextStyle(fontFamily: 'Arial', fontSize: 14),
+                        ),
+                      )
+                    : Container(),
                 const SizedBox(
                   height: 10,
                 ),
                 Row(
                   children: [
-                    Text("You can calculate your BMI ", style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey)),
+                    Text("You can calculate your BMI ",
+                        style: TextStyle(fontSize: 13, color: Colors.grey)),
                     GestureDetector(
                       onTap: () {},
-                      child: Text("here", style: TextStyle(
+                      child: Text("here",
+                          style: TextStyle(
                             fontSize: 13,
-                            decoration: TextDecoration.underline, color:Colors.grey, fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
                           )),
                     )
                   ],
@@ -839,16 +852,14 @@ class _TestForPredictionState extends State<TestForPrediction> {
 }
 
 Future predict(BuildContext context) async {
-  if (gender == "none") {
+  if (genderGlobal == "none") {
     Fluttertoast.showToast(msg: "Gender wasn't chosen!");
   } else if (bp.text.isEmpty) {
-    Fluttertoast.showToast(
-        msg: "Arterial BP wasn't folled in!");
+    Fluttertoast.showToast(msg: "Arterial BP wasn't folled in!");
   } else if (isSmoker == "unknown") {
     Fluttertoast.showToast(msg: "Smoking status wasn't filled in!");
   } else if (cholesterol.text.isEmpty) {
-    Fluttertoast.showToast(
-        msg: "Cholesterol level wasn't filled in!");
+    Fluttertoast.showToast(msg: "Cholesterol level wasn't filled in!");
   } else if (bmi.text.isEmpty) {
     Fluttertoast.showToast(msg: "BMI was not filled in");
   } else {
@@ -859,7 +870,7 @@ Future predict(BuildContext context) async {
           "The level of arterial blood pressure is low, it's the sign of the hypotension. Hypotension is accompanied by weakness, dizziness, palpitations, shortness of breath, loss of consciousness and other symptoms.";
     } else if (double.parse(bp.text) < 145 &&
         double.parse(bp.text) > 110 &&
-        gender == "female" &&
+        genderGlobal == "female" &&
         selectedAge > 50) {
       bloodPressure = "The level of arterial blood pressure is normal.";
     } else if (double.parse(bp.text) > 130) {
@@ -886,8 +897,8 @@ Future predict(BuildContext context) async {
           "The cholesterol level is low. There is a risk of hypocholesterolemia";
     }
 
-    if (gender == "male") {
-    } else if (gender == "female") {}
+    if (genderGlobal == "male") {
+    } else if (genderGlobal == "female") {}
 
     showDialog(
         context: context,
@@ -921,7 +932,8 @@ Future predict(BuildContext context) async {
                     padding: const EdgeInsets.only(left: 20.0, right: 20),
                     child: Text(
                       '$bloodPressure\n$smokingStatus\n$cholesterolStatus',
-                      style: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.7)),
+                      style: TextStyle(
+                          fontSize: 14, color: Colors.black.withOpacity(0.7)),
                     ),
                   ),
                   Row(
@@ -929,13 +941,15 @@ Future predict(BuildContext context) async {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          gender = "none";
                           selectedAge = 50;
                           bp = TextEditingController(text: "");
                           isSmoker = 'unknown';
                           cholesterol = TextEditingController(text: "");
                           isDiabetes = false;
-                          bmi = TextEditingController(text: heightUser==0 ? "${weightUser /heightUser /heightUser}" : "");
+                          bmi = TextEditingController(
+                              text: heightGlobal == 0
+                                  ? "${weightGlobal / heightGlobal / heightGlobal}"
+                                  : "");
                           isMPressed = false;
                           isFPressed = false;
                           isSYPressed = false;
@@ -947,20 +961,21 @@ Future predict(BuildContext context) async {
                           Navigator.of(context).pop();
                         },
                         child: Padding(
-                          padding: const EdgeInsets.only(right:20.0),
+                          padding: const EdgeInsets.only(right: 20.0),
                           child: Container(
-                            height: 32,
-                            decoration: BoxDecoration(
-                              color: primaryColor.withOpacity(0.2)
-                            ),
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left:8.0, right:8.0),
-                              child: Text('OK,thanks', style: TextStyle(color:Colors.grey.shade600)),
-                            )),
+                              height: 32,
+                              decoration: BoxDecoration(
+                                  color: primaryColor.withOpacity(0.2)),
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8.0),
+                                child: Text('OK,thanks',
+                                    style:
+                                        TextStyle(color: Colors.grey.shade600)),
+                              )),
                         ),
                       ),
-
                     ],
                   )
                 ],

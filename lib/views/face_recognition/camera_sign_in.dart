@@ -1,17 +1,14 @@
 import 'package:camera/camera.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rehabis/api/authentication.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/main.dart';
-import 'package:rehabis/utils/local_db.dart';
 import 'package:rehabis/views/auth/sign_up.dart';
 import 'package:rehabis/views/first_view/select_your_weak.dart';
-import 'package:rehabis/views/main/home.dart';
 import '../../models/user.dart';
-import '../../widgets/common_widgets.dart';
 import 'ml_service.dart';
 
 class FaceScanScreenSignIn extends StatefulWidget {
@@ -30,6 +27,8 @@ class _FaceScanScreenSignInState extends State<FaceScanScreenSignIn> {
   late FaceDetector _faceDetector;
   final MLService _mlService = MLService();
   List<Face> facesDetected = [];
+
+  bool isPressed = false;
 
   Future initializeCamera() async {
     await _cameraController.initialize();
@@ -91,10 +90,7 @@ class _FaceScanScreenSignInState extends State<FaceScanScreenSignIn> {
         if (user == null) {
           Fluttertoast.showToast(msg: "Unknown User");
         } else {
-          Auth.signIn();
-          
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const SelectWeakness()));
+          Auth.signIn(context);
         }
       }
     }
@@ -149,8 +145,7 @@ class _FaceScanScreenSignInState extends State<FaceScanScreenSignIn> {
           backgroundColor: Colors.transparent,
           leadingWidth: 100,
           leading: Builder(
-            builder: (BuildContext context) => 
-            IconButton(
+            builder: (BuildContext context) => IconButton(
               icon: Row(
                 children: [
                   Icon(Icons.add_box),
@@ -206,12 +201,12 @@ class _FaceScanScreenSignInState extends State<FaceScanScreenSignIn> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    child: CWidgets.customExtendedButton(
-                        text: "SIGN IN",
-                        context: context,
-                        isClickable: true,
+                      padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                      child: GestureDetector(
                         onTap: () {
+                          setState(() {
+                            isPressed = true;
+                          });
                           bool canProcess = false;
                           _cameraController
                               .startImageStream((CameraImage image) async {
@@ -222,8 +217,27 @@ class _FaceScanScreenSignInState extends State<FaceScanScreenSignIn> {
                             });
                             return null;
                           });
-                        }),
-                  ),
+                        },
+                        child: Opacity(
+                          opacity: isPressed ? 0.4 : 1,
+                          child: Container(
+                            width: width*0.8,
+                            height: 45,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                color: primaryColor),
+                            child: Center(
+                              child: Text(
+                                'SIGN IN',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )),
                   const SizedBox(
                     height: 30,
                   ),

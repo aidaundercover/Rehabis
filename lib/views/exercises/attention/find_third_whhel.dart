@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/views/exercises/exerciseWidgets.dart';
-
-
 
 class ExerciseThree extends StatefulWidget {
   const ExerciseThree({Key? key}) : super(key: key);
@@ -53,13 +52,25 @@ class _ExerciseThreeState extends State<ExerciseThree> {
   }
 
   void stopTimer(int errors) {
-    setState(() {
+    setState(() async {
       timer?.cancel();
       isRunning = false;
 
       String twoDigits(int n) => n.toString().padLeft(2, '0');
       final minutes = twoDigits(duration.inMinutes.remainder(60));
       final seconds = twoDigits(duration.inSeconds.remainder(60));
+
+      DatabaseReference ref = FirebaseDatabase.instance
+          .ref()
+          .child("Users/$iinGlobal/Trainings/${DateTime.now().toString()}");
+
+      await ref.set({
+        'Skill': "Attention",
+        "Equipment" : "None",
+        "Type" : "Find Third Wheel",
+        "Count" : points,
+        "Time" : "$minutes: $seconds",
+        });
 
       showDialog(
           context: (context),
@@ -174,11 +185,11 @@ class _ExerciseThreeState extends State<ExerciseThree> {
       points = 0;
       pressed = 0;
       isSelected = [
-      [false, false, false, false],
-      [false, false, false, false],
-      [false, false, false, false],
-      [false, false, false, false]
-    ];
+        [false, false, false, false],
+        [false, false, false, false],
+        [false, false, false, false],
+        [false, false, false, false]
+      ];
     });
   }
 
@@ -197,39 +208,41 @@ class _ExerciseThreeState extends State<ExerciseThree> {
     pressed = 0;
   }
 
-  
   List _questionsData = [
     {
       "images": [
         "assets/hedgehog.png",
         "assets/matryoshka.png",
-        "assets/cow.png", 
+        "assets/cow.png",
         "assets/wolf.png"
-        ],
+      ],
       "right": 1
     },
     {
       "images": [
         "assets/baby.png",
         "assets/icecream.png",
-        "assets/ladybag.png", 
-        "assets/hedgehog.png"],
+        "assets/ladybag.png",
+        "assets/hedgehog.png"
+      ],
       "right": 0
     },
     {
       "images": [
         "assets/cube.png",
         "assets/window.png",
-        "assets/ball.png", 
-        "assets/gift.png"],
+        "assets/ball.png",
+        "assets/gift.png"
+      ],
       "right": 0
     },
     {
       "images": [
-        "assets/bear.png", 
-        "assets/fox.png", 
-        "assets/feather.png", 
-        "assets/pillow.png"],
+        "assets/bear.png",
+        "assets/fox.png",
+        "assets/feather.png",
+        "assets/pillow.png"
+      ],
       "right": 3
     },
   ];
@@ -447,11 +460,10 @@ class _ExerciseThreeState extends State<ExerciseThree> {
                                                 _questionsData[index]
                                                     ["right"]) {
                                               getPoint();
-                                            } 
+                                            }
                                           }
                                         } else {
-                                          isSelected[index][indexBtn] =
-                                              false;
+                                          isSelected[index][indexBtn] = false;
                                         }
                                       }
                                     }
@@ -468,11 +480,10 @@ class _ExerciseThreeState extends State<ExerciseThree> {
                                           color: isSelected[index][i]
                                               ? Colors.white
                                               : Colors.grey.shade600),
-                                      borderRadius:
-                                          BorderRadius.circular(15)),
+                                      borderRadius: BorderRadius.circular(15)),
                                   child: Center(
-                                    child: Image.asset("${_questionsData[index]["images"][i]}")
-                                  ),
+                                      child: Image.asset(
+                                          "${_questionsData[index]["images"][i]}")),
                                 ),
                               ),
                             );
@@ -499,7 +510,7 @@ class _ExerciseThreeState extends State<ExerciseThree> {
             ),
             TextButton(
               onPressed: () {
-                if (isRunning) stopTimer(4-points);
+                if (isRunning) stopTimer(4 - points);
               },
               child: Text(
                 "STOP",
@@ -536,10 +547,3 @@ class _ExerciseThreeState extends State<ExerciseThree> {
     );
   }
 }
-
-
-
-
-
-
-

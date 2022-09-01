@@ -1,21 +1,26 @@
 // ignore: file_names
 import 'package:flutter/material.dart' show Color;
+import 'package:rehabis/models/Relative.dart';
 
 String prediction = "None";
 double value = 0.01;
 
+bool isLoggedIn = false;
+
 /// Personal data ///
 String nameGlobal = "Имя Фамилия";
 String iinGlobal = "060114651689";
-
+String roleGlobal = '';
 List<String> selectedWeakneases = [];
+List<Relative> relatives = [];
 
 /// Medical data ///
-String bornDate = "";
-String gender = "male";
-String strokeType = "";
-int heightUser = 0;
-int weightUser = 0;
+String bornDateGlobal = "";
+String genderGlobal = "male";
+String strokeTypeGlobal = "";
+int heightGlobal = 0;
+int weightGlobal = 0;
+double bmiGlobal = 0;
 
 // COLOR SCHEME //
 Color primaryColor = const Color.fromRGBO(204, 101, 255, 1.0);

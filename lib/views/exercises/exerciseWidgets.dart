@@ -2,10 +2,11 @@ import "package:flutter/material.dart";
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/views/exercises/attention/find_third_whhel.dart';
 import 'package:rehabis/views/exercises/attention/similiar_words.dart';
+import 'package:rehabis/views/exercises/cube/legs_one.dart';
 import 'package:rehabis/views/exercises/hands/diaganole.dart';
+import 'package:rehabis/views/exercises/hands/glove_one.dart';
 import 'package:rehabis/views/exercises/hands/hands.dart';
 import 'package:rehabis/views/exercises/exercises_main.dart';
-import 'package:rehabis/views/exercises/gloves/glove_one.dart';
 import 'package:rehabis/views/exercises/logic/3d_thinking.dart';
 import 'package:rehabis/views/exercises/logic/ladybag.dart';
 import 'package:rehabis/views/exercises/logic/patterns.dart';
@@ -45,26 +46,7 @@ List threeMemory = [
 
 //Motorics
 
-List oneMotorics = [
-  {
-    "title" : "Fingers exercise",
-    "minutes" : 5,
-    "skill" : "Motorics",
-    "page" : GloveOne()
-  } 
-];
 
-List twoMotorics = [
-  {
-    "title" : "Find I and J",
-    "minutes" : 5,
-    "skill" : "Motorics",
-    "page" : ExercizeOne()
-  } 
-];
-List threeMotorics = [
-  
-];
 //Speaking
 
 List oneSpeaking = [
@@ -92,12 +74,12 @@ List threeSpeaking = [
 //Arm mobility
 
 List oneArm = [
-  // {
-  //   'title': "Wrists",
-  //   "minutes": 4,
-  //   "page": HandsOneExrcise(),
-  //   "skill": "Arm mobility"
-  // },
+  {
+    'title': "Motorics",
+    "minutes": 4,
+    "page": GloveOne(),
+    "skill": "Arm mobility"
+  },
 ];
 
 List twoArm = [
@@ -113,7 +95,7 @@ List threeArm = [
   {
     'title': "Flexing elbow",
     "minutes": 4,
-    "page": DiagonalHands(),
+    "page": const DiagonaleHands(),
     "skill": "Arm mobility"
   },
 ];
@@ -165,29 +147,19 @@ List threeProblem = [
 
 List oneLeg = [
   {
-    'title': "Memorise цифры",
+    'title': "Foot exercise",
     "minutes": 4,
-    "page": ExercizeOne(),
+    "page": LegsOne(),
     "skill": "Leg mobility"
   },
 ];
 
 List twoLeg = [
-  {
-    'title': "Запомни цифры",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Leg mobility"
-  },
+  
 ];
 
 List threeLeg = [
-  {
-    'title': "Что дороже?",
-    "minutes": 4,
-    "page": ExercizeOne(),
-    "skill": "Leg mobility"
-  },
+  
 ];
 
 //Core

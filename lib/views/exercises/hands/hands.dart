@@ -57,7 +57,7 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
                 children: [
               textHeader(width,
                   "Using 'Cubes' equipment user supposed to train the wrist and low-palm area"),
-               SizedBox(
+              SizedBox(
             height: height * 0.14,
           ),
               Text(

@@ -176,6 +176,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  curved_navigation_bar:
+    dependency: "direct main"
+    description:
+      name: curved_navigation_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   dbus:
     dependency: transitive
     description:
@@ -674,6 +681,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  simple_gesture_detector:
+    dependency: transitive
+    description:
+      name: simple_gesture_detector
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -728,13 +742,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  syncfusion_flutter_calendar:
-    dependency: "direct main"
-    description:
-      name: syncfusion_flutter_calendar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "20.2.46"
   syncfusion_flutter_charts:
     dependency: "direct main"
     description:
@@ -749,13 +756,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "20.2.46"
-  syncfusion_flutter_datepicker:
-    dependency: transitive
+  table_calendar:
+    dependency: "direct main"
     description:
-      name: syncfusion_flutter_datepicker
+      name: table_calendar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.2.46"
+    version: "3.0.6"
   term_glyph:
     dependency: transitive
     description:

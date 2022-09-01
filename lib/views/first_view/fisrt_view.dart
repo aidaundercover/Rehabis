@@ -14,53 +14,69 @@ class FirstView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stack(
-              alignment: Alignment.topCenter,
-              children:[
-              Container(
-              height: height*0.76,
-                  width: width*0.8,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/first_bc.png"),
-                      fit: BoxFit.fill
-                    )
+        child: SizedBox(
+          width: width * 0.8,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(
+                alignment: Alignment.topCenter,
+                children:[
+                Container(
+                height: height*0.76,
+                    width: width*0.8,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                        secondPrimaryColor,
+                        secondPrimaryColor,
+                        secondPrimaryColor.withOpacity(0.7)
+                  , secondPrimaryColor
+                      ])
+                      
+                    ),
                   ),
+                  SizedBox(
+                  height: height * 0.76,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/logo_white.png', width: width*0.4,),
+                        const Text(
+                          "Start your recovery\nwith Rehabis!",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Image.asset('assets/first_bc.png'),
+                          ],
+                        )
+                      ]),
                 ),
-                SizedBox(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset('assets/logo.png', width: 800,),
-                      const Text(
-                        "Start your recovery\nwith Rehabis!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                    ]),
+                ]
               ),
-              ]
-            ),
-            GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => SignUp()));
-                },
-                child: Container(
-                  width: width*0.15,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
-                  ),
-                  alignment: Alignment.center,
-                  child: const Icon(Icons.arrow_forward_ios, color: Colors.white,)
-                ))
-          ],
+              GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => SignUp()));
+                  },
+                  child: Container(
+                    width: width*0.15,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      color: secondPrimaryColor,
+                      borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(35), bottomRight: Radius.circular(35)),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Icon(Icons.arrow_forward_ios, color: Colors.white,)
+                  ))
+            ],
+          ),
         ),
       ),
     );

@@ -11,7 +11,6 @@ import 'package:rehabis/utils/local_db.dart';
 import 'package:rehabis/views/auth/sign_in.dart';
 import 'package:rehabis/views/first_view/select_your_weak.dart';
 import '../../models/user.dart';
-import '../../widgets/common_widgets.dart';
 import 'ml_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -25,8 +24,8 @@ class FaceScanScreenSignUp extends StatefulWidget {
 }
 
 class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
-  final TextEditingController _iinController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _iinController = TextEditingController(text: "");
+  final TextEditingController _nameController = TextEditingController(text: "");
 
   late CameraController _cameraController;
   bool flash = false;
@@ -34,6 +33,7 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
   late FaceDetector _faceDetector;
   final MLService _mlService = MLService();
   List<Face> facesDetected = [];
+  bool isPressed = false;
 
   Future initializeCamera() async {
     await _cameraController.initialize();
@@ -94,19 +94,14 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
 
       if (widget.user == null) {
         // register case
-        if (_nameController.text.isEmpty || _iinController.text.isEmpty) {
+        if (_nameController.text == '' || _iinController.text == '') {
           Fluttertoast.showToast(msg: "Fill every textfield!");
         } else if (_iinController.text.length != 12) {
           Fluttertoast.showToast(msg: "IIN consists of 12 digits");
-        }
-        // else if (_iinController.text.contains(RegExp(r'(\w+)'))) {
-        //   Fluttertoast.showToast(msg: "IIN consists of ONLY digits");
-        // }
-        else {
-          Auth.signUp(_nameController, _iinController);
+        } else {
+          Auth.signUp(context, _nameController, _iinController);
 
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const SelectWeakness()));
+    
         }
       } else {
         // login case
@@ -229,17 +224,22 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
                   ),
                   SizedBox(
                     width: width * 0.9,
-                    child: TextField(
+                    child: TextFormField(
                       controller: _iinController,
                       maxLength: 12,
-                      onChanged: (input) {
-                        _iinController.text = input;
+                    
+                      validator: (input) {
+                        _iinController.text = input!;
                         if (_iinController.text.contains(RegExp(r'[A-Z]'))) {
                           throw "IIN consists of only numbers";
                         }
                       },
                       decoration: InputDecoration(
+                          counterStyle: TextStyle(color: Colors.white),
                           hintText: "TIP: IIN contains 12 digits",
+                           hintStyle: TextStyle(
+                              color: Colors.black.withOpacity(0.4),
+                              fontFamily: 'Inter'),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide:
@@ -264,7 +264,12 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
                     child: TextField(
                       controller: _nameController,
                       decoration: InputDecoration(
+
                           hintText: "e.g. Aida",
+                          hintStyle: TextStyle(
+                            color: Colors.black.withOpacity(0.4), 
+                            fontFamily: 'Inter'
+                          ),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide:
@@ -286,13 +291,12 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    child: CWidgets.customExtendedButton(
-                        text: "SIGN UP",
-                        context: context,
-                        isClickable: true,
-                        width: width * 0.8,
-                        onTap: () {
-                          bool canProcess = false;
+                    child: GestureDetector(
+      onTap: () {
+        setState(() {
+                            isPressed = true;
+                          });
+        bool canProcess = false;
                           _cameraController
                               .startImageStream((CameraImage image) async {
                             if (canProcess) return;
@@ -302,7 +306,28 @@ class _FaceScanScreenSignUpState extends State<FaceScanScreenSignUp> {
                             });
                             return null;
                           });
-                        }),
+      },
+      child: Opacity(
+        opacity: isPressed ? 0.4 : 1,
+        child: Container(
+          width: width*0.8,
+          height: 45,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              color: primaryColor),
+          child: Center(
+            child: Text(
+              'SIGN UP',
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.w600, fontFamily: "Inter"),
+            ),
+          ),
+        ),
+      ),
+    )
+                    
+                    
+                    
                   ),
                   const SizedBox(
                     height: 30,

@@ -65,17 +65,12 @@ List one = [];
 List two = [];
 List three = [];
 
-
-
 class _ExerciseMainState extends State<ExerciseMain> {
-
-  
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    
+
     List tagTitles = [];
 
     setState(() {
@@ -107,19 +102,22 @@ class _ExerciseMainState extends State<ExerciseMain> {
         }
       }
 
-      for (int r = 0; r < tagTitles.length; r++) {
-        tagsList[r]["selected"] = true;
+      // for (int r = 0; r < tagTitles.length; r++) {
+      //   tagsList[r]["selected"] = true;
 
-        one += tagsList[r]["one"];
-        two += tagsList[r]["two"];
-        three += tagsList[r]["three"];
-      }
+      //   one += tagsList[r]["one"];
+      //   two += tagsList[r]["two"];
+      //   three += tagsList[r]["three"];
+      // }
     });
 
-    
+    for (int i = 0; i < tagsList.length; i++) {
+      tagsList[i]["selected"] = false;
+    }
+    one = [];
+    two = [];
+    three = [];
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -188,16 +186,29 @@ class _ExerciseMainState extends State<ExerciseMain> {
                       onTap: () {
                         setState(() {
                           tagsList[x]["selected"] = !tagsList[x]["selected"];
+
                           if (tagsList[x]["selected"]) {
                             one += tagsList[x]["one"];
                             two += tagsList[x]["two"];
                             three += tagsList[x]["three"];
-                          } else {
+                          } 
+
+                          if (!tagsList[x]["selected"]) {
                             for (int i = 0;
                                 i < tagsList[x]["one"].length;
                                 i++) {
                               one.remove(tagsList[x]["one"][i]);
+                            }
+
+                            for (int i = 0;
+                                i < tagsList[x]["two"].length;
+                                i++) {
                               two.remove(tagsList[x]["two"][i]);
+                            }
+
+                            for (int i = 0;
+                                i < tagsList[x]["three"].length;
+                                i++) {
                               three.remove(tagsList[x]["three"][i]);
                             }
                           }

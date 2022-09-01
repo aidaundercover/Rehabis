@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/foundation.dart';
@@ -47,10 +48,8 @@ class Utils {
 
       player.play();
     } else if (text.contains(Command.call)) {
-
-      const number = '+77079610043'; //set the number here
+      const number = '+77054475982'; //set the number here
       await FlutterPhoneDirectCaller.callNumber(number);
-
     } else if (text.contains(Command.email)) {
       final body = _getTextAfterCommand(text: text, command: Command.email);
 
@@ -104,6 +103,6 @@ class Command {
   static const email = 'write email';
   static const browser1 = 'open';
   static const browser2 = 'go to';
-  static const hello = "hello";
+  static const hello = "Hi";
   static const about = "What is Rehabis";
 }

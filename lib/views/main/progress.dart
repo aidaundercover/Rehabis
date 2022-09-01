@@ -58,7 +58,7 @@ class _ProgressMainState extends State<ProgressMain> {
     Widget progressGraph() {
       return Container(
         width: width * 0.86,
-        height: height * 0.35,
+        height: height * 0.3,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -78,14 +78,14 @@ class _ProgressMainState extends State<ProgressMain> {
             CircularPercentIndicator(
                 radius: 75,
                 lineWidth: 16,
-                percent: 0.2,
+                percent: 0.01,
                 progressColor: secondPrimaryColor,
                 backgroundColor: secondPrimaryColor.withOpacity(0.5),
                 circularStrokeCap: CircularStrokeCap.round,
                 center: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("20%",
+                    Text("1%",
                         style: TextStyle(
                             color: Colors.grey.shade800,
                             fontWeight: FontWeight.bold,
@@ -103,12 +103,12 @@ class _ProgressMainState extends State<ProgressMain> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 buildSkill("Speech", 0.1),
-                buildSkill("Memory", 0.1),
-                buildSkill("Problem Solving", 0.1),
-                buildSkill(
-                  "Motorics",
-                  0.1,
-                ),
+                buildSkill("Cognitive", 0.1),
+                buildSkill("Flexibility", 0.1),
+                // buildSkill(
+                //   "Motorics",
+                //   0.1,
+                // ),
               ],
             ),
           ],

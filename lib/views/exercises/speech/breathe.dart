@@ -13,7 +13,7 @@ class Breathing extends StatefulWidget {
 }
 
 class _BreathingState extends State<Breathing> {
-  bool isInhale = true;
+  bool isInhale=true;
   bool isStarted = false;
 
   late AudioPlayer player;
@@ -24,10 +24,14 @@ class _BreathingState extends State<Breathing> {
 
     player = AudioPlayer();
 
+    isStarted ? startVoiceOver() : () {};
+
     super.initState();
   }
 
-  void startVoiceOver() {
+  void startVoiceOver() async {
+    await player.setAsset('assets/inhale.mp3');
+    player.play();
     Timer.periodic(const Duration(milliseconds: 7500), (timer) {
       setState(() async {
         isInhale = !isInhale;
@@ -56,7 +60,6 @@ class _BreathingState extends State<Breathing> {
     var width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      floatingActionButton: TextButton(child: Container(), onPressed: () {}),
       appBar: exerciseAppbar("Breathing exercise", context),
       body: Column(
         children: [
@@ -66,19 +69,15 @@ class _BreathingState extends State<Breathing> {
           Stack(
             alignment: Alignment.center,
             children: [
-              isStarted
-                  ? Lottie.asset("assets/breathe.json")
-                  : Image.asset('asset/female.png'),
-              isStarted
-                  ? Text(
-                      isInhale ? "Inhale" : "Exhale",
-                      style: TextStyle(
-                          fontFamily: "Inter",
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    )
-                  : Container()
+              Lottie.asset("assets/breathe.json", animate: isStarted),
+              Text(
+                isInhale ? "Inhale" : "Exhale",
+                style: TextStyle(
+                    fontFamily: "Inter",
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              )
             ],
           ),
           SizedBox(
@@ -89,7 +88,7 @@ class _BreathingState extends State<Breathing> {
                   onPressed: () {
                     setState(() {
                       isStarted = true;
-                      startVoiceOver();
+                      // startVoiceOver();
                     });
                   },
                   child: Container(

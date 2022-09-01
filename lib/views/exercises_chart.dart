@@ -11,9 +11,12 @@ class ExercisesChart extends StatefulWidget {
 }
 
 class _ExercisesChartState extends State<ExercisesChart> {
+  List<bool> isSelected = [false, false, false];
+
   List<Exercise> _chartDataHands = [];
   List<Exercise> _chartDataLegs = [];
   List<Exercise> _chartDataCore = [];
+  List<Exercise> _cognitivedData = [];
 
   TooltipBehavior _tooltipBehavior = TooltipBehavior();
 
@@ -27,21 +30,58 @@ class _ExercisesChartState extends State<ExercisesChart> {
   final ref = FirebaseDatabase.instance.ref();
 
   Widget colorShow(Color color, String title) {
-    return Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: color));
+    return Text(title,
+        style:
+            TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color));
   }
-
 
   @override
   Widget build(BuildContext context) {
-
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
-
+    var style = TextStyle(color: Colors.grey, fontFamily: "Inter");
 
     return SafeArea(
-        child: Column(
+      child: Column(
         children: [
+          ToggleButtons(
+              children: [
+                Text("Today", style: style),
+                Text("Last week", style: style),
+                Text("Last month", style: style),
+              ],
+              isSelected: isSelected,
+              selectedColor: secondPrimaryColor.withOpacity(0.4),
+              fillColor: secondPrimaryColor.withOpacity(0.4),
+              splashColor: secondPrimaryColor.withOpacity(0.4),
+              focusColor: secondPrimaryColor.withOpacity(0.4),
+              onPressed: (i) {
+                setState(() {
+                  isSelected[i] = !isSelected[i];
+
+                  switch (i) {
+                    case 0:
+                      {
+                        isSelected[1] = false;
+                        isSelected[2] = false;
+                      }
+                      break;
+                    case 1:
+                      {
+                        isSelected[0] = false;
+                        isSelected[2] = false;
+                      }
+                      break;
+                    case 2:
+                      {
+                        isSelected[0] = false;
+                        isSelected[1] = false;
+                      }
+                      break;
+                  }
+                });
+              }),
           StreamBuilder(
               stream: ref.child('Users/$iinGlobal/Trainings/').onValue,
               builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
@@ -52,33 +92,45 @@ class _ExercisesChartState extends State<ExercisesChart> {
                   myTrainings.forEach((key, value) async {
                     final nextMarker = Map<String, dynamic>.from(value);
 
-                    if (nextMarker["BodyPart"] == "Cap") {
-                      final mapre = Exercise(nextMarker["BodyPart"],
-                          nextMarker["Count"], nextMarker["Date"]);
+                    String time = '';
+                    if(isSelected[0]){
+                      
+                    }
+
+                    if (nextMarker["Equipment"] == "Cap") {
+                      final mapre = Exercise(
+                          time, nextMarker["Count"], nextMarker["Time"]);
 
                       _chartDataHands.add(mapre);
                     }
 
-                    if (nextMarker["BodyPart"] == "Glove") {
-                      final mapre = Exercise(nextMarker["BodyPart"],
-                          nextMarker["Count"], nextMarker["Date"]);
+                    if (nextMarker["Equipment"] == "Glove") {
+                      final mapre = Exercise(
+                          time, nextMarker["Count"], nextMarker["Time"]);
 
                       _chartDataLegs.add(mapre);
                     }
 
-                    if (nextMarker["BodyPart"] == "Cube") {
-                      final mapre = Exercise(nextMarker["BodyPart"],
-                          nextMarker["Count"], nextMarker["Date"]);
+                    if (nextMarker["Equipment"] == "Cube") {
+                      final mapre = Exercise(
+                          key, nextMarker["Count"], nextMarker["Time"]);
 
                       _chartDataCore.add(mapre);
+                    }
+
+                    if (nextMarker["Equipment"] == "None") {
+                      final mapre = Exercise(
+                          key, nextMarker["Count"], nextMarker["Time"]);
+
+                      _cognitivedData.add(mapre);
                     }
                   });
 
                   return Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: SizedBox(
-                      height: height*0.6,
-                      width: width*0.82,
+                      height: height * 0.35,
+                      width: width * 0.82,
                       child: SfCartesianChart(
                         tooltipBehavior: _tooltipBehavior,
                         primaryXAxis: CategoryAxis(),
@@ -89,6 +141,14 @@ class _ExercisesChartState extends State<ExercisesChart> {
                               xAxisName: "Дата выполнения",
                               yAxisName: "Количество выполнений",
                               name: "Cap",
+                              enableTooltip: true,
+                              xValueMapper: (Exercise exercises, _) =>
+                                  exercises.time,
+                              yValueMapper: (Exercise exercises, _) =>
+                                  exercises.count),
+                          LineSeries<Exercise, String>(
+                              dataSource: _chartDataLegs,
+                              color: deepPink,
                               enableTooltip: true,
                               xValueMapper: (Exercise exercises, _) =>
                                   exercises.time,
@@ -122,20 +182,19 @@ class _ExercisesChartState extends State<ExercisesChart> {
                 }
               }),
           SizedBox(
-            height:10,
+            height: 10,
           ),
           SizedBox(
-            width: width*0.6,
+            width: width * 0.6,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 colorShow(deepPurple, "Cap"),
                 colorShow(deepPink, "Gloves"),
-            colorShow(orange, "Cubes")
+                colorShow(orange, "Cubes")
               ],
             ),
           ),
-          
         ],
       ),
     );

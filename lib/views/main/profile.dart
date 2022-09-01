@@ -134,28 +134,35 @@ class _ProfileMainState extends State<ProfileMain> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 5.0),
                             child: Text(
-                              "",
+                              genderGlobal == 'F' ? 'Female' : 'Male',
                               style: medData,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 5.0),
                             child: Text(
-                              "",
+                              bornDateGlobal,
                               style: medData,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 5.0),
                             child: Text(
-                              "",
+                              "$heightGlobal",
                               style: medData,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 5.0),
                             child: Text(
-                              "",
+                              "$weightGlobal",
+                              style: medData,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 5.0),
+                            child: Text(
+                              strokeTypeGlobal,
                               style: medData,
                             ),
                           )

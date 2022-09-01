@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -28,12 +30,23 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
     player = AudioPlayer();
     welcome();
 
+    isLoggedIn = true;
+
     super.initState();
   }
 
   void welcome() async {
     await player.setAsset("assets/welcome.mp3");
+    setState(() {
+      isListening = true;
+    });
     player.play();
+
+    Timer(Duration(seconds: 4), () {
+      setState(() {
+        isListening = false;
+      });
+    });
   }
 
   @override
@@ -48,10 +61,7 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
 
     return Scaffold(
       floatingActionButton: TextButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Main()));
-        },
+        onPressed: () {},
         child: SizedBox(
           width: width * 0.5 + 30,
           height: 70,
@@ -75,25 +85,30 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
                           isListening ? Icon(Icons.mic) : Icon(Icons.mic_none)),
                 ),
               ),
-              Container(
-                width: width * 0.31,
-                height: 40,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(width: 2, color: secondPrimaryColor)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Complete",
-                      style: TextStyle(color: secondPrimaryColor, fontSize: 15),
-                    ),
-                    Icon(
-                      Icons.done_rounded,
-                      color: secondPrimaryColor,
-                    )
-                  ],
+              GestureDetector(
+                onTap: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Main())),
+                child: Container(
+                  width: width * 0.31,
+                  height: 40,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(width: 2, color: secondPrimaryColor)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Complete",
+                        style:
+                            TextStyle(color: secondPrimaryColor, fontSize: 15),
+                      ),
+                      Icon(
+                        Icons.done_rounded,
+                        color: secondPrimaryColor,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -122,7 +137,8 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
               ),
               SizedBox(
                   width: width * 0.35,
-                  child: Lottie.asset('assets/voice.json')),
+                  child:
+                      Lottie.asset('assets/voice.json', animate: isListening)),
               SizedBox(
                 height: 15,
               ),

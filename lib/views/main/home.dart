@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/models/Training.dart';
@@ -170,8 +171,6 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    
-
     Widget exercises() {
       return SizedBox(
         width: width * 0.88,
@@ -189,29 +188,95 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(
             height: 20,
           ),
-          SizedBox(
-            height: 120,
-            child: ListView.builder(
-              itemCount: lastExercises.length,
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: exerciseWidgetMain(
-                      lastExercises[index].title,
-                      lastExercises[index].level,
-                      lastExercises[index].skill,
-                      lastExercises[index].minutes,
-                      lastExercises[index].page,
-                      lastExercises[index].instruction,
-                      lastExercises[index].img, width, height,
-                      context),
-                      
-                );
-              },
-            ),
-          ),
+          StreamBuilder(
+              stream: FirebaseDatabase.instance
+                  .ref('Users/$iinGlobal/Trainings/')
+                  .limitToLast(3)
+                  .onValue,
+              builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
+                if (snapshot.hasData) {
+                  var trainings = 
+                      Map<String, dynamic>.from(
+                      snapshot.data!.snapshot.value as Map<dynamic, dynamic>);
+
+                  // return SizedBox(
+                  //   height: 120,
+                  //   child: ListView.builder(
+                  //     itemCount: lastExercises.length,
+                  //     shrinkWrap: true,
+                  //     scrollDirection: Axis.horizontal,
+                  //     itemBuilder: (BuildContext context, index) {
+                  //       return Padding(
+                  //         padding: const EdgeInsets.only(left: 10.0),
+                  //         child: exerciseWidgetMain(
+                  //             trainings[index]['type'],
+                  //             trainings[index]['level'],
+                  //             trainings[index].skill,
+                  //             trainings[index].minutes,
+                  //             trainings[index].page,
+                  //             trainings[index].instruction,
+                  //             trainings[index].img,
+                  //             width,
+                  //             height,
+                  //             context),
+                  //       );
+                  //     },
+                  //   ),
+                  // );
+
+
+                  return SizedBox(
+                    height: 120,
+                    child: ListView.builder(
+                      itemCount: lastExercises.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (BuildContext context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: exerciseWidgetMain(
+                              lastExercises[index].title,
+                              lastExercises[index].level,
+                              lastExercises[index].skill,
+                              lastExercises[index].minutes,
+                              lastExercises[index].page,
+                              lastExercises[index].instruction,
+                              lastExercises[index].img,
+                              width,
+                              height,
+                              context),
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return SizedBox(
+                    height: 120,
+                    child: ListView.builder(
+                      itemCount: lastExercises.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (BuildContext context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: exerciseWidgetMain(
+                              lastExercises[index].title,
+                              lastExercises[index].level,
+                              lastExercises[index].skill,
+                              lastExercises[index].minutes,
+                              lastExercises[index].page,
+                              lastExercises[index].instruction,
+                              lastExercises[index].img,
+                              width,
+                              height,
+                              context),
+                        );
+                      },
+                    ),
+                  );
+                }
+              }),
+        
         ]),
       );
     }
@@ -219,44 +284,51 @@ class _HomePageState extends State<HomePage> {
     Widget tile(String title, String desc, String img, Widget page) {
       return GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => page));
         },
         child: Container(
           width: width * 0.84,
           height: 135,
           margin: EdgeInsets.only(bottom: 20),
-          decoration:
-              BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(17), boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                offset: Offset(3, 3),
-                blurRadius: 5),
-            BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                offset: Offset(-3, -3),
-                blurRadius: 5)
-          ]),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(17),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    offset: Offset(3, 3),
+                    blurRadius: 5),
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    offset: Offset(-3, -3),
+                    blurRadius: 5)
+              ]),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: width*0.45,
+                width: width * 0.45,
                 child: Padding(
-                  padding: const EdgeInsets.only(left:12.0),
+                  padding: const EdgeInsets.only(left: 12.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(title, style: TextStyle(
-                        color: Colors.black.withOpacity(0.8),
-                      fontFamily: "Inter",
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16
-                      ),),
-                      SizedBox(height: 10,),
-                      Text(desc, style: TextStyle(
+                      Text(
+                        title,
+                        style: TextStyle(
+                            color: Colors.black.withOpacity(0.8),
+                            fontFamily: "Inter",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        desc,
+                        style: TextStyle(
                             color: Colors.black.withOpacity(0.4),
                             fontFamily: "Inter",
                             fontSize: 11),
@@ -286,18 +358,22 @@ class _HomePageState extends State<HomePage> {
                   fontSize: 20,
                   fontFamily: 'Inter'),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             ListView.builder(
               padding: EdgeInsets.zero,
               itemCount: listRecomends.length,
               shrinkWrap: true,
               itemBuilder: (context, index) => tile(
-              listRecomends[index]["title"],
-              listRecomends[index]["desc"],
-              listRecomends[index]["img"],
-              listRecomends[index]["page"]),
+                  listRecomends[index]["title"],
+                  listRecomends[index]["desc"],
+                  listRecomends[index]["img"],
+                  listRecomends[index]["page"]),
             ),
-          SizedBox(height: 30,)
+            SizedBox(
+              height: 60,
+            )
           ]));
     }
 

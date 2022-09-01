@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -17,9 +18,15 @@ List<bool> isSelected = [false, false];
 List<bool> isSelectedActivity = [false, false, false];
 
 List<DropdownMenuItem<String>> items = [
-    const DropdownMenuItem(child: Text("Ichemic stroke"), value: "1",),
-    const DropdownMenuItem(child: Text("Hemoragic stroke"), value: "2",),
-    const DropdownMenuItem(
+  const DropdownMenuItem(
+    child: Text("Ichemic stroke"),
+    value: "1",
+  ),
+  const DropdownMenuItem(
+    child: Text("Hemoragic stroke"),
+    value: "2",
+  ),
+  const DropdownMenuItem(
     child: Text("TIA stroke"),
     value: "3",
   ),
@@ -45,9 +52,7 @@ TextEditingController _weightController = TextEditingController(text: "");
 TextEditingController _heightController = TextEditingController(text: "");
 GlobalKey _key = GlobalKey<FormState>();
 
-
 class _AddDataViewState extends State<AddDataView> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -56,37 +61,69 @@ class _AddDataViewState extends State<AddDataView> {
 
   @override
   Widget build(BuildContext context) {
-    
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: backgroundColor,
       floatingActionButton: GestureDetector(
-        onTap: () {
-        
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => SetVoiceAssistant()));
+        onTap: () async {
+          DatabaseReference ref =
+              FirebaseDatabase.instance.ref("Users/$iinGlobal/MedicalData");
+
+          genderGlobal = isSelected[0] ? 'F' : 'M';
+
+          switch (_value) {
+            case '1':
+              strokeTypeGlobal = 'Ichemic stroke';
+              break;
+            case '2':
+              strokeTypeGlobal = 'Hemoragic stroke';
+              break;
+            case '3':
+              strokeTypeGlobal = 'TIA stroke';
+              break;
+            default:
+              strokeTypeGlobal = 'Ichemic stroke';
+          }
+
+          if (_weightController.text.isNotEmpty &&
+              _heightController.text.isNotEmpty) {
+            weightGlobal = int.parse(_weightController.text);
+            heightGlobal = int.parse(_heightController.text);
+
+            await ref.update({
+              'Gender': genderGlobal,
+              'StrokeType': strokeTypeGlobal,
+              'Weight': weightGlobal,
+              'Height': heightGlobal
+            });
+
+            bmiGlobal = weightGlobal / (heightGlobal * heightGlobal / 1000);
+          }
+
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => SetVoiceAssistant()));
         },
         child: Padding(
-          padding: EdgeInsets.only(right: width*0.04),
+          padding: EdgeInsets.only(right: width * 0.04),
           child: Container(
-            width: width*0.31,
+            width: width * 0.31,
             height: 40,
             decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10
-                )
-              ]
-            ),
+                color: primaryColor,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.1), blurRadius: 10)
+                ]),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Next", style: TextStyle(color: Colors.white, fontSize: 20),),
+                Text(
+                  "Next",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
                 Icon(Icons.arrow_forward_ios, color: Colors.white)
               ],
             ),
@@ -107,7 +144,9 @@ class _AddDataViewState extends State<AddDataView> {
                     fontFamily: "Ruberoid",
                     color: Color.fromARGB(255, 50, 50, 50)),
               ),
-              SizedBox(height: height*0.1,),
+              SizedBox(
+                height: height * 0.1,
+              ),
               Theme(
                 data: ThemeData.light().copyWith(
                   colorScheme: ColorScheme.light(
@@ -117,45 +156,11 @@ class _AddDataViewState extends State<AddDataView> {
                   ),
                 ),
                 child: Form(
-                  autovalidateMode: AutovalidateMode.always,
+                    autovalidateMode: AutovalidateMode.always,
                     key: _key,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // SizedBox(
-                        //   width: width * 0.6,
-                        //   child: DropdownButtonFormField<String>(
-                        //     value: _value,
-                        //     items: items,
-                        //     borderRadius: BorderRadius.circular(25),
-                        //     icon: const Icon(Icons.arrow_drop_down_sharp),
-                        //     iconDisabledColor: Colors.black,
-                        //     iconEnabledColor: primaryColor,
-                            
-                        //     onChanged: (String? value) {
-                        //       setState(() {
-                        //         _value = value!;
-                        //       });
-                        //     },
-                        //     decoration: InputDecoration(
-                        //       label: const Text(
-                        //         "Role",
-                        //       ),
-                        //       focusedBorder: OutlineInputBorder(
-                        //           borderRadius: BorderRadius.circular(20),
-                        //           borderSide: BorderSide(
-                        //               color: primaryColor, width: 2)),
-                        //       enabledBorder: OutlineInputBorder(
-                        //           borderRadius: BorderRadius.circular(20),
-                        //           borderSide: BorderSide(
-                        //               color: primaryColor, width: 2)),
-                        //       disabledBorder: OutlineInputBorder(
-                        //           borderRadius: BorderRadius.circular(20),
-                        //           borderSide:
-                        //               BorderSide(color: Colors.grey, width: 1)),
-                        //     ),
-                        //   ),
-                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -164,17 +169,21 @@ class _AddDataViewState extends State<AddDataView> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(bottom: 4.0, left: 5.0),
+                                    padding: const EdgeInsets.only(
+                                        bottom: 4.0, left: 5.0),
                                     child: Text(
                                       "Gender",
                                       style: TextStyle(
-                                          color: Colors.black.withOpacity(0.7), fontSize: 12),
+                                          color: Colors.black.withOpacity(0.7),
+                                          fontSize: 12),
                                     ),
                                   ),
                                   ToggleButtons(
                                     borderRadius: BorderRadius.circular(10),
-                                    highlightColor: primaryColor.withOpacity(0.5),
-                                    selectedColor: primaryColor.withOpacity(0.5),
+                                    highlightColor:
+                                        primaryColor.withOpacity(0.5),
+                                    selectedColor:
+                                        primaryColor.withOpacity(0.5),
                                     focusColor: primaryColor.withOpacity(0.5),
                                     fillColor: primaryColor.withOpacity(0.3),
                                     children: [
@@ -194,7 +203,7 @@ class _AddDataViewState extends State<AddDataView> {
                                           isSelected[0] = !isSelected[0];
                                           isSelected[1] = false;
                                         }
-          
+
                                         if (index == 1) {
                                           isSelected[1] = !isSelected[1];
                                           isSelected[0] = false;
@@ -206,9 +215,8 @@ class _AddDataViewState extends State<AddDataView> {
                               ),
                             ),
                             SizedBox(
-                              width: width*0.6,
+                              width: width * 0.6,
                               child: DropdownButtonFormField<String>(
-                            
                                 value: _value,
                                 items: items,
                                 borderRadius: BorderRadius.circular(25),
@@ -217,47 +225,47 @@ class _AddDataViewState extends State<AddDataView> {
                                 iconEnabledColor: primaryColor,
                                 hint: const Text(
                                   "Select diagnosed stroke type",
-                                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 12),
                                 ),
                                 onChanged: (String? value) {
                                   setState(() {
                                     _value = value!;
                                   });
                                 },
-                                
-                                  decoration: InputDecoration(
+                                decoration: InputDecoration(
                                   label: const Text(
-                                  "Stroke type",
-                                ),
+                                    "Stroke type",
+                                  ),
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide:
-                                          BorderSide(color: primaryColor, width: 2)),
+                                      borderSide: BorderSide(
+                                          color: primaryColor, width: 2)),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide:
-                                          BorderSide(color: primaryColor, width: 2)),
+                                      borderSide: BorderSide(
+                                          color: primaryColor, width: 2)),
                                   disabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide:
-                                          BorderSide(color: Colors.grey, width: 1)),
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1)),
                                 ),
                               ),
                             ),
-                            
                           ],
                         ),
-                        SizedBox(height: height*0.02,),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              width: width*0.43,
+                              width: width * 0.43,
                               height: 100,
                               child: TextFormField(
                                 controller: _weightController,
                                 keyboardType: TextInputType.number,
-                                
                                 decoration: InputDecoration(
                                   labelText: "Weight",
                                   hintText: "e.g. 89",
@@ -268,17 +276,16 @@ class _AddDataViewState extends State<AddDataView> {
                                           color: primaryColor, width: 2)),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide:
-                                          BorderSide(color: primaryColor, width: 2)),
+                                      borderSide: BorderSide(
+                                          color: primaryColor, width: 2)),
                                   disabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide:
-                                          BorderSide(color: Colors.black, width: 1)),
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 1)),
                                 ),
                                 onSaved: (String? value) {
                                   _weightController.text = value!;
                                 },
-          
                               ),
                             ),
                             SizedBox(
@@ -316,7 +323,7 @@ class _AddDataViewState extends State<AddDataView> {
                         //   height: height * 0.02,
                         // ),
                         // Column(
-                          
+
                         //   crossAxisAlignment: CrossAxisAlignment.start,
                         //   children: [
                         //     Padding(
@@ -353,13 +360,13 @@ class _AddDataViewState extends State<AddDataView> {
                         //             isSelectedActivity[1] = false;
                         //             isSelectedActivity[2] = false;
                         //           }
-          
+
                         //           if (index == 1) {
                         //             isSelectedActivity[1] = !isSelectedActivity[1];
                         //             isSelectedActivity[0] = false;
                         //             isSelectedActivity[2] = false;
                         //           }
-          
+
                         //           if (index == 2) {
                         //             isSelectedActivity[2] = !isSelectedActivity[2];
                         //             isSelectedActivity[0] = false;

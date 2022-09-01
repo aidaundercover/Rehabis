@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rehabis/api/notification_api.dart';
+import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/main.dart';
 import 'package:rehabis/views/some_page.dart';
 import 'package:intl/intl.dart';
@@ -65,59 +66,100 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-              title: Text(
-            "Settings",
-            style: TextStyle(fontFamily: "Inter"),
-          ))
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                SliverAppBar(
+                    title: Text(
+                  "Settings",
+                  style: TextStyle(fontFamily: "Inter"),
+                ))
+              ],
+          body: SingleChildScrollView(
+            child: Column(children: [setNotifications(), addRelatives()]),
+          )),
+    );
+    
+  }
+
+  Widget setNotifications() {
+    return Container(
+      decoration: BoxDecoration(color: secondaryColor.withOpacity(0.1)),
+      child: Column(
+        children: [
+          TextFormField(
+            controller: days,
+            keyboardType: TextInputType.number,
+          ),
+          ToggleButtons(children: [
+            Text('Every Day'),
+            Text('Every 2 days'),
+            Text('Every 3 days'),
+          ], isSelected: isSelected),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                _selectTime(context);
+                showTime = true;
+              },
+              child: const Text('Timer Picker'),
+            ),
+          ),
+          showTime
+              ? Center(child: Text(getTime(selectedTime)))
+              : const SizedBox(),
+          TextButton(
+              onPressed: () {
+                NotificationApi.showScheduledNotification(
+                    title: "Its time for streching up!",
+                    time: selectedTime,
+                    days: int.parse(days.text),
+                    body:
+                        "The instensity of your exercising will Directly affect your rehab duration!",
+                    payload: "rehabis.com");
+                Scaffold.of(context).showBottomSheet((context) => Container(
+                      height: 10,
+                      decoration: BoxDecoration(),
+                      alignment: Alignment.center,
+                      child: Text("Notification Set"),
+                    ));
+              },
+              child: Text("Show  Notification"))
         ],
-        body: Column(
+      ),
+    );
+  }
+
+  Widget relativeCard() {
+    return SizedBox(
+      // width: width*0.94,
+
+      child: Row(children: [
+        
+      ],)
+    );
+  }
+
+  Widget addRelatives() {
+    return Container(
+      decoration: BoxDecoration(),
+      child: Column(children: [
+        Row(
           children: [
-            TextFormField(
-              controller: days,
-              keyboardType: TextInputType.number,
-            ),
-            ToggleButtons(children: [
-              Text('Every Day'),
-              Text('Every 2 days'),
-              Text('Every 3 days'),
-            ], isSelected: isSelected),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  _selectTime(context);
-                  showTime = true;
-                },
-                child: const Text('Timer Picker'),
-              ),
-            ),
-            showTime
-                ? Center(child: Text(getTime(selectedTime)))
-                : const SizedBox(),
-            TextButton(
-                onPressed: () {
-                  NotificationApi.showScheduledNotification(
-                      title: "Its time for streching up!",
-                      time: selectedTime,
-                      days: int.parse(days.text),
-                      body: "The instensity of your exercising will Directly affect your rehab duration!",
-                      payload: "rehabis.com");
-                    Scaffold.of(context).showBottomSheet((context) => Container(
-                        height: 10,
-                        decoration: BoxDecoration(),
-                        alignment: Alignment.center,
-                        child: Text("Notification Set"),
-                      ));
-                },
-                child: Text("Show  Notification"))
+            Text("Add relatives cell phone numbers, in case of emergency"),
+            Tooltip(
+              message: "You can use voice assistant for calling them",
+              child: Icon(Icons.whatshot_outlined, color: secondaryColor),
+            )
           ],
         ),
-      ),
+      ]),
     );
   }
 }

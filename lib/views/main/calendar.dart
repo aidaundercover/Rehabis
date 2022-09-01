@@ -1,110 +1,212 @@
+
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:rehabis/globalVars.dart';
-import 'package:rehabis/models/Event.dart';
-import 'package:rehabis/provider/event_provider.dart';
-import 'package:rehabis/views/calendar/event_datasource.dart';
-import 'package:rehabis/views/calendar/event_editing_view.dart';
-import 'package:rehabis/views/calendar/tasks_widget.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-
-class SCalendar extends StatefulWidget {
-  const SCalendar({Key? key}) : super(key: key);
+class Calendar extends StatefulWidget {
+  const Calendar({Key? key}) : super(key: key);
 
   @override
-  State<SCalendar> createState() => _SCalendarState();
+  State<Calendar> createState() => _CalendarState();
 }
 
-class _SCalendarState extends State<SCalendar> {
+Map<DateTime, List<Event>> selectedEvents = {};
+CalendarFormat format = CalendarFormat.month;
+DateTime selectedDay = DateTime.now();
+DateTime focusedDay = DateTime.now();
+
+class _CalendarState extends State<Calendar> {
+  
+
+  TextEditingController _eventController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  List<Event> _getEventsfromDay(DateTime date) {
+    return selectedEvents[date] ?? [];
+  }
+
+  
+
   @override
   Widget build(BuildContext context) {
 
-    final List<Event> events = Provider.of<EventProvider>(context).events;
+    var width = MediaQuery.of(context).size.width;
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        title: Text(
+          "Calendar",
+          style: TextStyle(
+              color: Colors.black.withOpacity(0.9),
+              fontSize: 20,
+              fontFamily: "Inter"),
+        ),
+        leading: Container(),
+      ),
+      body: Column(
+        children: [
+          TableCalendar(
+            focusedDay: selectedDay,
+            firstDay: DateTime(1990),
+            lastDay: DateTime(2050),
+            calendarFormat: format,
+            onFormatChanged: (CalendarFormat _format) {
+              setState(() {
+                format = _format;
+              });
+            },
+            startingDayOfWeek: StartingDayOfWeek.sunday,
+            daysOfWeekVisible: true,
 
-    return SfCalendar(
-      //backgroundColor: Colors.white,
-      initialSelectedDate: DateTime.now(),
-      view: CalendarView.month,
-      dataSource: EventDataSource(events),
-      headerStyle:
-          const CalendarHeaderStyle(textStyle: TextStyle(fontFamily: "Inter")),
-      todayHighlightColor: primaryColor,
-      cellBorderColor: deepPurple,
-      
-      selectionDecoration: BoxDecoration(
-          color: Colors.transparent,
-          border: Border.all(color: primaryColor, width: 2),
-          borderRadius: const BorderRadius.all(Radius.circular(4)),
-          shape: BoxShape.rectangle),
-      
-      showCurrentTimeIndicator: true,
+            //Day Changed
+            onDaySelected: (DateTime selectDay, DateTime focusDay) {
+              setState(() {
+                selectedDay = selectDay;
+                focusedDay = focusDay;
+              });
+              print(focusedDay);
+            },
+            selectedDayPredicate: (DateTime date) {
+              return isSameDay(selectedDay, date);
+            },
 
-      onLongPress: (details) {
-        final provider =
-            Provider.of<EventProvider>(context, listen: false);
-        provider.setDate(details.date!);
-        showModalBottomSheet(
-            context: context, builder: (context) => const TasksWidget());
-      },
+            eventLoader: _getEventsfromDay,
+
+            //To style the Calendar
+            calendarStyle: CalendarStyle(
+              isTodayHighlighted: true,
+              selectedDecoration: BoxDecoration(
+                color: secondPrimaryColor,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              selectedTextStyle: TextStyle(color: Colors.white),
+              todayDecoration: BoxDecoration(
+                color: Colors.purpleAccent,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              defaultDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              weekendDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+            ),
+            headerStyle: HeaderStyle(
+              formatButtonVisible: true,
+              titleCentered: true,
+              formatButtonShowsNext: false,
+              formatButtonDecoration: BoxDecoration(
+                color: secondaryColor,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              formatButtonTextStyle: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+          ..._getEventsfromDay(selectedDay).map(
+            (Event event) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: width * 0.9,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(13),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.01),
+                      spreadRadius: 10,
+                      blurRadius: 10, 
+                      offset: Offset(3,3)
+                    )
+                  ]
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      height:50,
+                      width: 15,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.only(topLeft: 
+                        Radius.circular(13),bottomLeft: Radius.circular(13),
+                          ),
+                      )
+                    ),
+                    SizedBox(width: 20,),
+                    Text(
+                      event.title,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("Add Event"),
+            content: TextFormField(
+              controller: _eventController,
+            ),
+            actions: [
+              TextButton(
+                child: Text("Cancel"),
+                onPressed: () => Navigator.pop(context),
+              ),
+              TextButton(
+                child: Text("Ok"),
+                onPressed: () {
+                  if (_eventController.text.isEmpty) {
+
+                  } else {
+                    if (selectedEvents[selectedDay] != null) {
+                      selectedEvents[selectedDay]!.add(
+                        Event(title: _eventController.text),
+                      );
+                    } else {
+                      selectedEvents[selectedDay] = [
+                        Event(title: _eventController.text)
+                      ];
+                    }
+
+                  }
+                  Navigator.pop(context);
+                  _eventController.clear();
+                  setState((){});
+                  return;
+                },
+              ),
+            ],
+          ),
+        ),
+        label: Text("Add Event"),
+        focusColor: primaryColor,
+        backgroundColor: primaryColor,
+        icon: Icon(Icons.add),
+      ),
     );
   }
 }
 
-class MyWidget extends StatefulWidget {
-  const MyWidget({Key? key}) : super(key: key);
 
-  @override
-  State<MyWidget> createState() => _MyWidgetState();
-}
+class Event {
+  final String title;
+  Event({required this.title});
 
-class _MyWidgetState extends State<MyWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          title: Text(
-            "Calendar",
-            style: TextStyle(
-                color: Colors.black.withOpacity(0.9),
-                fontSize: 20,
-                fontFamily: "Inter"),
-          ),
-          leading: Container(),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Scaffold.of(context)
-                      .showBottomSheet((context) => const EventCreate());
-                },
-                icon: Icon(
-                  Icons.add,
-                  color: primaryColor,
-                ))
-          ],
-        ),
-        body: const SCalendar());
-  }
-}
-
-class Schedule extends StatefulWidget {
-  const Schedule({Key? key}) : super(key: key);
-
-  @override
-  State<Schedule> createState() => _ScheduleState();
-}
-
-class _ScheduleState extends State<Schedule> {
-
-  @override
-  Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
-    return MyWidget();
-  }
+  String toString() => this.title;
 }
