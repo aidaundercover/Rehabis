@@ -62,8 +62,8 @@ class _MyAppState extends State<MyApp> {
         create: (context) => EventProvider(),
         child: MaterialApp(
             home:isLoggedIn
-                ? FirstView()
-                : Main()));
+                ? Main()
+                : FirstView()));
   }
 }
 
