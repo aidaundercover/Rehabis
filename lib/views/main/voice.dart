@@ -4,7 +4,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/main.dart';
-import 'package:rehabis/api/speech_api.dart';
+import 'package:rehabis/services/speech_api.dart';
 import 'package:rehabis/utils/utils.dart';
 import 'package:rehabis/widgets/slider_fv.dart';
 import 'package:rehabis/widgets/substring_highlight.dart';

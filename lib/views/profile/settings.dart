@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:rehabis/api/notification_api.dart';
+import 'package:rehabis/database/database.dart';
+import 'package:rehabis/services/notification_api.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/main.dart';
 import 'package:rehabis/views/some_page.dart';
@@ -130,7 +131,11 @@ class _SettingsState extends State<Settings> {
                       child: Text("Notification Set"),
                     ));
               },
-              child: Text("Show  Notification"))
+              child: Text("Show  Notification")),
+          TextButton(onPressed: () {
+              DatabaseHelper _dataBaseHelper = DatabaseHelper.instance;
+              _dataBaseHelper.deleteAll();
+          }, child: Text('Clear Databse',), )
         ],
       ),
     );

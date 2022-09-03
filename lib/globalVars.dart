@@ -1,11 +1,13 @@
 // ignore: file_names
 import 'package:flutter/material.dart' show Color;
 import 'package:rehabis/models/Relative.dart';
+import 'package:rehabis/views/main/calendar.dart';
 
 String prediction = "None";
 double value = 0.01;
 
 bool isLoggedIn = false;
+Map<DateTime, List<Event>> selectedEvents = {};
 
 /// Personal data ///
 String nameGlobal = "Имя Фамилия";

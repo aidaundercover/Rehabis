@@ -17,11 +17,11 @@ class _DiagonaleHands extends State<DiagonaleHands> {
     setState(() {
       handPosition = int.parse(data.toString());
 
-      if (handPosition == 1) {
+      if (handPosition%2==1) {
         isPressed = true;
       }
 
-      if (handPosition == 2) {
+      if (handPosition%2 == 0) {
         isPressed = false;
       }
     });

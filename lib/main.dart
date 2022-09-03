@@ -1,26 +1,20 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:rehabis/services/ml_kit_service.dart';
 import 'package:rehabis/globalVars.dart';
-import 'package:rehabis/provider/event_provider.dart';
-import 'package:rehabis/utils/local_db.dart';
-import 'package:rehabis/views/face_recognition/camera_sign_in.dart';
+import 'package:rehabis/services/facenet_service.dart';
 import 'package:rehabis/views/first_view/fisrt_view.dart';
-import 'package:rehabis/views/first_view/select_your_weak.dart';
 import 'package:rehabis/views/main/calendar.dart';
 import 'package:rehabis/views/main/home.dart';
 import 'package:rehabis/views/main/profile.dart';
-import 'package:rehabis/views/main/progress.dart';
 import 'package:rehabis/views/main/voice.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
-List<CameraDescription>? cameras;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,12 +24,11 @@ Future<void> main() async {
     if (kReleaseMode) exit(1);
   };
 
-  cameras = await availableCameras();
-  await Hive.initFlutter();
-  await HiveBoxes.initialize();
 
   runApp(MyApp());
 }
+
+late CameraDescription cameraDescription;
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -45,10 +38,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  FaceNetService _faceNetService = FaceNetService.faceNetService;
+  MLKitService _mlKitService = MLKitService();
+
+  bool loading = false;
 
   void initState() {
     super.initState();
-    
+    _startup();
   }
 
   @override
@@ -58,12 +55,36 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => EventProvider(),
-        child: MaterialApp(
-            home:isLoggedIn
-                ? Main()
-                : FirstView()));
+    return !loading
+        ? MaterialApp(home: isLoggedIn ? Main() : FirstView())
+        : CircularProgressIndicator(
+            color: secondPrimaryColor,
+          );
+  }
+
+  void _startup() async {
+    _setLoading(true);
+
+    List<CameraDescription> cameras = await availableCameras();
+
+    /// takes the front camera
+    cameraDescription = cameras.firstWhere(
+      (CameraDescription camera) =>
+          camera.lensDirection == CameraLensDirection.front,
+    );
+
+    // start the services
+    await _faceNetService.loadModel();
+    //  await _dataBaseService.loadDB();
+    _mlKitService.initialize();
+
+    _setLoading(false);
+  }
+
+  void _setLoading(bool value) {
+    setState(() {
+      loading = value;
+    });
   }
 }
 

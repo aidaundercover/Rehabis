@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:rehabis/globalVars.dart';
 
 class FacePainter extends CustomPainter {
   FacePainter({required this.imageSize, this.face, required this.isPortrait});
@@ -24,7 +25,7 @@ class FacePainter extends CustomPainter {
       paint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 3.0
-        ..color = Colors.green;
+        ..color = primaryColor;
     }
 
     scaleX = isPortrait

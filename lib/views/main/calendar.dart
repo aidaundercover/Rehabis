@@ -11,7 +11,7 @@ class Calendar extends StatefulWidget {
   State<Calendar> createState() => _CalendarState();
 }
 
-Map<DateTime, List<Event>> selectedEvents = {};
+
 CalendarFormat format = CalendarFormat.month;
 DateTime selectedDay = DateTime.now();
 DateTime focusedDay = DateTime.now();

@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rehabis/globalVars.dart';
-import 'package:rehabis/utils/local_db.dart';
 import 'package:rehabis/views/auth/sign_in.dart';
 import 'package:rehabis/views/first_view/select_your_weak.dart';
 
 class Auth {
+
   static void signUp(BuildContext context, TextEditingController name,
       TextEditingController iin) async {
     nameGlobal = name.text;
@@ -19,33 +19,29 @@ class Auth {
 
     getBornDate(iinGlobal);
 
-    await ref.set({
-      "Name": nameGlobal,
-      "Iin": iinGlobal,
-      //"Photo": LocalDB.getUserArray(),
-      // "Password": password.text,
-      "MedicalData": {
-        "Born": bornDateGlobal,
-        "Gender": "Unknown",
-        "Height": 0,
-        "Weight": 0,
-        "StrokeType": "Unknown",
-      },
-      "Trainings": {
-        "registration_time": {
-          "Equipment": "Cube",
-          "Count": 0,
-          "Time": '00: 00',
-          "Type": "Type1",
-          'Skill': "None",
-          'level': 0,
-        }
-      }
-    });
-
-    // UserCredential userCredential = await FirebaseAuth.instance
-    //     .createUserWithEmailAndPassword(
-    //         email: "$iinGlobal@rehabis.com", password: LocalDB.getUserArray());
+    // await ref.set({
+    //   "Name": nameGlobal,
+    //   "Iin": iinGlobal,
+    //   //"Photo": LocalDB.getUserArray(),
+    //   "MedicalData": {
+    //     "Born": bornDateGlobal,
+    //     "Gender": "Unknown",
+    //     "Height": 0,
+    //     "Weight": 0,
+    //     "StrokeType": "Unknown",
+    //   },
+    //   "Trainings": {
+    //     "registration_time": {
+    //       "Equipment": "Cube",
+    //       "Count": 0,
+    //       "Time": '00: 00',
+    //       "Type": "Type1",
+    //       'Skill': "None",
+    //       'level': 0,
+    //     }
+    //   },
+    //   "Events" : {}
+    // });
 
     Fluttertoast.showToast(msg: "User registered successfully");
 
@@ -53,10 +49,10 @@ class Auth {
         MaterialPageRoute(builder: (context) => const SelectWeakness()));
   }
 
-  static void signIn(BuildContext context) async {
+  static void signIn(BuildContext context, String? predictedIin) async {
     FirebaseDatabase.instance
         .ref()
-        .child("Users/${LocalDB.getUser().iin}/")
+        .child("Users/$predictedIin/")
         .onValue
         .listen((value) {
       var user = value.snapshot.value as Map<dynamic, dynamic>;
@@ -70,9 +66,7 @@ class Auth {
       strokeTypeGlobal = user['MedicalData']['StrokeType'];
     });
 
-    UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: "$iinGlobal@example.com", password: LocalDB.getUserArray());
+
 
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const SelectWeakness()));
@@ -87,8 +81,8 @@ class Auth {
       }
     });
 
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => SignIn()));
+    // Navigator.of(context)
+    //     .push(MaterialPageRoute(builder: (context) => SignIn()));
   }
 }
 

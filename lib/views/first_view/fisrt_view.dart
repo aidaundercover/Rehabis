@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:rehabis/globalVars.dart';
+import 'package:rehabis/main.dart';
 import 'package:rehabis/views/auth/sign_up.dart';
+import 'package:rehabis/services/facenet_service.dart';
+import 'package:rehabis/services/ml_kit_service.dart';
+import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
+
 
 class FirstView extends StatelessWidget {
   const FirstView({Key? key}) : super(key: key);
@@ -63,7 +69,7 @@ class FirstView extends StatelessWidget {
               GestureDetector(
                   onTap: () {
                     Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => SignUp()));
+                        .push(MaterialPageRoute(builder: (context) => SignUp(cameraDescription: cameraDescription,)));
                   },
                   child: Container(
                     width: width*0.15,

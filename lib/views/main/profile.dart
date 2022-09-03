@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import "package:flutter/material.dart";
 import 'package:rehabis/globalVars.dart';
+import 'package:rehabis/main.dart';
 import 'package:rehabis/views/auth/sign_in.dart';
 import 'package:rehabis/views/profile/about.dart';
 import 'package:rehabis/views/profile/settings.dart';
@@ -35,7 +36,7 @@ class _ProfileMainState extends State<ProfileMain> {
     List<String> titles = ["Gender", "Born", "Height", "Weight", "Diagnosis"];
 
     Widget appBar() {
-      return Container(
+      return SizedBox(
         width: width * 0.84,
         child: Column(
           children: [
@@ -234,8 +235,10 @@ class _ProfileMainState extends State<ProfileMain> {
               onTap: () {
                 nameGlobal = "";
                 iinGlobal = "";
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => SignIn()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SignIn(
+                          cameraDescription: cameraDescription,
+                        )));
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 30.0),
@@ -255,7 +258,9 @@ class _ProfileMainState extends State<ProfileMain> {
                   ],
                 ),
               ),
-            )
+            ),
+            Expanded(
+              child: Text('Version 1.0.0',  style: TextStyle(color: primaryColor, fontFamily: "Inter")))
           ],
         ),
       ),

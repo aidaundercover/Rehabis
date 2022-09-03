@@ -2,7 +2,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/models/Training.dart';
-import 'package:rehabis/utils/local_db.dart';
 import 'package:rehabis/views/exercises/hands/hands.dart';
 import 'package:rehabis/views/exercises/exerciseWidgets.dart';
 import 'package:rehabis/views/main/progress.dart';
