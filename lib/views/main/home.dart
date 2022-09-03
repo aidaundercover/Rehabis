@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Container(
               width: width * 0.88,
-              height: height * 0.45,
+              // height: height * 0.45,
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,14 +110,14 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Container(
                           width: width * 0.7,
-                          height: height * 0.24,
+                          height: height>1000 ? height*0.24: height* 0.35,
                           decoration: BoxDecoration(
                               color: secondPrimaryColor,
                               borderRadius: BorderRadius.circular(25)),
                         ),
                         Image.asset(
                           "assets/robot_neutral.png",
-                          width: width * 0.5,
+                          width: width>850 ? width*0.22: width>799 ? width* 0.4 : width* 0.5,
                         )
                       ],
                     ),
@@ -382,7 +382,8 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [appBar(), exercises(), recomendations()],
+          children: [
+            appBar(), exercises(), recomendations()],
         ),
       ),
     );

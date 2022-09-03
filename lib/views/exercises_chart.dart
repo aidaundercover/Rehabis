@@ -44,44 +44,48 @@ class _ExercisesChartState extends State<ExercisesChart> {
 
     return SafeArea(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ToggleButtons(
-              children: [
-                Text("Today", style: style),
-                Text("Last week", style: style),
-                Text("Last month", style: style),
-              ],
-              isSelected: isSelected,
-              selectedColor: secondPrimaryColor.withOpacity(0.4),
-              fillColor: secondPrimaryColor.withOpacity(0.4),
-              splashColor: secondPrimaryColor.withOpacity(0.4),
-              focusColor: secondPrimaryColor.withOpacity(0.4),
-              onPressed: (i) {
-                setState(() {
-                  isSelected[i] = !isSelected[i];
+          Padding(
+            padding: const EdgeInsets.only(left: 50.0),
+            child: ToggleButtons(
+                children: [
+                  Text("Today", style: style),
+                  Text("Last week", style: style),
+                  Text("Last month", style: style),
+                ],
+                isSelected: isSelected,
+                selectedColor: secondPrimaryColor.withOpacity(0.4),
+                fillColor: secondPrimaryColor.withOpacity(0.4),
+                splashColor: secondPrimaryColor.withOpacity(0.4),
+                focusColor: secondPrimaryColor.withOpacity(0.4),
+                onPressed: (i) {
+                  setState(() {
+                    isSelected[i] = !isSelected[i];
 
-                  switch (i) {
-                    case 0:
-                      {
-                        isSelected[1] = false;
-                        isSelected[2] = false;
-                      }
-                      break;
-                    case 1:
-                      {
-                        isSelected[0] = false;
-                        isSelected[2] = false;
-                      }
-                      break;
-                    case 2:
-                      {
-                        isSelected[0] = false;
-                        isSelected[1] = false;
-                      }
-                      break;
-                  }
-                });
-              }),
+                    switch (i) {
+                      case 0:
+                        {
+                          isSelected[1] = false;
+                          isSelected[2] = false;
+                        }
+                        break;
+                      case 1:
+                        {
+                          isSelected[0] = false;
+                          isSelected[2] = false;
+                        }
+                        break;
+                      case 2:
+                        {
+                          isSelected[0] = false;
+                          isSelected[1] = false;
+                        }
+                        break;
+                    }
+                  });
+                }),
+          ),
           StreamBuilder(
               stream: ref.child('Users/$iinGlobal/Trainings/').onValue,
               builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
