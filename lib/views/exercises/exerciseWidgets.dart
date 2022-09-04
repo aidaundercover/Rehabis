@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:rehabis/globalVars.dart';
+import 'package:rehabis/services/exercise_api.dart';
 import 'package:rehabis/views/exercises/attention/find_third_whhel.dart';
 import 'package:rehabis/views/exercises/attention/similiar_words.dart';
 import 'package:rehabis/views/exercises/cube/legs_one.dart';
@@ -18,7 +19,6 @@ import 'package:rehabis/views/exercises/hands/findiandh.dart';
 import 'package:rehabis/views/exercises/speech/breathe.dart';
 import 'package:rehabis/views/exercises/speech/smile.dart';
 import 'package:rehabis/views/exercises/speech/tongue_one.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 //Data for ALL exercises
 
@@ -39,27 +39,25 @@ List threeMemory = [
   {
     'title': "Matching Game",
     "minutes": 5,
-    "page": MatchingGame(),
+    "page": const MatchingGame(),
     "skill": "Memory"
   },
 ];
-
-//Motorics
 
 
 //Speaking
 
 List oneSpeaking = [
-  {'title': "Smiley", "minutes": 4, "page": Smiley(), "skill": "Speaking"},
+  {'title': "Smiley", "minutes": 4, "page": const Smiley(), "skill": "Speaking"},
 ];
 
 List twoSpeaking = [
-  // {
-  //   'title': "Tongue Actions",
-  //   "minutes": 6,
-  //   "page": TongueActions(),
-  //   "skill": "Speaking"
-  // },
+  {
+    'title': "Tongue Actions",
+    "minutes": 6,
+    "page": const TongueActions(),
+    "skill": "Speaking"
+  },
 ];
 
 List threeSpeaking = [
@@ -154,13 +152,9 @@ List oneLeg = [
   },
 ];
 
-List twoLeg = [
-  
-];
+List twoLeg = [];
 
-List threeLeg = [
-  
-];
+List threeLeg = [];
 
 //Core
 
@@ -567,7 +561,14 @@ Widget textHeader(double width, String text) {
   );
 }
 
-PreferredSizeWidget exerciseAppbar(String title, BuildContext context) {
+PreferredSizeWidget exerciseAppbar(
+    String title,
+    BuildContext context,
+    String equipment,
+    int count,
+    String time,
+    String skill,
+    int level) {
   return AppBar(
     title: Text(
       title,
@@ -579,6 +580,7 @@ PreferredSizeWidget exerciseAppbar(String title, BuildContext context) {
     elevation: 0.0,
     leading: IconButton(
         onPressed: () {
+          ExerciseApi.uploadExercise(equipment, count, time, title, skill, level);
           Navigator.of(context).pop();
         },
         icon: Icon(

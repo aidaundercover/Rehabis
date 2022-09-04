@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_database/firebase_database.dart';
 import "package:flutter/material.dart";
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/main.dart';
 import 'package:rehabis/views/auth/sign_in.dart';
 import 'package:rehabis/views/profile/about.dart';
+import 'package:rehabis/views/profile/goals.dart';
 import 'package:rehabis/views/profile/settings.dart';
 import 'package:rehabis/views/profile/support.dart';
 
@@ -36,44 +39,92 @@ class _ProfileMainState extends State<ProfileMain> {
     List<String> titles = ["Gender", "Born", "Height", "Weight", "Diagnosis"];
 
     Widget appBar() {
-      return SizedBox(
+      return Container(
         width: width * 0.84,
         child: Column(
           children: [
             SizedBox(
               height: 20,
             ),
-            Stack(
-              children: [
-                Container(
-                  width: width * 0.82,
-                  height: height * 0.13,
-                ),
-                Container(
-                  width: width * 0.82,
-                  height: height * 0.1,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(colors: [
-                        secondPrimaryColor,
-                        Color.fromARGB(255, 201, 100, 255),
-                        secondPrimaryColor,
-                      ])),
-                ),
-                Positioned(
-                  top: height * 0.04,
-                  left: width * 0.32,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: width * 0.1,
-                    child: Image.asset(
-                      "assets/robot_neutral.png",
-                      height: width * 0.18,
+            MediaQuery.of(context).orientation == Orientation.portrait
+                ? SizedBox(
+                    height: height * 0.18,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Container(
+                          width: width * 0.82,
+                          height: height * 0.13,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: height * 0.07),
+                          child: Container(
+                            width: width * 0.82,
+                            height: height * 0.1,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                gradient: LinearGradient(colors: [
+                                  secondPrimaryColor,
+                                  Color.fromARGB(255, 201, 100, 255),
+                                  secondPrimaryColor,
+                                ])),
+                          ),
+                        ),
+                        Positioned(
+                          top: height * 0.04,
+                          left: width * 0.32,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: width * 0.1,
+                            child: Image.asset(
+                              "assets/robot_neutral.png",
+                              height: width * 0.18,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                : SizedBox(
+                    height: height * 0.23,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Container(
+                          width: width * 0.82,
+                          height: height * 0.13,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: height * 0.05),
+                          child: Container(
+                            width: width * 0.82,
+                            height: height * 0.1,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                gradient: LinearGradient(colors: [
+                                  secondPrimaryColor,
+                                  Color.fromARGB(255, 201, 100, 255),
+                                  secondPrimaryColor,
+                                ])),
+                          ),
+                        ),
+                        Positioned(
+                          top: height * 0.04,
+                          left: width * 0.32,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: width * 0.1,
+                            child: avatarPath.isEmpty
+                                ? Image.asset(
+                                    "assets/robot_neutral.png",
+                                    height: width * 0.18,
+                                  )
+                                : Image.file(File(avatarPath)),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                )
-              ],
-            ),
             SizedBox(
               height: 10,
             ),
@@ -235,10 +286,14 @@ class _ProfileMainState extends State<ProfileMain> {
               onTap: () {
                 nameGlobal = "";
                 iinGlobal = "";
+                genderGlobal = '';
+                bornDateGlobal = '';
+                strokeTypeGlobal = '';
+                weightGlobal = 0;
+                heightGlobal = 0;
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => SignIn(
-                          cameraDescription: cameraDescription,
-                        )));
+                    builder: (context) =>
+                        SignIn(cameraDescription: cameraDescription)));
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 30.0),
@@ -258,14 +313,10 @@ class _ProfileMainState extends State<ProfileMain> {
                   ],
                 ),
               ),
-            ),
-            Expanded(
-              child: Text('Version 1.0.0',  style: TextStyle(color: primaryColor, fontFamily: "Inter")))
+            )
           ],
         ),
       ),
     );
   }
 }
-
-class Goals {}

@@ -35,7 +35,7 @@ class _LadyBagState extends State<LadyBag> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: exerciseAppbar("Find a Ladybag", context),
+      // appBar: exerciseAppbar("Find a Ladybag", context),
       body: Center(
         child: Column(
           children: [

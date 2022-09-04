@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/models/user_model.dart';
 import 'package:rehabis/services/camera_service.dart';
 import 'package:rehabis/services/facenet_service.dart';
@@ -155,7 +156,13 @@ class _SignInState extends State<SignIn> {
               isLogin: true,
               reload: _reload,
             )
-          : Container(),
+          : Container(
+            // padding: EdgeInsets.all(10),
+            // decoration: BoxDecoration(
+            //   color: Colors.white
+            // ),
+            // child: Text("User was not identified", style: TextStyle(color: primaryColor, fontFamily: 'Inter')),
+          ),
     );
   }
 

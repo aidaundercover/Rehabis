@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rehabis/globalVars.dart';
+import 'package:rehabis/main.dart';
 import 'package:rehabis/views/auth/sign_in.dart';
 import 'package:rehabis/views/first_view/select_your_weak.dart';
 
@@ -19,29 +20,29 @@ class Auth {
 
     getBornDate(iinGlobal);
 
-    // await ref.set({
-    //   "Name": nameGlobal,
-    //   "Iin": iinGlobal,
-    //   //"Photo": LocalDB.getUserArray(),
-    //   "MedicalData": {
-    //     "Born": bornDateGlobal,
-    //     "Gender": "Unknown",
-    //     "Height": 0,
-    //     "Weight": 0,
-    //     "StrokeType": "Unknown",
-    //   },
-    //   "Trainings": {
-    //     "registration_time": {
-    //       "Equipment": "Cube",
-    //       "Count": 0,
-    //       "Time": '00: 00',
-    //       "Type": "Type1",
-    //       'Skill': "None",
-    //       'level': 0,
-    //     }
-    //   },
-    //   "Events" : {}
-    // });
+    await ref.set({
+      "Name": nameGlobal,
+      "Iin": iinGlobal,
+      //"Photo": LocalDB.getUserArray(),
+      "MedicalData": {
+        "Born": bornDateGlobal,
+        "Gender": "Unknown",
+        "Height": 0,
+        "Weight": 0,
+        "StrokeType": "Unknown",
+      },
+      "Trainings": {
+        "registration_time": {
+          "Equipment": "Cube",
+          "Count": 0,
+          "Time": '00: 00',
+          "Type": "Type1",
+          'Skill': "None",
+          'level': 0,
+        }
+      },
+      "Events" : {}
+    });
 
     Fluttertoast.showToast(msg: "User registered successfully");
 
@@ -61,7 +62,7 @@ class Auth {
       iinGlobal = user['Iin'];
       weightGlobal = user['MedicalData']['Weight'];
       heightGlobal = user['MedicalData']['Height'];
-      genderGlobal = user['MedicalData']['Gender'] == 'F' ? 'female' : 'male';
+      genderGlobal = user['MedicalData']['Gender'] == 'F' ? 'Female' : 'Male';
       bornDateGlobal = user['MedicalData']['Born'];
       strokeTypeGlobal = user['MedicalData']['StrokeType'];
     });
@@ -69,7 +70,7 @@ class Auth {
 
 
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const SelectWeakness()));
+        MaterialPageRoute(builder: (context) => const Main()));
   }
 
   static void signOut(BuildContext context) {

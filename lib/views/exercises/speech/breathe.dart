@@ -60,7 +60,7 @@ class _BreathingState extends State<Breathing> {
     var width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: exerciseAppbar("Breathing exercise", context),
+      // appBar: exerciseAppbar("Breathing exercise", context),
       body: Column(
         children: [
           textHeader(width,

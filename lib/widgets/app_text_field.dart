@@ -1,56 +1,8 @@
-// import 'package:flutter/material.dart';
-
-// class AppTextField extends StatelessWidget {
-//   AppTextField(
-//       {Key? key,
-//         required this.labelText,
-//         required this.controller,
-//         this.keyboardType = TextInputType.text,
-//         this.autofocus = false,
-//         })
-//       : super(key: key);
-//   final String labelText;
-//   final TextEditingController controller;
-//   final TextInputType keyboardType;
-//   final bool autofocus;
-
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextField(
-//       controller: this.controller,
-//       autofocus: this.autofocus,
-//       maxLength: labelText == 'IIN' ? 12 : 50,
-//       cursorColor: Color(0xffbc49ff),
-//       decoration: InputDecoration(
-//         floatingLabelBehavior: FloatingLabelBehavior.never,
-//         labelText: labelText,
-//         border: InputBorder.none,
-//         filled: true,
-//         fillColor: Colors.grey[200],
-//         enabledBorder: new OutlineInputBorder(
-//           borderSide: BorderSide.none,
-//           borderRadius: const BorderRadius.all(
-//             const Radius.circular(10.0),
-//           ),
-//         ),
-//         focusedBorder: new OutlineInputBorder(
-//           borderSide: BorderSide.none,
-//           borderRadius: const BorderRadius.all(
-//             const Radius.circular(10.0),
-//           ),
-//         ),
-//       ),
-//       keyboardType: keyboardType,
-//     );
-//   }
-// }
-
-
 import 'package:flutter/material.dart';
+import 'package:rehabis/globalVars.dart';
 
 class AppTextField extends StatelessWidget {
-  AppTextField(
+  const AppTextField(
       {Key? key,
       required this.labelText,
       required this.controller,
@@ -65,26 +17,44 @@ class AppTextField extends StatelessWidget {
   final bool isPassword;
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: this.controller,
-      autofocus: this.autofocus,
-      cursorColor: Color(0xFF5BC8AA),
+    return TextFormField(
+      controller: controller,
+      autofocus: autofocus,
+      cursorColor: primaryColor,
+      maxLength: labelText == 'IIN' ? 12 : 50,
+      
+      onEditingComplete: () {
+        if (labelText == 'IIN') {
+          int month = int.parse(controller.text[2] + controller.text[3]);
+          int day = int.parse(controller.text[4] + controller.text[5]);
+
+          if (controller.text.length == 12) {
+            if (month > 0 && month < 13 && day > 0 && day < 32) {
+            } else {
+              throw 'IIN is not a valid';
+            }
+          } else {
+            throw 'IIN consists of 12 characters';
+          }
+        }
+      },
       decoration: InputDecoration(
         floatingLabelBehavior: FloatingLabelBehavior.never,
+        counterStyle: const TextStyle(fontFamily: "Inter"),
         labelText: labelText,
         border: InputBorder.none,
         filled: true,
         fillColor: Colors.grey[200],
-        enabledBorder: new OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide.none,
-          borderRadius: const BorderRadius.all(
-            const Radius.circular(10.0),
+          borderRadius: BorderRadius.all(
+            Radius.circular(12.0),
           ),
         ),
         focusedBorder: new OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: const BorderRadius.all(
-            const Radius.circular(10.0),
+            const Radius.circular(12.0),
           ),
         ),
       ),

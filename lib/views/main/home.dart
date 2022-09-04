@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
         skill: "Motorics",
         title: "Same symbols",
         minutes: 3,
-        page: HandsOneExrcise()),
+        page: ExercizeOne()),
     Training(
         instruction:
             "Прослушайте текст и выберете изображение которое отобржает сказанное",
@@ -109,14 +109,18 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Container(
                           width: width * 0.7,
-                          height: height>1000 ? height*0.24: height* 0.35,
+                          height: height > 1000 ? height * 0.24 : height * 0.35,
                           decoration: BoxDecoration(
                               color: secondPrimaryColor,
                               borderRadius: BorderRadius.circular(25)),
                         ),
                         Image.asset(
                           "assets/robot_neutral.png",
-                          width: width>850 ? width*0.22: width>799 ? width* 0.4 : width* 0.5,
+                          width: width > 850
+                              ? width * 0.22
+                              : width > 799
+                                  ? width * 0.4
+                                  : width * 0.5,
                         )
                       ],
                     ),
@@ -125,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          width: width * 0.7,
+                          width:  MediaQuery.of(context).orientation == Orientation.portrait ? width * 0.7 : width*0.45, 
                           height: 50,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -194,8 +198,7 @@ class _HomePageState extends State<HomePage> {
                   .onValue,
               builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
                 if (snapshot.hasData) {
-                  var trainings = 
-                      Map<String, dynamic>.from(
+                  var trainings = Map<String, dynamic>.from(
                       snapshot.data!.snapshot.value as Map<dynamic, dynamic>);
 
                   // return SizedBox(
@@ -222,7 +225,6 @@ class _HomePageState extends State<HomePage> {
                   //     },
                   //   ),
                   // );
-
 
                   return SizedBox(
                     height: 120,
@@ -275,7 +277,6 @@ class _HomePageState extends State<HomePage> {
                   );
                 }
               }),
-        
         ]),
       );
     }
@@ -381,8 +382,7 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            appBar(), exercises(), recomendations()],
+          children: [appBar(), exercises(), recomendations()],
         ),
       ),
     );

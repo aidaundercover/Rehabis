@@ -60,17 +60,7 @@ class _ExerciseThreeState extends State<ExerciseThree> {
       final minutes = twoDigits(duration.inMinutes.remainder(60));
       final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-      DatabaseReference ref = FirebaseDatabase.instance
-          .ref()
-          .child("Users/$iinGlobal/Trainings/${DateTime.now().toString()}");
-
-      await ref.set({
-        'Skill': "Attention",
-        "Equipment" : "None",
-        "Type" : "Find Third Wheel",
-        "Count" : points,
-        "Time" : "$minutes: $seconds",
-        });
+      
 
       showDialog(
           context: (context),
@@ -208,7 +198,7 @@ class _ExerciseThreeState extends State<ExerciseThree> {
     pressed = 0;
   }
 
-  List _questionsData = [
+  final List _questionsData = [
     {
       "images": [
         "assets/hedgehog.png",
@@ -271,7 +261,7 @@ class _ExerciseThreeState extends State<ExerciseThree> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 7,
                   ),
                   Row(
@@ -358,11 +348,11 @@ class _ExerciseThreeState extends State<ExerciseThree> {
                                     shadows: [
                                       isRunning
                                           ? Shadow(
-                                              offset: Offset(3, 3),
+                                              offset: const Offset(3, 3),
                                               color:
                                                   Colors.white.withOpacity(0.3),
                                               blurRadius: 5)
-                                          : Shadow(
+                                          : const Shadow(
                                               offset: Offset(3, 3),
                                               color: Colors.transparent,
                                               blurRadius: 5)
@@ -497,15 +487,15 @@ class _ExerciseThreeState extends State<ExerciseThree> {
         child: Column(
           children: [
             appBar(),
-            SizedBox(
+            const SizedBox(
               height: 18,
             ),
             timerWidget(),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             main(),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             TextButton(
@@ -521,29 +511,7 @@ class _ExerciseThreeState extends State<ExerciseThree> {
           ],
         ),
       ),
-      // bottomNavigationBar: isRunning
-      //     ? GestureDetector(
-      //         onTap: () {
-      //           startTimer();
-      //         },
-      //         child: Container(
-      //           decoration: BoxDecoration(
-      //             color: Color.fromARGB(255, 191, 43, 255),
-      //           ),
-      //           width: width,
-      //           height: 50,
-      //           alignment: Alignment.center,
-      //           child: const Text(
-      //             "Завершить",
-      //             style: TextStyle(
-      //                 color: Colors.white,
-      //                 fontWeight: FontWeight.bold,
-      //                 fontSize: 15,
-      //                 fontFamily: 'Inter'),
-      //           ),
-      //         ),
-      //       )
-      //     : Container(),
+      
     );
   }
 }

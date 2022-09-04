@@ -57,6 +57,10 @@ class _AddDataViewState extends State<AddDataView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _weightController = TextEditingController(text: "");
+    _heightController = TextEditingController(text: "");
+    _value = "1";
+    isSelected = [false, false];
   }
 
   @override
@@ -136,13 +140,24 @@ class _AddDataViewState extends State<AddDataView> {
           child: Column(
             children: [
               slider(2, width),
-              const Text(
-                "Personalize trainings by adding data",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    fontFamily: "Ruberoid",
-                    color: Color.fromARGB(255, 50, 50, 50)),
+              Container(
+                width: width * 0.84,
+                alignment:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? Alignment.centerLeft
+                        : Alignment.center,
+                child: Text(
+                  "Personalize trainings by adding data",
+                  textAlign:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? TextAlign.start
+                          : TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                      fontFamily: "Ruberoid",
+                      color: Color.fromARGB(255, 50, 50, 50)),
+                ),
               ),
               SizedBox(
                 height: height * 0.1,
@@ -178,38 +193,45 @@ class _AddDataViewState extends State<AddDataView> {
                                           fontSize: 12),
                                     ),
                                   ),
-                                  ToggleButtons(
-                                    borderRadius: BorderRadius.circular(10),
-                                    highlightColor:
-                                        primaryColor.withOpacity(0.5),
-                                    selectedColor:
-                                        primaryColor.withOpacity(0.5),
-                                    focusColor: primaryColor.withOpacity(0.5),
-                                    fillColor: primaryColor.withOpacity(0.3),
-                                    children: [
-                                      Icon(
-                                        Icons.female,
-                                        color: primaryColor,
-                                      ),
-                                      Icon(
-                                        Icons.male,
-                                        color: Colors.blue,
-                                      )
-                                    ],
-                                    isSelected: isSelected,
-                                    onPressed: (int index) {
-                                      setState(() {
-                                        if (index == 0) {
-                                          isSelected[0] = !isSelected[0];
-                                          isSelected[1] = false;
-                                        }
+                                  SizedBox(
+                                    child: ToggleButtons(
+                                      constraints: BoxConstraints(
+                                          maxWidth: width * 0.12,
+                                          minWidth: width * 0.12,
+                                          minHeight: 60,
+                                          maxHeight: 60),
+                                      borderRadius: BorderRadius.circular(10),
+                                      highlightColor:
+                                          primaryColor.withOpacity(0.5),
+                                      selectedColor:
+                                          primaryColor.withOpacity(0.5),
+                                      focusColor: primaryColor.withOpacity(0.5),
+                                      fillColor: primaryColor.withOpacity(0.3),
+                                      children: [
+                                        Icon(
+                                          Icons.female,
+                                          color: primaryColor,
+                                        ),
+                                        Icon(
+                                          Icons.male,
+                                          color: Colors.blue,
+                                        )
+                                      ],
+                                      isSelected: isSelected,
+                                      onPressed: (int index) {
+                                        setState(() {
+                                          if (index == 0) {
+                                            isSelected[0] = !isSelected[0];
+                                            isSelected[1] = false;
+                                          }
 
-                                        if (index == 1) {
-                                          isSelected[1] = !isSelected[1];
-                                          isSelected[0] = false;
-                                        }
-                                      });
-                                    },
+                                          if (index == 1) {
+                                            isSelected[1] = !isSelected[1];
+                                            isSelected[0] = false;
+                                          }
+                                        });
+                                      },
+                                    ),
                                   ),
                                 ],
                               ),

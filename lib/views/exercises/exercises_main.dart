@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rehabis/globalVars.dart';
+import 'package:rehabis/views/exercise_collections/collections_main.dart';
 import 'package:rehabis/views/exercises/exerciseWidgets.dart';
 
 class ExerciseMain extends StatefulWidget {
@@ -73,7 +74,7 @@ class _ExerciseMainState extends State<ExerciseMain> {
 
     List tagTitles = [];
 
-    setState(() {
+    selectedWeakneases.isNotEmpty ? setState(() {
       for (int i = 0; i < selectedWeakneases.length; i++) {
         tagTitles.add(selectedWeakneases[i]);
       }
@@ -109,7 +110,7 @@ class _ExerciseMainState extends State<ExerciseMain> {
       //   two += tagsList[r]["two"];
       //   three += tagsList[r]["three"];
       // }
-    });
+    }) : () {};
 
     for (int i = 0; i < tagsList.length; i++) {
       tagsList[i]["selected"] = false;
@@ -126,10 +127,12 @@ class _ExerciseMainState extends State<ExerciseMain> {
         fontFamily: "Inter",
         fontSize: 19,
         color: Colors.grey.shade500);
-    TextStyle styleSmall = const TextStyle(fontSize: 14, color: Colors.white);
+    const TextStyle styleSmall = const TextStyle(fontSize: 14, color: Colors.white);
 
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+
+    bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     Widget workouts(List exercises, int level) {
       return Column(
@@ -159,8 +162,8 @@ class _ExerciseMainState extends State<ExerciseMain> {
                     exercises[i]["page"],
                     "",
                     "",
-                    width,
-                    height,
+                    isPortrait ? width : width*0.7,
+                    isPortrait ? height : height*1.2,
                     context);
               }),
             ),
@@ -314,7 +317,8 @@ class _ExerciseMainState extends State<ExerciseMain> {
             tags(),
             workouts(one, 1),
             workouts(two, 2),
-            workouts(three, 3)
+            workouts(three, 3),
+            CollectionsMain()
           ],
         ),
       ),

@@ -13,6 +13,7 @@ Map<DateTime, List<Event>> selectedEvents = {};
 String nameGlobal = "Имя Фамилия";
 String iinGlobal = "060114651689";
 String roleGlobal = '';
+String avatarPath = '';
 List<String> selectedWeakneases = [];
 List<Relative> relatives = [];
 

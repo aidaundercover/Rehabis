@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rehabis/globalVars.dart';
 
 class AppButton extends StatelessWidget {
   AppButton(
       {required this.onPressed,
       required this.text,
-      this.color = const Color(0xFF0F0BDB),
+      this.color = const Color(0xFFcc65ff),
       this.icon = const Icon(
         Icons.add,
         color: Colors.white,
@@ -23,7 +24,7 @@ class AppButton extends StatelessWidget {
           color: color,
           boxShadow: <BoxShadow>[
             BoxShadow(
-              color: Colors.blue.withOpacity(0.1),
+              color: primaryColor.withOpacity(0.3),
               blurRadius: 1,
               offset: Offset(0, 2),
             ),

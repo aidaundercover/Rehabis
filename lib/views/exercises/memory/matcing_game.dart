@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/models/memor_tile.dart';
+import 'package:rehabis/services/exercise_api.dart';
 import 'package:rehabis/views/exercises/exerciseWidgets.dart';
 import 'package:rehabis/views/exercises/memory/getData.dart';
 
@@ -10,7 +14,14 @@ class MatchingGame extends StatefulWidget {
   State<MatchingGame> createState() => _MatchingGameState();
 }
 
+bool isStarted = false;
+String minutes = '00';
+String seconds = '00';
+Duration duration = Duration();
+Timer? timer;
+
 class _MatchingGameState extends State<MatchingGame> {
+  String title = "Matching Game";
   List<MemoryTile> gridViewTiles = [];
   List<MemoryTile> questionPairs = [];
 
@@ -19,17 +30,41 @@ class _MatchingGameState extends State<MatchingGame> {
     // TODO: implement initState
     super.initState();
     points = 0;
-    reStart();
+    isStarted = false;
+
+    // reStart();
+  }
+
+  void addTime() {
+    final addSeconds = 1;
+
+    setState(() {
+      final seconds = duration.inSeconds + addSeconds;
+
+      duration = Duration(seconds: seconds);
+    });
+  }
+
+  void startTimer() {
+    setState(() {
+      isStarted = true;
+    });
+    timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
   }
 
   void reStart() {
     myPairs = getPairs();
     myPairs.shuffle();
 
+    startTimer();
+
+    setState(() {
+      isStarted = true;
+    });
+
     gridViewTiles = myPairs;
     Future.delayed(const Duration(seconds: 5), () {
       setState(() {
-        print("2 seconds done");
         questionPairs = getQuestionPairs();
         gridViewTiles = questionPairs;
         selected = false;
@@ -43,7 +78,27 @@ class _MatchingGameState extends State<MatchingGame> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: exerciseAppbar("Matching Game", context),
+      appBar:
+          exerciseAppbar(title, context, 'None', points, "time", 'Memory', 3),
+      floatingActionButton: !isStarted
+          ? TextButton(
+              onPressed: () {
+                reStart();
+              },
+              child: Container(
+                  width: width * 0.29,
+                  height: 50,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(17),
+                      boxShadow: [const BoxShadow()]),
+                  child: const Text('Start!',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Inter",
+                          fontSize: 18))))
+          : Container(),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -59,13 +114,13 @@ class _MatchingGameState extends State<MatchingGame> {
                           children: <Widget>[
                             Text(
                               "$points/800",
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 20,
                                   color: Colors.grey,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: 'Inter'),
                             ),
-                            Text(
+                            const Text(
                               "Points",
                               textAlign: TextAlign.start,
                               style: TextStyle(
@@ -80,90 +135,43 @@ class _MatchingGameState extends State<MatchingGame> {
                 ],
               ),
               // SizedBox(child: GridView.count(crossAxisCount: 4)),
-        
+
               Container(
                 height: height * 0.8,
                 width: width * 0.95,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     points != 800
-                        ? GridView(
-                            shrinkWrap: true,
-                            //physics: ClampingScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            gridDelegate:
-                                SliverGridDelegateWithMaxCrossAxisExtent(
-                                    mainAxisSpacing: 0.0,
-                                    maxCrossAxisExtent: 100.0),
-                            children:
-                                List.generate(gridViewTiles.length, (index) {
-                              return Tile(
-                                imagePathUrl:
-                                    gridViewTiles[index].getImageAssetPath(),
-                                tileIndex: index,
-                                parent: this,
-                              );
-                            }),
+                        ? SizedBox(
+                            width: MediaQuery.of(context).orientation ==
+                                    Orientation.portrait
+                                ? width * 0.9
+                                : width * 0.3,
+                            child: GridView(
+                              shrinkWrap: true,
+                              //physics: ClampingScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                      mainAxisSpacing: 0.0,
+                                      maxCrossAxisExtent: 100),
+                              children:
+                                  List.generate(gridViewTiles.length, (index) {
+                                return Tile(
+                                  imagePathUrl:
+                                      gridViewTiles[index].getImageAssetPath(),
+                                  tileIndex: index,
+                                  parent: this,
+                                );
+                              }),
+                            ),
                           )
-                        : Container(
-                            child: Column(
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    points = 0;
-                                    reStart();
-                                  });
-                                },
-                                child: Container(
-                                  height: 50,
-                                  width: 200,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  child: const Text(
-                                    "Replay",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 17,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  // TODO
-                                },
-                                child: Container(
-                                  height: 50,
-                                  width: 200,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Colors.blue, width: 2),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  child: Text(
-                                    "Rate Us",
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ))
+                        : Container()
                   ],
                 ),
               ),
@@ -178,9 +186,10 @@ class _MatchingGameState extends State<MatchingGame> {
 class Tile extends StatefulWidget {
   String? imagePathUrl;
   int? tileIndex;
+  void restart;
   _MatchingGameState? parent;
 
-  Tile({Key? key, this.imagePathUrl, this.tileIndex, this.parent})
+  Tile({Key? key, this.imagePathUrl, this.tileIndex, this.parent, this.restart})
       : super(key: key);
 
   @override
@@ -188,6 +197,107 @@ class Tile extends StatefulWidget {
 }
 
 class _TileState extends State<Tile> {
+  void stopTimer() {
+    setState(() async {
+      timer?.cancel();
+      isStarted = false;
+
+      String twoDigits(int n) => n.toString().padLeft(2, '0');
+      minutes = twoDigits(duration.inMinutes.remainder(60));
+      seconds = twoDigits(duration.inSeconds.remainder(60));
+
+      showDialog(
+          context: (context),
+          builder: (_) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                padding: EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(width: 4, color: Colors.purple)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                        child: Text("Well done!",
+                            style: TextStyle(
+                                color: deepPurple,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Intel"))),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 13.0),
+                      child: Row(
+                        children: [
+                          Text("Execution time:",
+                              style: TextStyle(
+                                color: deepPurple,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text("$minutes: $seconds",
+                              style: TextStyle(
+                                color: deepPurple,
+                                fontSize: 15,
+                              ))
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          child: Container(
+                            width: 100,
+                            height: 35,
+                            child: Text("Restart",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white)),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                                color: Colors.purple.shade200),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            isStarted = true;
+                            widget.restart;
+                          },
+                        ),
+                        const SizedBox(width: 7),
+                        TextButton(
+                          child: Container(
+                            width: 100,
+                            height: 35,
+                            child: const Text("Завершить",
+                                style: TextStyle(color: Colors.white)),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                                color: Colors.purple.shade200),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+          });
+      duration = Duration();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -202,12 +312,22 @@ class _TileState extends State<Tile> {
                 myPairs[widget.tileIndex!].getImageAssetPath()) {
               print("add point");
               points = points + 100;
+              if (points == 800) {
+                setState(() {
+                  isStarted = false;
+                });
+                stopTimer();
+
+                ExerciseApi.uploadExercise(
+                    'None', points, "$minutes : $seconds", 'Matching game', 'Memory', 3);
+              }
+
               print(selectedTile + " thishis" + widget.imagePathUrl!);
 
               MemoryTile tileModel = MemoryTile();
               print(widget.tileIndex);
               selected = true;
-              Future.delayed(const Duration(seconds: 2), () {
+              Future.delayed(const Duration(seconds: 1), () {
                 tileModel.setImageAssetPath("");
                 myPairs[widget.tileIndex!] = tileModel;
                 print(selectedIndex);
@@ -250,7 +370,7 @@ class _TileState extends State<Tile> {
         }
       },
       child: Container(
-        margin: EdgeInsets.all(5),
+        margin: const EdgeInsets.all(5),
         child: myPairs[widget.tileIndex!].getImageAssetPath() != ""
             ? Image.asset(myPairs[widget.tileIndex!].getIsSelected()
                 ? myPairs[widget.tileIndex!].getImageAssetPath()

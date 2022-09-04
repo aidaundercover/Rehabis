@@ -22,6 +22,24 @@ List _selected = [
 
 class _SelectWeaknessState extends State<SelectWeakness> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _selected = [
+      {"title": "Memory", "selected": false},
+      {"title": "Speaking", "selected": false},
+      {"title": "Arm mobility", "selected": false},
+      {"title": "Problem Solving", "selected": false},
+      {"title": "Leg Mobility", "selected": false},
+      {"title": "Core", "selected": false},
+      {"title": "Attention", "selected": false},
+    ];
+
+    selectedWeakneases = [];
+  }
+
+  @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
@@ -64,71 +82,79 @@ class _SelectWeaknessState extends State<SelectWeakness> {
           ),
         ),
       ),
-      body: Center(
-        child: SizedBox(
-          width: width * 0.86,
-          child: SingleChildScrollView(
-            child: Column(children: [
-              slider(1, width),
-              SizedBox(
-                width: width * 0.8,
-                child: Text(
-                  "Select your weak points.",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      fontFamily: "Ruberoid",
-                      color: Color.fromARGB(255, 50, 50, 50)),
+      body: Container(
+        alignment: Alignment.topCenter,
+        child: 
+          SizedBox(
+            width: width * 0.86,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                slider(1, width),
+                Container(
+                  width: width * 0.8,
+                  height: 50,
+                  alignment: MediaQuery.of(context).orientation == Orientation.portrait ? Alignment.centerLeft : Alignment.center,
+                  child: Text(
+                    "Select your weak points",
+                    textAlign: MediaQuery.of(context).orientation == Orientation.portrait ? TextAlign.start : TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                        fontFamily: "Ruberoid",
+                        color: Color.fromARGB(255, 50, 50, 50)),
+                  ),
                 ),
-              ),
-              SizedBox(
-                  child: ListView.builder(
-                      itemCount: _selected.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) =>
-                          Container(
-                            height: 70,
-                            margin: EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: _selected[index]["selected"]
-                                          ? Colors.black.withOpacity(0.15)
-                                          : Colors.black.withOpacity(0.07),
-                                      offset: Offset(4, 3),
-                                      blurRadius: 10)
-                                ]),
-                            alignment: Alignment.center,
-                            child: ListTile(
-                              title: Padding(
-                                padding: EdgeInsets.only(left: width * 0.03),
-                                child: Text(_selected[index]["title"]),
+                SizedBox(
+                    child: ListView.builder(
+                        itemCount: _selected.length,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) =>
+                            Container(
+                              height: 70,
+                              margin: EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: _selected[index]["selected"]
+                                            ? Colors.black.withOpacity(0.15)
+                                            : Colors.black.withOpacity(0.07),
+                                        offset: Offset(4, 3),
+                                        blurRadius: 10)
+                                  ]),
+                              alignment: Alignment.center,
+                              child: ListTile(
+                                title: Padding(
+                                  padding: EdgeInsets.only(left: width * 0.03),
+                                  child: Text(_selected[index]["title"]),
+                                ),
+                                trailing: IconButton(
+                                  icon: _selected[index]["selected"]
+                                      ? Icon(
+                                          Icons.check_circle,
+                                          color: primaryColor,
+                                        )
+                                      : Icon(Icons.circle_outlined),
+                                  onPressed: () {
+                                    setState(() {
+                                      _selected[index]["selected"] =
+                                          !_selected[index]["selected"];
+                                    });
+                                  },
+                                ),
                               ),
-                              trailing: IconButton(
-                                icon: _selected[index]["selected"]
-                                    ? Icon(
-                                        Icons.check_circle,
-                                        color: primaryColor,
-                                      )
-                                    : Icon(Icons.circle_outlined),
-                                onPressed: () {
-                                  setState(() {
-                                    _selected[index]["selected"] =
-                                        !_selected[index]["selected"];
-                                  });
-                                },
-                              ),
-                            ),
-                          ))),
-              SizedBox(
-                height: 40,
-              )
-            ]),
+                            ))),
+                SizedBox(
+                  height: 50,
+                )
+              ]),
+            ),
           ),
-        ),
+        
       ),
     );
   }

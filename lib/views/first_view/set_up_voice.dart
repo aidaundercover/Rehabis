@@ -22,6 +22,8 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
   String text = "Press mic and say hi";
   bool isListening = false;
 
+  bool isPressed = false;
+
   late AudioPlayer player;
 
   @override
@@ -39,20 +41,16 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
     await player.setAsset("assets/welcome.mp3");
     setState(() {
       isListening = true;
+      isPressed = true;
     });
     player.play();
 
     Timer(Duration(seconds: 4), () {
       setState(() {
         isListening = false;
+        isPressed = false;
       });
     });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
   }
 
   @override
@@ -60,59 +58,60 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      floatingActionButton: TextButton(
-        onPressed: () {},
-        child: SizedBox(
-          width: width * 0.5 + 30,
-          height: 70,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AvatarGlow(
-                animate: isListening,
-                glowColor: secondPrimaryColor,
-                endRadius: 50,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: secondPrimaryColor,
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                      color: Colors.white,
-                      splashRadius: 30,
-                      onPressed: toggleRecording,
-                      icon:
-                          isListening ? Icon(Icons.mic) : Icon(Icons.mic_none)),
+      floatingActionButton: SizedBox(
+        width: width * 0.5 + 30,
+        height: 70,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            AvatarGlow(
+              animate: isPressed,
+              glowColor: secondPrimaryColor,
+              endRadius: 100,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: secondPrimaryColor,
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                    color: Colors.white,
+                    splashRadius: 30,
+                    onPressed: () {
+                      toggleRecording();
+                      setState(() {
+                        isPressed != isPressed;
+                      });
+                    },
+                    icon: isPressed ? Icon(Icons.mic) :
+                  Icon(Icons.mic_none)),
+              ),
+            ),
+            GestureDetector(
+              onTap: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Main())),
+              child: Container(
+                width: width * 0.31,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(width: 2, color: secondPrimaryColor)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Complete",
+                      style: TextStyle(color: secondPrimaryColor, fontSize: 15),
+                    ),
+                    Icon(
+                      Icons.done_rounded,
+                      color: secondPrimaryColor,
+                    )
+                  ],
                 ),
               ),
-              GestureDetector(
-                onTap: () => Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Main())),
-                child: Container(
-                  width: width * 0.31,
-                  height: 40,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(width: 2, color: secondPrimaryColor)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Complete",
-                        style:
-                            TextStyle(color: secondPrimaryColor, fontSize: 15),
-                      ),
-                      Icon(
-                        Icons.done_rounded,
-                        color: secondPrimaryColor,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       body: SingleChildScrollView(
@@ -121,8 +120,12 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
           child: Column(
             children: [
               slider(3, width),
-              SizedBox(
+              Container(
                 width: width * 0.8,
+                alignment:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? Alignment.centerLeft
+                        : Alignment.center,
                 child: Text(
                   "Use in-build voice assistant.",
                   style: TextStyle(
@@ -135,30 +138,59 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
               SizedBox(
                 height: 30,
               ),
-              SizedBox(
-                  width: width * 0.35,
-                  child:
-                      Lottie.asset('assets/voice.json', animate: isListening)),
+              MediaQuery.of(context).orientation == Orientation.portrait
+                  ? SizedBox(
+                      width: width * 0.42,
+                      child: Lottie.asset('assets/voice.json',
+                          animate: isListening))
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                          SizedBox(
+                              width: width * 0.3,
+                              child: Lottie.asset('assets/voice.json',
+                                  animate: isListening)),
+                          SizedBox(
+                            width: width * 0.4,
+                            child: SubstringHighlight(
+                              text: text,
+                              terms: Command.all,
+                              textStyle: TextStyle(
+                                  fontSize: 27.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "Inter"),
+                              textStyleHighlight: TextStyle(
+                                  fontSize: 27.0,
+                                  color: secondPrimaryColor,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "Inter"),
+                            ),
+                          )
+                        ]),
               SizedBox(
                 height: 15,
               ),
-              SizedBox(
-                width: width * 0.8,
-                child: SubstringHighlight(
-                  text: text,
-                  terms: Command.all,
-                  textStyle: TextStyle(
-                      fontSize: 27.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: "Inter"),
-                  textStyleHighlight: TextStyle(
-                      fontSize: 27.0,
-                      color: secondPrimaryColor,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: "Inter"),
-                ),
-              ),
+              MediaQuery.of(context).orientation == Orientation.portrait
+                  ? Container(
+                      width: width * 0.8,
+                      alignment: Alignment.center,
+                      child: SubstringHighlight(
+                        text: text,
+                        terms: Command.all,
+                        textStyle: TextStyle(
+                            fontSize: 27.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "Inter"),
+                        textStyleHighlight: TextStyle(
+                            fontSize: 27.0,
+                            color: secondPrimaryColor,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "Inter"),
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         ),
@@ -172,7 +204,7 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
         setState(() => isListening = isListening);
 
         if (!isListening) {
-          Future.delayed(Duration(seconds: 1), () {
+          Future.delayed(Duration(milliseconds: 500), () {
             Utils.scanText(text);
           });
         }

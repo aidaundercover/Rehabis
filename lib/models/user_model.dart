@@ -13,8 +13,8 @@ class User {
 
   static User fromMap(Map<String, dynamic> user) {
     return new User(
-      name: user['name'],
       iin: user['iin'],
+      name: user['name'],
       modelData: jsonDecode(user['model_data']),
     );
   }

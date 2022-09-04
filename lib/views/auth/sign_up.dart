@@ -56,7 +56,7 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
         body: Stack(
           children: [
-            FutureBuilder<void>(
+            FutureBuilder(
               future: _initializeControllerFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/views/exercises/exerciseWidgets.dart';
+import 'package:rehabis/widgets/timer_for_exercise.dart';
 
 class Smiley extends StatefulWidget {
   const Smiley({Key? key}) : super(key: key);
@@ -12,12 +13,14 @@ class Smiley extends StatefulWidget {
 
 class _SmileyState extends State<Smiley> {
   bool isStarted = false;
+  String time= '';
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     isStarted = false;
+    time= '00:00';
   }
 
   @override
@@ -47,13 +50,18 @@ class _SmileyState extends State<Smiley> {
           ),
         ),
       ),
-      appBar: exerciseAppbar('Exercise "Smiley"', context),
+      appBar: exerciseAppbar('Exercise "Smiley"', context, 'None', int.parse(time[0]), time, 'Speech', 1),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: [
-              headerExercise(width,
-                  "It's better to use a mirror or selfie camera for this exercise. It is a simple speech therapy exercise that helps improve oral motor skills.", score),
+              Row(
+                children: [
+                  headerExercise(width*0.5,
+                      "It's better to use a mirror or selfie camera for this exercise. It is a simple speech therapy exercise that helps improve oral motor skills.", score),
+                  TimerForExercise(onListening: isStarted, onChanged: (value) => time = value,)
+                ],
+              ),
               isStarted ? LottieBuilder.asset('assets/smiley.json', animate: isStarted,) : SizedBox(
                 width: width * 0.88,
                 child: Column(

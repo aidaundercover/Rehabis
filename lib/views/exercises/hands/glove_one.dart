@@ -91,7 +91,7 @@ class _GloveOneState extends State<GloveOne> {
     }
 
     return Scaffold(
-        appBar: exerciseAppbar("Fingers exercise", context),
+        // appBar: exerciseAppbar("Fingers exercise", context),
         body: Column(
           children: [
             textHeader(width,

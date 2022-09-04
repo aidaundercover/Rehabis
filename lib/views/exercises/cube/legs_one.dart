@@ -12,7 +12,8 @@ class LegsOne extends StatefulWidget {
 class _LegsOne extends State<LegsOne> {
   int handPosition = 1;
   bool isPressed = false;
-  
+  int points = 0;
+  String time = '';
 
   void updateStarCount(Object? data) {
     setState(() {
@@ -25,6 +26,8 @@ class _LegsOne extends State<LegsOne> {
       if (handPosition == 2) {
         isPressed = false;
       }
+
+      points++;
     });
   }
 
@@ -36,10 +39,9 @@ class _LegsOne extends State<LegsOne> {
     starCountRef.onValue.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       updateStarCount(data);
-
-      print(data);
     });
-
+    points = 0;
+    time = '00 : 00';
     super.initState();
   }
 
@@ -48,7 +50,7 @@ class _LegsOne extends State<LegsOne> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: exerciseAppbar("Exercise Wrists", context),
+      appBar: exerciseAppbar("Exercise Foot", context, 'Cube', points, time, 'Leg Mobility', 1),
       backgroundColor: Color.fromARGB(255, 248, 248, 248),
       body: Center(
         child: SizedBox(

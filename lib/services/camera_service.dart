@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 
-class CameraService{
+class CameraService {
   // singleton boilerplate
   static final CameraService _cameraServiceService = CameraService._internal();
 
@@ -13,15 +13,15 @@ class CameraService{
   // singleton boilerplate
   CameraService._internal();
 
- late CameraController _cameraController;
+  late CameraController _cameraController;
   CameraController get cameraController => this._cameraController;
 
- late CameraDescription _cameraDescription;
+  late CameraDescription _cameraDescription;
 
- late InputImageRotation _cameraRotation;
+  late InputImageRotation _cameraRotation;
   InputImageRotation get cameraRotation => this._cameraRotation;
 
- late String _imagePath;
+  late String _imagePath;
   String? get imagePath => this._imagePath;
 
   Future startService(CameraDescription cameraDescription) async {
@@ -32,16 +32,14 @@ class CameraService{
       enableAudio: false,
     );
     // sets the rotation of the image
-    this._cameraRotation = rotationIntToImageRotation(
-      this._cameraDescription.sensorOrientation
-    );
+    this._cameraRotation =
+        rotationIntToImageRotation(this._cameraDescription.sensorOrientation);
 
     // Next, initialize the controller. This returns a Future.
     return this._cameraController.initialize();
   }
 
   InputImageRotation rotationIntToImageRotation(int rotation) {
-
     switch (rotation) {
       case 90:
         return InputImageRotation.Rotation_90deg;
@@ -68,8 +66,6 @@ class CameraService{
       _cameraController.value.previewSize!.width,
     );
   }
-
-
 
   dispose() {
     this._cameraController.dispose();

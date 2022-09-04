@@ -47,7 +47,7 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: exerciseAppbar("Exercise Wrists", context),
+      // appBar: exerciseAppbar("Exercise Wrists", context),
       backgroundColor: Color.fromARGB(255, 248, 248, 248),
       body: Center(
         child: SizedBox(

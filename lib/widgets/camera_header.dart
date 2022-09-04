@@ -50,7 +50,7 @@ class CameraHeader extends StatelessWidget {
               },
               child: Container(
                 alignment: Alignment.center,
-                child: Text(text, style: const TextStyle()),
+                child: Text(text, style: TextStyle(color: Colors.white.withOpacity(0.7), fontFamily: "Inter", fontSize: 16, decoration: TextDecoration.underline)),
               ))
         ],
       ),

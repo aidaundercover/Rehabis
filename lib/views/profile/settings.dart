@@ -7,6 +7,8 @@ import 'package:rehabis/main.dart';
 import 'package:rehabis/views/some_page.dart';
 import 'package:intl/intl.dart';
 
+import 'settings/picking_closed_ones.dart';
+
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
 
@@ -77,8 +79,13 @@ class _SettingsState extends State<Settings> {
                 SliverAppBar(
                     title: Text(
                   "Settings",
-                  style: TextStyle(fontFamily: "Inter"),
-                ))
+                  style: TextStyle(fontFamily: "Inter", color: Colors.black54),
+                ),
+                centerTitle: true,
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: Colors.grey), onPressed: () => Navigator.of(context).pop(),)
+                )
               ],
           body: SingleChildScrollView(
             child: Column(children: [setNotifications(), addRelatives()]),
@@ -152,19 +159,22 @@ class _SettingsState extends State<Settings> {
   }
 
   Widget addRelatives() {
-    return Container(
-      decoration: BoxDecoration(),
-      child: Column(children: [
-        Row(
-          children: [
-            Text("Add relatives cell phone numbers, in case of emergency"),
-            Tooltip(
-              message: "You can use voice assistant for calling them",
-              child: Icon(Icons.whatshot_outlined, color: secondaryColor),
-            )
-          ],
-        ),
-      ]),
+    return GestureDetector(
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PickingClosedOnes())),
+      child: Container(
+        decoration: BoxDecoration(),
+        child: Column(children: [
+          Row(
+            children: [
+              Text("Add relatives cell phone numbers, in case of emergency"),
+              Tooltip(
+                message: "You can use voice assistant for calling them",
+                child: Icon(Icons.whatshot_outlined, color: secondaryColor),
+              )
+            ],
+          ),
+        ]),
+      ),
     );
   }
 }

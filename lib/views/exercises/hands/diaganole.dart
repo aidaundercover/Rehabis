@@ -47,7 +47,7 @@ class _DiagonaleHands extends State<DiagonaleHands> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: exerciseAppbar("Flexing Elbow", context),
+      // appBar: exerciseAppbar("Flexing Elbow", context),
       backgroundColor: Color.fromARGB(255, 248, 248, 248),
       body: Center(
         child: SizedBox(

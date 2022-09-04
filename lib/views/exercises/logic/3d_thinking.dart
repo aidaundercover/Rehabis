@@ -98,7 +98,7 @@ class _SpaceThinkingState extends State<SpaceThinking> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-        appBar: exerciseAppbar("3D Thinking", context),
+        // appBar: exerciseAppbar("3D Thinking", context),
         backgroundColor: backgroundColor,
         body: SingleChildScrollView(
           child:
