@@ -119,7 +119,7 @@ class _ProfileMainState extends State<ProfileMain> {
                                     "assets/robot_neutral.png",
                                     height: width * 0.18,
                                   )
-                                : Image.file(File(avatarPath)),
+                                : Image.file(File(avatarPath), fit: BoxFit.cover),
                           ),
                         )
                       ],

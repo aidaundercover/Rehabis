@@ -142,7 +142,10 @@ class _SettingsState extends State<Settings> {
           TextButton(onPressed: () {
               DatabaseHelper _dataBaseHelper = DatabaseHelper.instance;
               _dataBaseHelper.deleteAll();
-          }, child: Text('Clear Databse',), )
+          }, child: Text('Clear Databse',), ),
+          TextButton(onPressed: () {
+             ExerciseApi.uploadExercise('equipment', 33, "time", "t", "skill", 2);
+          }, child: Text('Uplaod exercise test',), )
         ],
       ),
     );

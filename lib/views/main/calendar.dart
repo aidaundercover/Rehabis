@@ -24,10 +24,15 @@ class _CalendarState extends State<Calendar> {
   @override
   void initState() {
     super.initState();
+    _getEventsfromDay,
+
   }
 
   List<Event> _getEventsfromDay(DateTime date) {
     return selectedEvents[date] ?? [];
+
+    DatabaseReference ref =
+        FirebaseDatabase.instance.ref().child("Users/$iinGlobal/Events/");
   }
 
   

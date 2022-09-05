@@ -60,11 +60,12 @@ class Utils {
       try {
         DatabaseReference ref = FirebaseDatabase.instance.ref("LR");
 
-        ref.set(6);
+        ref.set(5);
 
       } catch (e) {}
     } else if (text.contains(Command.browser1)) {
-      final url = _getTextAfterCommand(text: text, command: Command.browser1);
+      final url = _getTextAfterCommand(text: text, 
+      command: Command.browser1);
 
       openLink(url: url);
     } else if (text.contains(Command.browser2)) {

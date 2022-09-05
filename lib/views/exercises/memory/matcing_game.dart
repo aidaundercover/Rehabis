@@ -14,7 +14,6 @@ class MatchingGame extends StatefulWidget {
   State<MatchingGame> createState() => _MatchingGameState();
 }
 
-bool isStarted = false;
 String minutes = '00';
 String seconds = '00';
 Duration duration = Duration();
@@ -30,9 +29,8 @@ class _MatchingGameState extends State<MatchingGame> {
     // TODO: implement initState
     super.initState();
     points = 0;
-    isStarted = false;
 
-    // reStart();
+    reStart();
   }
 
   void addTime() {
@@ -79,26 +77,8 @@ class _MatchingGameState extends State<MatchingGame> {
 
     return Scaffold(
       appBar:
-          exerciseAppbar(title, context, 'None', points, "time", 'Memory', 3),
-      floatingActionButton: !isStarted
-          ? TextButton(
-              onPressed: () {
-                reStart();
-              },
-              child: Container(
-                  width: width * 0.29,
-                  height: 50,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(17),
-                      boxShadow: [const BoxShadow()]),
-                  child: const Text('Start!',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Inter",
-                          fontSize: 18))))
-          : Container(),
+          exerciseAppbar(title, context, 741022'None', points, "time", 'Memory', 3),
+
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -136,7 +116,24 @@ class _MatchingGameState extends State<MatchingGame> {
               ),
               // SizedBox(child: GridView.count(crossAxisCount: 4)),
 
-              Container(
+              !isStarted
+          ? TextButton(
+              onPressed: () {
+                reStart();
+              },
+              child: Container(
+                  width: width * 0.33,
+                  height: 70,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(23),
+                      boxShadow: [const BoxShadow()]),
+                  child: const Text('Start!',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Inter",
+                          fontSize: 24)))) : Container(
                 height: height * 0.8,
                 width: width * 0.95,
                 padding:

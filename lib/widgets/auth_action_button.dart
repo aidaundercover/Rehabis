@@ -54,8 +54,7 @@ Future _signUp(context) async {
 
   await databaseHelper.insert(userToSave);
   _faceNetService.setPredictedData(null);
-  _nameController.text = "";
-  _iinController.text = "";
+  
 
   // Auth.signUp(context, _nameController, _iinController);
 }

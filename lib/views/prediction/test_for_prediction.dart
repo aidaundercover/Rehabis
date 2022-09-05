@@ -152,12 +152,7 @@ class _TestForPredictionState extends State<TestForPrediction> {
     controller = FixedExtentScrollController(initialItem: selectedAge);
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    controller.dispose();
-  }
+ 
 
   @override
   Widget build(BuildContext context) {

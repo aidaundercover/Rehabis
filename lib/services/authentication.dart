@@ -45,6 +45,8 @@ class Auth {
     });
 
     Fluttertoast.showToast(msg: "User registered successfully");
+    name.text = "";
+    iin.text = "";
 
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const SelectWeakness()));

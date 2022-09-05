@@ -197,6 +197,7 @@ class _HomePageState extends State<HomePage> {
                   .limitToLast(3)
                   .onValue,
               builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
+                if(snapshot.connection == ConnectionState.active){
                 if (snapshot.hasData) {
                   var trainings = Map<String, dynamic>.from(
                       snapshot.data!.snapshot.value as Map<dynamic, dynamic>);
@@ -275,7 +276,30 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                   );
-                }
+                }} else return SizedBox(
+                    height: 120,
+                    child: ListView.builder(
+                      itemCount: lastExercises.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (BuildContext context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: exerciseWidgetMain(
+                              lastExercises[index].title,
+                              lastExercises[index].level,
+                              lastExercises[index].skill,
+                              lastExercises[index].minutes,
+                              lastExercises[index].page,
+                              lastExercises[index].instruction,
+                              lastExercises[index].img,
+                              width,
+                              height,
+                              context),
+                        );
+                      },
+                    ),
+                  );
               }),
         ]),
       );

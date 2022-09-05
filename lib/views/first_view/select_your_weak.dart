@@ -112,7 +112,14 @@ class _SelectWeaknessState extends State<SelectWeakness> {
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         itemBuilder: (BuildContext context, int index) =>
-                            Container(
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                      _selected[index]["selected"] =
+                                          !_selected[index]["selected"];
+                                    });
+                              },
+                              child : Container(
                               height: 70,
                               margin: EdgeInsets.only(bottom: 10),
                               decoration: BoxDecoration(
@@ -132,20 +139,13 @@ class _SelectWeaknessState extends State<SelectWeakness> {
                                   padding: EdgeInsets.only(left: width * 0.03),
                                   child: Text(_selected[index]["title"]),
                                 ),
-                                trailing: IconButton(
-                                  icon: _selected[index]["selected"]
+                                trailing: _selected[index]["selected"]
                                       ? Icon(
                                           Icons.check_circle,
                                           color: primaryColor,
                                         )
                                       : Icon(Icons.circle_outlined),
-                                  onPressed: () {
-                                    setState(() {
-                                      _selected[index]["selected"] =
-                                          !_selected[index]["selected"];
-                                    });
-                                  },
-                                ),
+                              
                               ),
                             ))),
                 SizedBox(
