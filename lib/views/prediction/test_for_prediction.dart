@@ -22,7 +22,7 @@ late FixedExtentScrollController controller;
 int selectedAge = bornDateGlobal.isEmpty
     ? 50
     : DateTime.now().year -
-        int.parse(bornDateGlobal.substring(bornDateGlobal.length - 4));
+        int.parse(bornDateGlobal[0]+bornDateGlobal[1])>25 ? int.parse("19" +bornDateGlobal[0]+bornDateGlobal[1]) : int.parse("20" +bornDateGlobal[0]+bornDateGlobal[1]);
 
 //buttons//
 bool isMPressed = false;
@@ -151,8 +151,6 @@ class _TestForPredictionState extends State<TestForPrediction> {
     super.initState();
     controller = FixedExtentScrollController(initialItem: selectedAge);
   }
-
- 
 
   @override
   Widget build(BuildContext context) {

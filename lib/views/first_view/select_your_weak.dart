@@ -148,14 +148,14 @@ class _SelectWeaknessState extends State<SelectWeakness> {
                               
                               ),
                             ))),
-                SizedBox(
-                  height: 50,
-                )
-              ]),
-            ),
+                // SizedBox(
+                //   height: 50,
+                // )
+              ),
+           ] ),
           ),
         
       ),
-    );
+    ));
   }
 }

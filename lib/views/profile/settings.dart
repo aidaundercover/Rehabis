@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rehabis/database/database.dart';
+import 'package:rehabis/services/exercise_api.dart';
 import 'package:rehabis/services/notification_api.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/main.dart';
@@ -144,7 +145,7 @@ class _SettingsState extends State<Settings> {
               _dataBaseHelper.deleteAll();
           }, child: Text('Clear Databse',), ),
           TextButton(onPressed: () {
-             ExerciseApi.uploadExercise('equipment', 33, "time", "t", "skill", 2);
+              // ExerciseApi.uploadExercise('equipment', 33, "time", "t", "skill", 2);
           }, child: Text('Uplaod exercise test',), )
         ],
       ),

@@ -39,13 +39,21 @@ class _SignUpState extends State<SignUp> {
   final CameraService _cameraService = CameraService();
   final FaceNetService _faceNetService = FaceNetService.faceNetService;
 
+  _onBackPressed() {
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
+  }
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     /// starts the camera & start framing faces
-    _start();
+    if(mounted) {
+      _start();}
   }
 
   @override
@@ -154,7 +162,7 @@ class _SignUpState extends State<SignUp> {
         floatingActionButton: !_bottomSheetVisible
             ? AuthActionButton(
                 _initializeControllerFuture,
-                onPressed: onShot,
+                onPressed: mounted? onShot : () {},
                 isLogin: false,
                 reload: _reload,
               )
@@ -174,9 +182,9 @@ class _SignUpState extends State<SignUp> {
         _cameraService.startService(widget.cameraDescription);
     await _initializeControllerFuture;
 
-    setState(() {
+    mounted ?setState(() {
       cameraInitializated = true;
-    });
+    }) : () {};
 
     _frameFaces();
   }
@@ -196,9 +204,9 @@ class _SignUpState extends State<SignUp> {
               MediaQuery.of(context).orientation == Orientation.portrait);
 
           if (faces.isNotEmpty) {
-            setState(() {
+            mounted ? setState(() {
               faceDetected = faces[0];
-            });
+            }) : () {};
 
             if (_saving) {
               _faceNetService.setCurrentPrediction(image, faceDetected!);
@@ -208,9 +216,9 @@ class _SignUpState extends State<SignUp> {
               });
             }
           } else {
-            setState(() {
+            mounted ? setState(() {
               faceDetected = null;
-            });
+            }) : () {};
           }
 
           _detectingFaces = false;
@@ -222,16 +230,14 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
-  _onBackPressed() {
-    Navigator.of(context).pop();
-  }
+
 
   _reload() {
-    setState(() {
+    mounted ? setState(() {
       _bottomSheetVisible = false;
       cameraInitializated = false;
       pictureTaked = false;
-    });
+    }) : () {};
     _start();
   }
 
@@ -256,10 +262,10 @@ class _SignUpState extends State<SignUp> {
       XFile file = await _cameraService.takePicture();
       imagePath = file.path;
 
-      setState(() {
+      mounted ? setState(() {
         _bottomSheetVisible = true;
         pictureTaked = true;
-      });
+      }) : () {};
 
       return true;
     }

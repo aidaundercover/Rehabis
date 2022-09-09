@@ -129,7 +129,10 @@ class _HomePageState extends State<HomePage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          width:  MediaQuery.of(context).orientation == Orientation.portrait ? width * 0.7 : width*0.45, 
+                          width: MediaQuery.of(context).orientation ==
+                                  Orientation.portrait
+                              ? width * 0.7
+                              : width * 0.45,
                           height: 50,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -197,86 +200,88 @@ class _HomePageState extends State<HomePage> {
                   .limitToLast(3)
                   .onValue,
               builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
-                if(snapshot.connection == ConnectionState.active){
-                if (snapshot.hasData) {
-                  var trainings = Map<String, dynamic>.from(
-                      snapshot.data!.snapshot.value as Map<dynamic, dynamic>);
+                if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.hasData) {
+                    var trainings = Map<String, dynamic>.from(
+                        snapshot.data!.snapshot.value as Map<dynamic, dynamic>);
 
-                  // return SizedBox(
-                  //   height: 120,
-                  //   child: ListView.builder(
-                  //     itemCount: lastExercises.length,
-                  //     shrinkWrap: true,
-                  //     scrollDirection: Axis.horizontal,
-                  //     itemBuilder: (BuildContext context, index) {
-                  //       return Padding(
-                  //         padding: const EdgeInsets.only(left: 10.0),
-                  //         child: exerciseWidgetMain(
-                  //             trainings[index]['type'],
-                  //             trainings[index]['level'],
-                  //             trainings[index].skill,
-                  //             trainings[index].minutes,
-                  //             trainings[index].page,
-                  //             trainings[index].instruction,
-                  //             trainings[index].img,
-                  //             width,
-                  //             height,
-                  //             context),
-                  //       );
-                  //     },
-                  //   ),
-                  // );
+                    // return SizedBox(
+                    //   height: 120,
+                    //   child: ListView.builder(
+                    //     itemCount: lastExercises.length,
+                    //     shrinkWrap: true,
+                    //     scrollDirection: Axis.horizontal,
+                    //     itemBuilder: (BuildContext context, index) {
+                    //       return Padding(
+                    //         padding: const EdgeInsets.only(left: 10.0),
+                    //         child: exerciseWidgetMain(
+                    //             trainings[index]['type'],
+                    //             trainings[index]['level'],
+                    //             trainings[index].skill,
+                    //             trainings[index].minutes,
+                    //             trainings[index].page,
+                    //             trainings[index].instruction,
+                    //             trainings[index].img,
+                    //             width,
+                    //             height,
+                    //             context),
+                    //       );
+                    //     },
+                    //   ),
+                    // );
 
+                    return SizedBox(
+                      height: 120,
+                      child: ListView.builder(
+                        itemCount: lastExercises.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: exerciseWidgetMain(
+                                lastExercises[index].title,
+                                lastExercises[index].level,
+                                lastExercises[index].skill,
+                                lastExercises[index].minutes,
+                                lastExercises[index].page,
+                                lastExercises[index].instruction,
+                                lastExercises[index].img,
+                                width,
+                                height,
+                                context),
+                          );
+                        },
+                      ),
+                    );
+                  } else {
+                    return SizedBox(
+                      height: 120,
+                      child: ListView.builder(
+                        itemCount: lastExercises.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: exerciseWidgetMain(
+                                lastExercises[index].title,
+                                lastExercises[index].level,
+                                lastExercises[index].skill,
+                                lastExercises[index].minutes,
+                                lastExercises[index].page,
+                                lastExercises[index].instruction,
+                                lastExercises[index].img,
+                                width,
+                                height,
+                                context),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                } else
                   return SizedBox(
-                    height: 120,
-                    child: ListView.builder(
-                      itemCount: lastExercises.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: exerciseWidgetMain(
-                              lastExercises[index].title,
-                              lastExercises[index].level,
-                              lastExercises[index].skill,
-                              lastExercises[index].minutes,
-                              lastExercises[index].page,
-                              lastExercises[index].instruction,
-                              lastExercises[index].img,
-                              width,
-                              height,
-                              context),
-                        );
-                      },
-                    ),
-                  );
-                } else {
-                  return SizedBox(
-                    height: 120,
-                    child: ListView.builder(
-                      itemCount: lastExercises.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: exerciseWidgetMain(
-                              lastExercises[index].title,
-                              lastExercises[index].level,
-                              lastExercises[index].skill,
-                              lastExercises[index].minutes,
-                              lastExercises[index].page,
-                              lastExercises[index].instruction,
-                              lastExercises[index].img,
-                              width,
-                              height,
-                              context),
-                        );
-                      },
-                    ),
-                  );
-                }} else return SizedBox(
                     height: 120,
                     child: ListView.builder(
                       itemCount: lastExercises.length,
@@ -401,15 +406,23 @@ class _HomePageState extends State<HomePage> {
           ]));
     }
 
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(248, 235, 255, 1.0),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [appBar(), exercises(), recomendations()],
-        ),
-      ),
-    );
+    return StreamBuilder(
+        stream: FirebaseDatabase.instance.ref('User/$iinGlobal/Name').onValue,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Scaffold(
+              backgroundColor: const Color.fromRGBO(248, 235, 255, 1.0),
+              body: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [appBar(), exercises(), recomendations()],
+                ),
+              ),
+            );
+          } else {
+            return Center(child: CircularProgressIndicator(color: primaryColor, ));
+          }
+        });
   }
 }
 

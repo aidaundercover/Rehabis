@@ -25,7 +25,7 @@ class AppTextField extends StatelessWidget {
       
       validator: (value) {
         if (labelText == 'IIN') {
-          int month = int.parse(value[2] + value[3]);
+          int month = int.parse(value![2] + value[3]);
           int day = int.parse(value[4] + value[5]);
 
           if ( value.length == 12) {

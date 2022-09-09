@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rehabis/database/database.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/models/user_model.dart';
@@ -54,7 +55,6 @@ Future _signUp(context) async {
 
   await databaseHelper.insert(userToSave);
   _faceNetService.setPredictedData(null);
-  
 
   // Auth.signUp(context, _nameController, _iinController);
 }
@@ -62,11 +62,14 @@ Future _signUp(context) async {
 /// resets the face stored in the face net sevice
 
 Future _signIn(context) async {
+  try {
+    var user = await _predictUser();
 
-  var user = await _predictUser();
-
-  Auth.signIn(context, user?.iin);
-  avatarPath = _cameraService.imagePath!;
+    Auth.signIn(context, user?.iin);
+    avatarPath = _cameraService.imagePath!;
+  } catch (e) {
+    Fluttertoast.showToast(msg: "No user found");
+  }
 }
 
 Future<User?> _predictUser() async {
@@ -75,66 +78,78 @@ Future<User?> _predictUser() async {
 }
 
 class _AuthActionButtonState extends State<AuthActionButton> {
+
+  
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    return InkWell(
-      onTap: () async {
-        try {
-          // Ensure that the camera is initialized.
-          await widget._initializeControllerFuture;
-          // onShot event (takes the image and predict output)
-          bool faceDetected = await widget.onPressed();
-
-          if (faceDetected) {
-            if (widget.isLogin) {
-              var user = await _predictUser();
-              print("NullIssue======${user?.name}");
-              if (user != null) {
-                predictedUser = user;
-              } else {
-                predictedUser = null;
-              }
-            }
-
-            PersistentBottomSheetController bottomSheetController =
-                Scaffold.of(context).showBottomSheet(
-                    (context) => signSheet(context, predictedUser, width));
-            bottomSheetController.closed.whenComplete(() => widget.reload());
-          }
-        } catch (e) {
-          // If an error occurs, log the error to the console.
-          print("dataFromdatabaseAuth1==$e");
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: primaryColor.withOpacity(0.3),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: primaryColor.withOpacity(0.1),
-              blurRadius: 1,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-        width: MediaQuery.of(context).size.width * 0.7,
-        height: 60,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text(
-              'CAPTURE',
-              style: TextStyle(color: Colors.white),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Icon(Icons.camera_alt, color: Colors.white)
-          ],
+    return SizedBox(
+      width: width*0.8,
+      height: 100,
+      child: Center(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: InkWell(
+              onTap: () async {
+                try {
+                  // Ensure that the camera is initialized.
+                  await widget._initializeControllerFuture;
+                  // onShot event (takes the image and predict output)
+                  bool faceDetected = await widget.onPressed();
+          
+                  if (faceDetected) {
+                    if (widget.isLogin) {
+                      var user = await _predictUser();
+                      print("NullIssue======${user?.name}");
+                      if (user != null) {
+                        predictedUser = user;
+                      } else {
+                        predictedUser = null;
+                      }
+                    }
+          
+                    PersistentBottomSheetController bottomSheetController =
+                        Scaffold.of(context).showBottomSheet(
+                            (context) => signSheet(context, predictedUser, width));
+                    bottomSheetController.closed.whenComplete(() => widget.reload());
+                  }
+                } catch (e) {
+                  // If an error occurs, log the error to the console.
+                  print("dataFromdatabaseAuth1==$e");
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: primaryColor.withOpacity(0.3),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: primaryColor.withOpacity(0.1),
+                      blurRadius: 1,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                width: MediaQuery.of(context).size.width * 0.7,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'CAPTURE',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.camera_alt, color: Colors.white)
+                  ],
+                ),
+              ),
+            
+          ),
         ),
       ),
     );

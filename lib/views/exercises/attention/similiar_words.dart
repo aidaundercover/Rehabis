@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:rehabis/database/getData.dart';
 import 'package:rehabis/globalVars.dart';
+import 'package:rehabis/services/exercise_api.dart';
 import 'package:rehabis/widgets/audio_player.dart';
 import 'package:rehabis/views/exercises/exerciseWidgets.dart';
 
@@ -35,7 +37,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
   }
 
   void addTime() {
-    final addSeconds = 1;
+    const addSeconds = 1;
 
     setState(() {
       final seconds = duration.inSeconds + addSeconds;
@@ -51,7 +53,9 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
     timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
   }
 
-  void stopTimer(int errors) {
+  void stopTimer(int errors, double width) {
+
+
     setState(() {
       timer?.cancel();
       isRunning = false;
@@ -59,6 +63,9 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
       String twoDigits(int n) => n.toString().padLeft(2, '0');
       final minutes = twoDigits(duration.inMinutes.remainder(60));
       final seconds = twoDigits(duration.inSeconds.remainder(60));
+
+      uploadExercise('None', points, '$minutes : $seconds',
+          'Similiar sounds', "Attention", 3);
 
       showDialog(
           context: (context),
@@ -68,6 +75,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                   borderRadius: BorderRadius.circular(20)),
               child: Container(
                 height: 210,
+                width : MediaQuery.of(context).orientation == Orientation.portrait ? width*0.8 : width*0.6,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(width: 4, color: Colors.purple)),
@@ -76,17 +84,17 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                        child: Text("Отличная работа!",
+                        child: Text("Well done!",
                             style: TextStyle(
                                 color: deepPurple,
-                                fontSize: 18,
+                                fontSize: 28,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: "Ruberoid"))),
+                                fontFamily: "Inter"))),
                     Padding(
                       padding: const EdgeInsets.only(left: 13.0),
                       child: Row(
                         children: [
-                          Text("Время выполнения:",
+                          Text("Execution time:",
                               style: TextStyle(
                                 color: deepPurple,
                                 fontSize: 15,
@@ -107,7 +115,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                       padding: const EdgeInsets.only(left: 13.0),
                       child: Row(
                         children: [
-                          Text("Количество ошибок:",
+                          Text("Number of errors:",
                               style: TextStyle(
                                 color: deepPurple,
                                 fontSize: 15,
@@ -131,13 +139,18 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                           child: Container(
                             width: 100,
                             height: 35,
-                            child: Text("Начать сначала",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white)),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(7),
                                 color: Colors.purple.shade200),
+                            child: Row(
+                              children: [
+                                Text("Restart",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white)),
+                                Icon(Icons.replay, color : Colors.white)
+                              ],
+                            ),
                           ),
                           onPressed: () {
                             Navigator.of(context).pop();
@@ -150,8 +163,13 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                           child: Container(
                             width: 100,
                             height: 35,
-                            child: const Text("Завершить",
-                                style: TextStyle(color: Colors.white)),
+                            child: Row(
+                              children: [
+                                const Text("Exit",
+                                    style: TextStyle(color: Colors.white)),
+                                Icon(Icons.exit_to_app, color : Colors.white)
+                              ],
+                            ),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(7),
@@ -196,48 +214,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
     pressed = 0;
   }
 
-  List _questionsData = [
-    {
-      "audioFile": "cry.mp3",
-      "options": [
-        {"img": "assets/executioner.jpeg", "title": "Палач"},
-        {"img": "assets/cry.png", "title": "Плачь"},
-        {"img": "assets/cloak.jpeg", "title": "Плащ"},
-        {"img": "assets/rook.jpeg", "title": "Грач"},
-      ],
-      "right": 1
-    },
-    {
-      "audioFile": "pay.mp3",
-      "options": [
-        {"img": "assets/prophet.jpeg", "title": "Отсрочка"},
-        {"img": "assets/shirt.png", "title": "Сорочка"},
-        {"img": "assets/hillock.jpeg", "title": "Кочка"},
-        {"img": "assets/payment.png", "title": "Рассрочка"},
-      ],
-      "right": 3
-    },
-    {
-      "audioFile": "ghost.mp3",
-      "options": [
-        {"img": "assets/ghost.png", "title": "Привидение"},
-        {"img": "assets/dream.jpeg", "title": "Приведение"},
-        {"img": "assets/behaviour.png", "title": "Поведение"},
-        {"img": "assets/history.jpeg", "title": "Краеведение"},
-      ],
-      "right": 1
-    },
-    {
-      "audioFile": "flaw.mp3",
-      "options": [
-        {"img": "assets/prophet.jpeg", "title": "Пророк"},
-        {"img": "assets/flaw.png", "title": "Порок"},
-        {"img": "assets/flow.png", "title": "Поток"},
-        {"img": "assets/pie.png", "title": "Пирог"},
-      ],
-      "right": 1
-    },
-  ];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -245,154 +222,51 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
     var height = MediaQuery.of(context).size.height;
 
     Widget appBar() {
-      return Container(
-          width: width,
-          decoration: BoxDecoration(color: deepPurple, boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                offset: const Offset(0, 3),
-                blurRadius: 5)
-          ]),
-          child: Container(
-            width: width * 0.92,
-            height: height * 0.25,
-            alignment: Alignment.center,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 7,
-                  ),
-                  Row(
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            color: Colors.white,
-                          )),
-                      Text(
-                        "Назад",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                        ),
-                      )
-                    ],
-                  ),
-                  Text("Похожие звуки",
-                      style: TextStyle(
-                          fontFamily: "Ruberoid",
-                          fontSize: 25,
-                          color: Colors.white)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.timelapse,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Text("3 минуты",
-                                  style: TextStyle(
-                                      fontFamily: "Roboto",
-                                      fontSize: 18,
-                                      color: Colors.white)),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.settings_accessibility_outlined,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              const Text("1 уровень",
-                                  style: TextStyle(
-                                      fontFamily: "Roboto",
-                                      fontSize: 18,
-                                      color: Colors.white)),
-                            ],
-                          ),
-                        ],
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            startTimer();
-                          },
-                          child: Container(
-                            width: width * 0.25,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: isRunning ? deepPurple : primaryColor,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(isRunning ? "Вперед!" : "Начать!",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "Ruberoid",
-                                    fontSize: 19,
-                                    shadows: [
-                                      isRunning
-                                          ? Shadow(
-                                              offset: Offset(3, 3),
-                                              color:
-                                                  Colors.white.withOpacity(0.3),
-                                              blurRadius: 5)
-                                          : Shadow(
-                                              offset: Offset(3, 3),
-                                              color: Colors.transparent,
-                                              blurRadius: 5)
-                                    ])),
-                          ))
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ));
-    }
-
-    Widget timerWidget() {
-      String twoDigits(int n) => n.toString().padLeft(2, '0');
-      final minutes = twoDigits(duration.inMinutes.remainder(60));
-      final seconds = twoDigits(duration.inSeconds.remainder(60));
-
-      return SizedBox(
-        width: width * 0.94,
-        child: Row(
+      return Padding(
+        padding: const EdgeInsets.only(left: 20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: width * 0.55,
-              child: Text(
-                "Определите что было сказано в тексте",
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                    color: Color.fromARGB(255, 82, 82, 82), fontSize: 17),
-              ),
+              height: 7,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                buildTimeCard(minutes.toString(), "Минуты"),
-                const SizedBox(
-                  width: 7,
-                ),
-                buildTimeCard(seconds.toString(), "Секунды")
+                textHeader(width * 0.7,
+                    'The exercise helps with an attention and a logic, in order to execue an exercise one should be able to identify the exceeding element of a group'),
+      
+                TextButton(
+                    onPressed: () {
+                      startTimer();
+                    },
+                    child: Container(
+                      width: width * 0.25,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: isRunning ? deepPurple : primaryColor,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(isRunning ? "GO!" : "Start!",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Ruberoid",
+                              fontSize: 19,
+                              shadows: [
+                                isRunning
+                                    ? Shadow(
+                                        offset: Offset(3, 3),
+                                        color:
+                                            Colors.white.withOpacity(0.3),
+                                        blurRadius: 5)
+                                    : const Shadow(
+                                        offset: Offset(3, 3),
+                                        color: Colors.transparent,
+                                        blurRadius: 5)
+                              ])),
+                    ))
               ],
             ),
           ],
@@ -400,26 +274,33 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
       );
     }
 
+
     Widget main() {
       return SizedBox(
-          width: width * 0.95,
+          width:  MediaQuery.of(context).orientation == Orientation.landscape ? width * 0.5 : width*0.5,
+          height: MediaQuery.of(context).orientation == Orientation.landscape
+              ? height * 0.75
+              : height * 0.5,
           child: CarouselSlider(
             options: CarouselOptions(
-                height: height * 0.55,
+              height:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? height * 0.45
+                        : height * 0.75,
                 clipBehavior: Clip.antiAlias,
                 enlargeCenterPage: true,
                 enableInfiniteScroll: true,
                 autoPlay: false),
             items: List.generate(
-                _questionsData.length,
+                similiarWordsData.length,
                 (index) => Container(
                     width: width * 0.8,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Color.fromARGB(255, 248, 248, 248),
+                        color: const Color.fromARGB(255, 248, 248, 248),
                         boxShadow: [
                           BoxShadow(
-                              offset: Offset(3, 4),
+                              offset: const Offset(3, 4),
                               color: Colors.black.withOpacity(0.17),
                               blurRadius: 5),
                         ]),
@@ -427,7 +308,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         AudioPlay(
-                            audioAsset: _questionsData[index]['audioFile']),
+                            audioAsset: similiarWordsData[index]['audioFile']),
                         SizedBox(
                           child: GridView.builder(
                               shrinkWrap: true,
@@ -454,7 +335,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                                                   !isSelected[index][indexBtn];
                                               if (isSelected[index][indexBtn]) {
                                                 if (indexBtn ==
-                                                    _questionsData[index]
+                                                    similiarWordsData[index]
                                                         ["right"]) {
                                                   getPoint();
                                                 } 
@@ -483,7 +364,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                                               
                                       child: Center(
                                         child: Text(
-                                            _questionsData[index]['options'][i]
+                                            similiarWordsData[index]['options'][i]
                                                 ["title"],
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w500,
@@ -500,29 +381,36 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
           ));
     }
 
+
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+
     return Scaffold(
+      persistentFooterButtons: [
+        Center(
+          child: TextButton(
+            onPressed: () {
+              if (isRunning) stopTimer(4 - points, width);
+            },
+            child: const Text(
+              "STOP",
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+          ),
+        )
+      ],
+      appBar: exerciseAppbar('Similiar Words', context, 'None', points,
+          '$minutes : $seconds', "Attention", 3),
       body: SingleChildScrollView(
         child: Column(
           children: [
             appBar(),
-            SizedBox(
-              height: 18,
-            ),
-            timerWidget(),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             main(),
-            TextButton(
-              onPressed: () {
-                if (isRunning) stopTimer(4-points);
-              },
-              child: Text(
-                "STOP",
-                style:
-                    TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-              ),
-            )
+          
           ],
         ),
       ),

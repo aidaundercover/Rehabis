@@ -57,15 +57,22 @@ class _PickingClosedOnesState extends State<PickingClosedOnes> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             GestureDetector(
-              onTap: () {
-              },
-              child: Container(child: Text('$person', style: TextStyle(),))),
+                onTap: () {},
+                child: Container(
+                    child: Text(
+                  '$person',
+                  style: TextStyle(),
+                ))),
             GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
                       builder: (conext) => ContactsList(contacts: contacts!)));
-              },
-              child: Container(child: Text('$number', style: TextStyle(),)))
+                },
+                child: Container(
+                    child: Text(
+                  '$number',
+                  style: TextStyle(),
+                )))
           ],
         )
       ]),
@@ -86,15 +93,15 @@ class _PickingClosedOnesState extends State<PickingClosedOnes> {
           elevation: 0.0,
         ),
         floatingActionButton: IconButton(
-          onPressed: () {
-            
-          },
+          onPressed: () {},
           icon: Icon(Icons.add, color: Colors.white),
         ),
         body: relatives.isNotEmpty
             ? Column(
                 children: List.generate(
-                    relatives.length, (index) => contactCard(width, index+1, relatives[index].number, relatives[index].relation)))
+                    relatives.length,
+                    (index) => contactCard(width, index + 1,
+                        relatives[index].number, relatives[index].relation)))
             : Center(
                 child: SizedBox(
                   child: Text("There is no emergency contacts so far.",
@@ -122,7 +129,7 @@ class _ContactsListState extends State<ContactsList> {
     return ListView.builder(
       itemCount: widget.contacts.length,
       itemBuilder: (BuildContext context, int index) {
-        String num = (widget.contacts![index].phones.isNotEmpty)
+        String num = (widget.contacts[index].phones.isNotEmpty)
             ? (widget.contacts[index].phones.first.number)
             : "--";
         return ListTile(

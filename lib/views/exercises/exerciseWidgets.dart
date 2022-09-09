@@ -7,7 +7,6 @@ import 'package:rehabis/views/exercises/cube/legs_one.dart';
 import 'package:rehabis/views/exercises/hands/diaganole.dart';
 import 'package:rehabis/views/exercises/hands/glove_one.dart';
 import 'package:rehabis/views/exercises/hands/hands.dart';
-import 'package:rehabis/views/exercises/exercises_main.dart';
 import 'package:rehabis/views/exercises/logic/3d_thinking.dart';
 import 'package:rehabis/views/exercises/logic/ladybag.dart';
 import 'package:rehabis/views/exercises/logic/patterns.dart';
@@ -15,7 +14,6 @@ import 'package:rehabis/views/exercises/logic/sentence_based.dart';
 import 'package:rehabis/views/exercises/logic/sorting.dart';
 import 'package:rehabis/views/exercises/logic/whats_more.dart';
 import 'package:rehabis/views/exercises/memory/matcing_game.dart';
-import 'package:rehabis/views/exercises/hands/findiandh.dart';
 import 'package:rehabis/views/exercises/speech/breathe.dart';
 import 'package:rehabis/views/exercises/speech/smile.dart';
 import 'package:rehabis/views/exercises/speech/tongue_one.dart';
@@ -93,7 +91,7 @@ List threeArm = [
   {
     'title': "Flexing elbow",
     "minutes": 4,
-    "page": const DiagonaleHands(),
+    "page": DiagonaleHands(),
     "skill": "Arm mobility"
   },
 ];
@@ -168,10 +166,10 @@ List threeCore = [];
 
 List oneAttention = [
   {
-    'title': "Finger Dancing",
+    'title': "Find a third a wheel",
     "skill": "Attention",
     "minutes": 2,
-    "page": ExerciseThree(),
+    "page": const ExerciseThree(),
   },
 ];
 
@@ -572,7 +570,7 @@ PreferredSizeWidget exerciseAppbar(
   return AppBar(
     title: Text(
       title,
-      style: TextStyle(
+      style: const TextStyle(
           color: Colors.grey, fontFamily: "Inter", fontWeight: FontWeight.bold),
     ),
     centerTitle: true,
@@ -580,10 +578,10 @@ PreferredSizeWidget exerciseAppbar(
     elevation: 0.0,
     leading: IconButton(
         onPressed: () {
-          ExerciseApi.uploadExercise(equipment, count, time, title, skill, level);
+          uploadExercise(equipment, count, time, title, skill, level);
           Navigator.of(context).pop();
         },
-        icon: Icon(
+        icon: const Icon(
           Icons.arrow_back_ios,
           color: Colors.grey,
         )),

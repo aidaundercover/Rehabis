@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
 
   void initState() {
     super.initState();
-    _startup();
+    startup();
   }
 
   @override
@@ -56,13 +56,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return !loading
-        ? MaterialApp(home: isLoggedIn ? Main() : FirstView())
+        ? MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: isLoggedIn ? Main() : FirstView())
         : CircularProgressIndicator(
             color: secondPrimaryColor,
           );
   }
 
-  void _startup() async {
+  void startup() async {
     _setLoading(true);
 
     List<CameraDescription> cameras = await availableCameras();

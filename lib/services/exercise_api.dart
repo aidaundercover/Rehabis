@@ -1,11 +1,17 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:rehabis/globalVars.dart';
+import 'package:intl/intl.dart';
 
-class ExerciseApi {
-  static void uploadExercise(String equipment, int count, String time,
-      String type, String skill, int level) async {
-    DatabaseReference ref = FirebaseDatabase.instance
-        .ref("Users/$iinGlobal/Trainigs/${DateTime.now().toString()}");
+
+
+uploadExercise(String equipment, int count, String time, String type,
+    String skill, int level) async {
+  try {
+    String date = DateFormat('yyyy-MM-dd-hh-mm-ss').format(DateTime.now());
+
+
+    DatabaseReference ref =
+        FirebaseDatabase.instance.ref("Users/$iinGlobal/Trainings/$date/");
 
     var training = {
       "Equipment": equipment,
@@ -16,7 +22,8 @@ class ExerciseApi {
       'level': level,
     };
 
-    await ref.update(training);
-    print('Uploaded');
+    await ref.set(training);
+  } catch (e) {
+    print(e);
   }
 }

@@ -23,6 +23,10 @@ class _SmileyState extends State<Smiley> {
     time= '00:00';
   }
 
+  void countScore() {
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -59,7 +63,6 @@ class _SmileyState extends State<Smiley> {
                 children: [
                   headerExercise(width*0.5,
                       "It's better to use a mirror or selfie camera for this exercise. It is a simple speech therapy exercise that helps improve oral motor skills.", score),
-                  TimerForExercise(onListening: isStarted, onChanged: (value) => time = value,)
                 ],
               ),
               isStarted ? LottieBuilder.asset('assets/smiley.json', animate: isStarted,) : SizedBox(

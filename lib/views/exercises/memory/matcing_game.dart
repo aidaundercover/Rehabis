@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:rehabis/globalVars.dart';
-import 'package:rehabis/models/memor_tile.dart';
+import 'package:rehabis/models/memory_tile.dart';
 import 'package:rehabis/services/exercise_api.dart';
 import 'package:rehabis/views/exercises/exerciseWidgets.dart';
-import 'package:rehabis/views/exercises/memory/getData.dart';
+import 'package:rehabis/database/getData.dart';
 
 class MatchingGame extends StatefulWidget {
   const MatchingGame({Key? key}) : super(key: key);
@@ -44,9 +44,7 @@ class _MatchingGameState extends State<MatchingGame> {
   }
 
   void startTimer() {
-    setState(() {
-      isStarted = true;
-    });
+  
     timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
   }
 
@@ -56,9 +54,6 @@ class _MatchingGameState extends State<MatchingGame> {
 
     startTimer();
 
-    setState(() {
-      isStarted = true;
-    });
 
     gridViewTiles = myPairs;
     Future.delayed(const Duration(seconds: 5), () {
@@ -77,7 +72,7 @@ class _MatchingGameState extends State<MatchingGame> {
 
     return Scaffold(
       appBar:
-          exerciseAppbar(title, context, 741022'None', points, "time", 'Memory', 3),
+          exerciseAppbar(title, context, 'None', points, "time", 'Memory', 3),
 
       body: Center(
         child: SingleChildScrollView(
@@ -116,24 +111,25 @@ class _MatchingGameState extends State<MatchingGame> {
               ),
               // SizedBox(child: GridView.count(crossAxisCount: 4)),
 
-              !isStarted
-          ? TextButton(
-              onPressed: () {
-                reStart();
-              },
-              child: Container(
-                  width: width * 0.33,
-                  height: 70,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(23),
-                      boxShadow: [const BoxShadow()]),
-                  child: const Text('Start!',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Inter",
-                          fontSize: 24)))) : Container(
+          //     !isStarted
+          // ? TextButton(
+          //     onPressed: () {
+          //       reStart();
+          //     },
+          //     child: Container(
+          //         width: width * 0.33,
+          //         height: 70,
+          //         alignment: Alignment.center,
+          //         decoration: BoxDecoration(
+          //             color: primaryColor,
+          //             borderRadius: BorderRadius.circular(23),
+          //             boxShadow: [const BoxShadow()]),
+          //         child: const Text('Start!',
+          //             style: TextStyle(
+          //                 color: Colors.white,
+          //                 fontFamily: "Inter",
+          //                 fontSize: 24)))) : 
+                          Container(
                 height: height * 0.8,
                 width: width * 0.95,
                 padding:
@@ -197,7 +193,6 @@ class _TileState extends State<Tile> {
   void stopTimer() {
     setState(() async {
       timer?.cancel();
-      isStarted = false;
 
       String twoDigits(int n) => n.toString().padLeft(2, '0');
       minutes = twoDigits(duration.inMinutes.remainder(60));
@@ -263,7 +258,7 @@ class _TileState extends State<Tile> {
                           ),
                           onPressed: () {
                             Navigator.of(context).pop();
-                            isStarted = true;
+                            // isStarted = true;
                             widget.restart;
                           },
                         ),
@@ -310,13 +305,13 @@ class _TileState extends State<Tile> {
               print("add point");
               points = points + 100;
               if (points == 800) {
-                setState(() {
-                  isStarted = false;
-                });
+                // setState(() {
+                //   isStarted = false;
+                // });
                 stopTimer();
 
-                ExerciseApi.uploadExercise(
-                    'None', points, "$minutes : $seconds", 'Matching game', 'Memory', 3);
+                // ExerciseApi.uploadExercise(
+                //     'None', points, "$minutes : $seconds", 'Matching game', 'Memory', 3);
               }
 
               print(selectedTile + " thishis" + widget.imagePathUrl!);

@@ -111,15 +111,19 @@ class _ProfileMainState extends State<ProfileMain> {
                         Positioned(
                           top: height * 0.04,
                           left: width * 0.32,
-                          child: CircleAvatar(
+                          child: avatarPath.isEmpty ? CircleAvatar(
                             backgroundColor: Colors.white,
                             radius: width * 0.1,
-                            child: avatarPath.isEmpty
-                                ? Image.asset(
+                            child: Image.asset(
                                     "assets/robot_neutral.png",
                                     height: width * 0.18,
                                   )
-                                : Image.file(File(avatarPath), fit: BoxFit.cover),
+                          ) : CircleAvatar(
+                            backgroundColor: Colors.white,
+                                  radius: width * 0.1,
+                            backgroundImage: FileImage(
+                                    File(avatarPath)
+                                  ),
                           ),
                         )
                       ],

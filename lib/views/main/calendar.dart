@@ -1,5 +1,4 @@
-
-
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -11,35 +10,29 @@ class Calendar extends StatefulWidget {
   State<Calendar> createState() => _CalendarState();
 }
 
-
 CalendarFormat format = CalendarFormat.month;
 DateTime selectedDay = DateTime.now();
 DateTime focusedDay = DateTime.now();
 
 class _CalendarState extends State<Calendar> {
-  
-
   TextEditingController _eventController = TextEditingController();
+
+  List<Event> _getEventsfromDay(DateTime date) {
+    DatabaseReference ref =
+        FirebaseDatabase.instance.ref().child("Users/$iinGlobal/Events/");
+
+    ref.get();
+    return selectedEvents[date] ?? [];
+  }
 
   @override
   void initState() {
     super.initState();
-    _getEventsfromDay,
-
+    _getEventsfromDay(DateTime.now());
   }
-
-  List<Event> _getEventsfromDay(DateTime date) {
-    return selectedEvents[date] ?? [];
-
-    DatabaseReference ref =
-        FirebaseDatabase.instance.ref().child("Users/$iinGlobal/Events/");
-  }
-
-  
 
   @override
   Widget build(BuildContext context) {
-
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
@@ -126,30 +119,30 @@ class _CalendarState extends State<Calendar> {
               child: Container(
                 width: width * 0.9,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(13),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.01),
-                      spreadRadius: 10,
-                      blurRadius: 10, 
-                      offset: Offset(3,3)
-                    )
-                  ]
-                ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(13),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.01),
+                          spreadRadius: 10,
+                          blurRadius: 10,
+                          offset: Offset(3, 3))
+                    ]),
                 child: Row(
                   children: [
                     Container(
-                      height:50,
-                      width: 15,
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.only(topLeft: 
-                        Radius.circular(13),bottomLeft: Radius.circular(13),
+                        height: 50,
+                        width: 15,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(13),
+                            bottomLeft: Radius.circular(13),
                           ),
-                      )
+                        )),
+                    SizedBox(
+                      width: 20,
                     ),
-                    SizedBox(width: 20,),
                     Text(
                       event.title,
                     ),
@@ -177,7 +170,6 @@ class _CalendarState extends State<Calendar> {
                 child: Text("Ok"),
                 onPressed: () {
                   if (_eventController.text.isEmpty) {
-
                   } else {
                     if (selectedEvents[selectedDay] != null) {
                       selectedEvents[selectedDay]!.add(
@@ -188,11 +180,10 @@ class _CalendarState extends State<Calendar> {
                         Event(title: _eventController.text)
                       ];
                     }
-
                   }
                   Navigator.pop(context);
                   _eventController.clear();
-                  setState((){});
+                  setState(() {});
                   return;
                 },
               ),
@@ -207,7 +198,6 @@ class _CalendarState extends State<Calendar> {
     );
   }
 }
-
 
 class Event {
   final String title;

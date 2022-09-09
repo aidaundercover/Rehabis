@@ -1,4 +1,4 @@
-import 'package:rehabis/models/memor_tile.dart';
+import 'package:rehabis/models/memory_tile.dart';
 
 String selectedTile = "";
 int selectedIndex = 0;
@@ -144,3 +144,47 @@ List<MemoryTile> getQuestionPairs() {
 
   return pairs;
 }
+
+
+List similiarWordsData = [
+  {
+    "audioFile": "cry.mp3",
+    "options": [
+      {"img": "assets/executioner.jpeg", "title": "Палач"},
+      {"img": "assets/cry.png", "title": "Плачь"},
+      {"img": "assets/cloak.jpeg", "title": "Плащ"},
+      {"img": "assets/rook.jpeg", "title": "Грач"},
+    ],
+    "right": 1
+  },
+  {
+    "audioFile": "pay.mp3",
+    "options": [
+      {"img": "assets/prophet.jpeg", "title": "Отсрочка"},
+      {"img": "assets/shirt.png", "title": "Сорочка"},
+      {"img": "assets/hillock.jpeg", "title": "Кочка"},
+      {"img": "assets/payment.png", "title": "Рассрочка"},
+    ],
+    "right": 3
+  },
+  {
+    "audioFile": "ghost.mp3",
+    "options": [
+      {"img": "assets/ghost.png", "title": "Привидение"},
+      {"img": "assets/dream.jpeg", "title": "Приведение"},
+      {"img": "assets/behaviour.png", "title": "Поведение"},
+      {"img": "assets/history.jpeg", "title": "Краеведение"},
+    ],
+    "right": 1
+  },
+  {
+    "audioFile": "flaw.mp3",
+    "options": [
+      {"img": "assets/prophet.jpeg", "title": "Пророк"},
+      {"img": "assets/flaw.png", "title": "Порок"},
+      {"img": "assets/flow.png", "title": "Поток"},
+      {"img": "assets/pie.png", "title": "Пирог"},
+    ],
+    "right": 1
+  },
+];

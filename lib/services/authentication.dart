@@ -53,7 +53,7 @@ class Auth {
   }
 
   static void signIn(BuildContext context, String? predictedIin) async {
-    FirebaseDatabase.instance
+    await FirebaseDatabase.instance
         .ref()
         .child("Users/$predictedIin/")
         .onValue

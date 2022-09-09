@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'dart:math' as math;
 
+import 'package:rxdart/rxdart.dart';
+
 class SignIn extends StatefulWidget {
   final CameraDescription cameraDescription;
 
@@ -22,13 +24,14 @@ class SignIn extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SignInState createState() => _SignInState();
+  SignInState createState() => SignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class SignInState extends State<SignIn> {
   CameraService _cameraService = CameraService();
   MLKitService _mlKitService = MLKitService();
   FaceNetService _faceNetService = FaceNetService.faceNetService;
+  GlobalKey key = GlobalKey<SignInState>();
 
   late Future _initializeControllerFuture;
 
@@ -44,11 +47,20 @@ class _SignInState extends State<SignIn> {
   late Size imageSize;
   Face? faceDetected;
 
+  _onBackPressed() {
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
+  }
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _start();
+    if (mounted) {
+      _start();
+    }
   }
 
   @override
@@ -59,7 +71,7 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       body: Stack(
         children: [
-          FutureBuilder<void>(
+          FutureBuilder(
               future: _initializeControllerFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
@@ -157,12 +169,12 @@ class _SignInState extends State<SignIn> {
               reload: _reload,
             )
           : Container(
-            // padding: EdgeInsets.all(10),
-            // decoration: BoxDecoration(
-            //   color: Colors.white
-            // ),
-            // child: Text("User was not identified", style: TextStyle(color: primaryColor, fontFamily: 'Inter')),
-          ),
+              // padding: EdgeInsets.all(10),
+              // decoration: BoxDecoration(
+              //   color: Colors.white
+              // ),
+              // child: Text("User was not identified", style: TextStyle(color: primaryColor, fontFamily: 'Inter')),
+              ),
     );
   }
 
@@ -179,9 +191,11 @@ class _SignInState extends State<SignIn> {
         _cameraService.startService(widget.cameraDescription);
     await _initializeControllerFuture;
 
-    setState(() {
-      cameraInitializated = true;
-    });
+    mounted
+        ? setState(() {
+            cameraInitializated = true;
+          })
+        : () {};
 
     _frameFaces();
   }
@@ -203,18 +217,22 @@ class _SignInState extends State<SignIn> {
           if (faces != null) {
             if (faces.length > 0) {
               // preprocessing the image
-              setState(() {
-                faceDetected = faces[0];
-              });
+              mounted
+                  ? setState(() {
+                      faceDetected = faces[0];
+                    })
+                  : () {};
 
               if (_saving) {
                 _saving = false;
                 _faceNetService.setCurrentPrediction(image, faceDetected!);
               }
             } else {
-              setState(() {
-                faceDetected = null;
-              });
+              mounted
+                  ? setState(() {
+                      faceDetected = null;
+                    })
+                  : () {};
             }
           }
 
@@ -247,26 +265,27 @@ class _SignInState extends State<SignIn> {
       await Future.delayed(const Duration(milliseconds: 200));
       XFile file = await _cameraService.takePicture();
 
-      setState(() {
-        _bottomSheetVisible = true;
-        pictureTaked = true;
-        imagePath = file.path;
-      });
+      mounted
+          ? setState(() {
+              _bottomSheetVisible = true;
+              pictureTaked = true;
+              imagePath = file.path;
+            })
+          : () {};
 
       return true;
     }
   }
 
-  _onBackPressed() {
-    Navigator.of(context).pop();
-  }
 
   _reload() {
-    setState(() {
-      _bottomSheetVisible = false;
-      cameraInitializated = false;
-      pictureTaked = false;
-    });
+    mounted
+        ? setState(() {
+            _bottomSheetVisible = false;
+            cameraInitializated = false;
+            pictureTaked = false;
+          })
+        : () {};
     this._start();
   }
 }

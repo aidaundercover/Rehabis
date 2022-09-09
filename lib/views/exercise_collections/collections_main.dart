@@ -25,12 +25,12 @@ class _CollectionsMainState extends State<CollectionsMain> {
 
     return Center(
       child: SizedBox(
-        width: width*0.89,
+        width: width*0.98,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
           SizedBox(height: 30),
-          Text('Training Collections', style: TextStyle(color: Color.fromARGB(255, 233, 30, 148), fontSize: 24, fontFamily: "Inter")),
+          Text('Training Collections', style: TextStyle(color: primaryColor, fontSize: 28, fontFamily: "Inter")),
           SizedBox(height: 30),
           StreamBuilder(
             stream: FirebaseDatabase.instance.ref("Users/$iinGlobal/Trainigs").onValue,
