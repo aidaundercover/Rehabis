@@ -297,7 +297,7 @@ class _ProfileMainState extends State<ProfileMain> {
                 heightGlobal = 0;
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
-                        SignIn(cameraDescription: cameraDescription)));
+                        SignIn(cameraDescription: cameraDescription, mainContext: context,)));
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 30.0),

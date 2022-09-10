@@ -41,7 +41,8 @@ class Auth {
           'level': 0,
         }
       },
-      "Events" : {}
+      "Events" : {},
+      "Relatives" : {}
     });
 
     Fluttertoast.showToast(msg: "User registered successfully");

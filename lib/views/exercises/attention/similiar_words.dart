@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:rehabis/database/getData.dart';
 import 'package:rehabis/globalVars.dart';
@@ -17,6 +18,7 @@ class ExerciseTwo extends StatefulWidget {
 class _ExerciseTwoState extends State<ExerciseTwo> {
   late int points;
   late int pressed;
+  final controller = ConfettiController();
 
   Duration duration = Duration();
   Timer? timer;
@@ -54,8 +56,6 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
   }
 
   void stopTimer(int errors, double width) {
-
-
     setState(() {
       timer?.cancel();
       isRunning = false;
@@ -64,8 +64,8 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
       final minutes = twoDigits(duration.inMinutes.remainder(60));
       final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-      uploadExercise('None', points, '$minutes : $seconds',
-          'Similiar sounds', "Attention", 3);
+      uploadExercise('None', points, '$minutes : $seconds', 'Similiar sounds',
+          "Attention", 3);
 
       showDialog(
           context: (context),
@@ -74,116 +74,123 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               child: Container(
-                height: 210,
-                width : MediaQuery.of(context).orientation == Orientation.portrait ? width*0.8 : width*0.6,
+                height: 300,
+                width:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? width * 0.8
+                        : width * 0.5,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(width: 4, color: Colors.purple)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                        child: Text("Well done!",
-                            style: TextStyle(
-                                color: deepPurple,
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Inter"))),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 13.0),
-                      child: Row(
-                        children: [
-                          Text("Execution time:",
+                child: Stack(children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                          child: Text("Well done!",
                               style: TextStyle(
-                                color: deepPurple,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text("$minutes: $seconds",
-                              style: TextStyle(
-                                color: deepPurple,
-                                fontSize: 15,
-                              ))
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 13.0),
-                      child: Row(
-                        children: [
-                          Text("Number of errors:",
-                              style: TextStyle(
-                                color: deepPurple,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text("$errors",
-                              style: TextStyle(
-                                color: deepPurple,
-                                fontSize: 15,
-                              ))
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          child: Container(
-                            width: 100,
-                            height: 35,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                                color: Colors.purple.shade200),
-                            child: Row(
-                              children: [
-                                Text("Restart",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.white)),
-                                Icon(Icons.replay, color : Colors.white)
-                              ],
+                                  color: deepPurple,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Inter"))),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 13.0),
+                        child: Row(
+                          children: [
+                            Text("Execution time:",
+                                style: TextStyle(
+                                  color: deepPurple,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            const SizedBox(
+                              width: 5,
                             ),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            isRunning = true;
-                            startTimer();
-                          },
+                            Text("$minutes: $seconds",
+                                style: TextStyle(
+                                  color: deepPurple,
+                                  fontSize: 15,
+                                ))
+                          ],
                         ),
-                        const SizedBox(width: 7),
-                        TextButton(
-                          child: Container(
-                            width: 100,
-                            height: 35,
-                            child: Row(
-                              children: [
-                                const Text("Exit",
-                                    style: TextStyle(color: Colors.white)),
-                                Icon(Icons.exit_to_app, color : Colors.white)
-                              ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 13.0),
+                        child: Row(
+                          children: [
+                            Text("Number of errors:",
+                                style: TextStyle(
+                                  color: deepPurple,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            const SizedBox(
+                              width: 5,
                             ),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                                color: Colors.purple.shade200),
+                            Text("$errors",
+                                style: TextStyle(
+                                  color: deepPurple,
+                                  fontSize: 15,
+                                ))
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            child: Container(
+                              width: 100,
+                              height: 35,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7),
+                                  color: Colors.purple.shade200),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Restart",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white)),
+                                  Icon(Icons.replay, color: Colors.white)
+                                ],
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              startTimer();
+                            },
                           ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).pop();
-                          },
-                        )
-                      ],
-                    )
-                  ],
-                ),
+                          const SizedBox(width: 7),
+                          TextButton(
+                            child: Container(
+                              width: 100,
+                              height: 35,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text("Exit",
+                                      style: TextStyle(color: Colors.white)),
+                                  Icon(Icons.exit_to_app, color: Colors.white)
+                                ],
+                              ),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7),
+                                  color: Colors.purple.shade200),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  Center(child: ConfettiWidget(confettiController: controller))
+                ]),
               ),
             );
           });
@@ -191,18 +198,31 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
       points = 0;
       pressed = 0;
       isSelected = [
-      [false, false, false, false],
-      [false, false, false, false],
-      [false, false, false, false],
-      [false, false, false, false]
-    ];
+        [false, false, false, false],
+        [false, false, false, false],
+        [false, false, false, false],
+        [false, false, false, false]
+      ];
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
+    controller.addListener(() {
+      setState(() {
+        isRunning = controller.state == ConfettiControllerState.playing;
+      });
+    });
     isSelected = [
       [false, false, false, false],
       [false, false, false, false],
@@ -213,8 +233,6 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
     points = 0;
     pressed = 0;
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +254,6 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
               children: [
                 textHeader(width * 0.7,
                     'The exercise helps with an attention and a logic, in order to execue an exercise one should be able to identify the exceeding element of a group'),
-      
                 TextButton(
                     onPressed: () {
                       startTimer();
@@ -258,8 +275,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                                 isRunning
                                     ? Shadow(
                                         offset: Offset(3, 3),
-                                        color:
-                                            Colors.white.withOpacity(0.3),
+                                        color: Colors.white.withOpacity(0.3),
                                         blurRadius: 5)
                                     : const Shadow(
                                         offset: Offset(3, 3),
@@ -274,19 +290,20 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
       );
     }
 
-
     Widget main() {
       return SizedBox(
-          width:  MediaQuery.of(context).orientation == Orientation.landscape ? width * 0.5 : width*0.5,
-          height: MediaQuery.of(context).orientation == Orientation.landscape
-              ? height * 0.75
-              : height * 0.5,
+          width: MediaQuery.of(context).orientation == Orientation.landscape
+              ? width * 0.4
+              : width * 0.7,
+          // height: MediaQuery.of(context).orientation == Orientation.landscape
+          //     ? height * 0.6
+          //     : height * 0.75,
           child: CarouselSlider(
             options: CarouselOptions(
-              height:
+                height:
                     MediaQuery.of(context).orientation == Orientation.portrait
-                        ? height * 0.45
-                        : height * 0.75,
+                        ? height * 0.6
+                        : height * 0.9,
                 clipBehavior: Clip.antiAlias,
                 enlargeCenterPage: true,
                 enableInfiniteScroll: true,
@@ -325,7 +342,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                                     onTap: () {
                                       setState(() {
                                         pressed++;
-                                        
+
                                         if (isRunning) {
                                           for (int indexBtn = 0;
                                               indexBtn < isSelected.length;
@@ -338,7 +355,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                                                     similiarWordsData[index]
                                                         ["right"]) {
                                                   getPoint();
-                                                } 
+                                                }
                                               }
                                             } else {
                                               isSelected[index][indexBtn] =
@@ -350,6 +367,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                                     },
                                     child: Container(
                                       // width: width * 0.3,
+                                      height: height * 0.25,
                                       decoration: BoxDecoration(
                                           color: isSelected[index][i]
                                               ? primaryColor.withOpacity(0.6)
@@ -361,11 +379,11 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                                                   : Colors.grey.shade600),
                                           borderRadius:
                                               BorderRadius.circular(15)),
-                                              
+
                                       child: Center(
                                         child: Text(
-                                            similiarWordsData[index]['options'][i]
-                                                ["title"],
+                                            similiarWordsData[index]['options']
+                                                [i]["title"],
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w500,
                                                 fontFamily: "Roboto",
@@ -380,7 +398,6 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
                     ))),
           ));
     }
-
 
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final minutes = twoDigits(duration.inMinutes.remainder(60));
@@ -410,7 +427,6 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
               height: 20,
             ),
             main(),
-          
           ],
         ),
       ),

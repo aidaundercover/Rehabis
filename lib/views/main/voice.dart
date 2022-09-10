@@ -1,13 +1,16 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehabis/globalVars.dart';
-import 'package:rehabis/main.dart';
+import 'package:rehabis/models/Relative.dart';
 import 'package:rehabis/services/speech_api.dart';
 import 'package:rehabis/utils/utils.dart';
 import 'package:rehabis/widgets/slider_fv.dart';
 import 'package:rehabis/widgets/substring_highlight.dart';
+
+import '../../globalVars.dart';
 
 class Voice extends StatefulWidget {
   const Voice({Key? key}) : super(key: key);
@@ -24,7 +27,26 @@ class _Voice extends State<Voice> {
 
   @override
   void initState() {
+    player = AudioPlayer();
+
+    relatives = [];
+
     super.initState();
+
+    FirebaseDatabase.instance
+        .ref("User/$iinGlobal/Realtives")
+        .onValue
+        .listen((event) {
+      var myR = Map<String, dynamic>.from(
+          event.snapshot.value as Map<dynamic, dynamic>);
+
+      myR.forEach((key, value) => setState(() {
+            final nextMarker = Map<String, dynamic>.from(value);
+            relatives.add(Relative(
+                relation: nextMarker['relation'],
+                number: nextMarker["number"]));
+          }));
+    });
   }
 
   @override
@@ -99,7 +121,7 @@ class _Voice extends State<Voice> {
                         width: width * 0.3,
                         child: SubstringHighlight(
                           text: text,
-                          terms: Command.all,
+                          terms: all,
                           textStyle: TextStyle(
                               fontSize: 27.0,
                               color: Colors.black,
@@ -122,7 +144,7 @@ class _Voice extends State<Voice> {
                       alignment: Alignment.center,
                       child: SubstringHighlight(
                         text: text,
-                        terms: Command.all,
+                        terms: all,
                         textStyle: TextStyle(
                             fontSize: 27.0,
                             color: Colors.black,
@@ -150,7 +172,7 @@ class _Voice extends State<Voice> {
 
           if (!isListening) {
             Future.delayed(Duration(milliseconds: 500), () {
-              Utils.scanText(text);
+              Utils.scanText(text, player);
             });
           }
         },

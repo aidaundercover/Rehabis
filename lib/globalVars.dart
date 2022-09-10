@@ -15,7 +15,7 @@ String iinGlobal = "060114651689";
 String roleGlobal = '';
 String avatarPath = '';
 List<String> selectedWeakneases = [];
-List<Relative> relatives = [];
+List relatives = [];
 
 /// Medical data ///
 String bornDateGlobal = "";
@@ -24,6 +24,10 @@ String strokeTypeGlobal = "";
 int heightGlobal = 0;
 int weightGlobal = 0;
 double bmiGlobal = 0;
+
+//Voice Over
+
+List<String> all = ["call", "write email", "open", "go to", "hello", "What is app"];
 
 // COLOR SCHEME //
 Color primaryColor = const Color.fromRGBO(204, 101, 255, 1.0);

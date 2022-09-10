@@ -69,7 +69,7 @@ class FirstView extends StatelessWidget {
               GestureDetector(
                   onTap: () {
                     Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => SignUp(cameraDescription: cameraDescription,)));
+                        .push(MaterialPageRoute(builder: (context) => SignUp(cameraDescription: cameraDescription, mainContext: context,)));
                   },
                   child: Container(
                     width: width*0.15,

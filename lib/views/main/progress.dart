@@ -140,7 +140,7 @@ class _ProgressMainState extends State<ProgressMain> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          dayDisplay(4, "of activity this week", secondPrimaryColor),
+          dayDisplay(1, "of activity this week", secondPrimaryColor),
           dayDisplay(
               6, "of activity lat week", secondPrimaryColor.withOpacity(0.5)),
         ],

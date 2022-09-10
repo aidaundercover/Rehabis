@@ -1,5 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/foundation.dart';
@@ -39,41 +38,52 @@ class Utils {
     }
   }
 
-  static Future<void> scanText(String rawText) async {
+  static Future<void> scanText(String rawText, AudioPlayer player) async {
     final text = rawText.toLowerCase();
 
-    if (text.contains(Command.hello)) {
-      var player = AudioPlayer();
+  
 
+
+
+    if (text.contains("hello")) {
       await player.setAsset("assets/hello.mp3");
 
       player.play();
+    }   if (text.contains("call")) {
 
-    } else if (text.contains(Command.call)) {
-      const number = '+77054475982'; //set the number here
-      await FlutterPhoneDirectCaller.callNumber(number);
-    } else if (text.contains(Command.email)) {
-      final body = _getTextAfterCommand(text: text, command: Command.email);
+
+      for (int i = 0; i < relatives.length; i++) {
+        if (text.contains("call ${relatives[i].relation}")) {
+          String number = relatives[i].number; //set the number here
+          await FlutterPhoneDirectCaller.callNumber(number);
+        }
+      }
+      
+    }
+    else if (text.contains("write email")) {
+      final body = _getTextAfterCommand(text: text, command: "write email");
 
       openEmail(body: body);
-    } else if (text.contains(Command.pills)) {
+    } else if (text.contains("pills")) {
       try {
         DatabaseReference ref = FirebaseDatabase.instance.ref("LR");
 
         ref.set(5);
-
       } catch (e) {}
-    } else if (text.contains(Command.browser1)) {
-      final url = _getTextAfterCommand(text: text, 
-      command: Command.browser1);
+    } else if (text.contains("open")) {
+      final url = _getTextAfterCommand(text: text, command: "open");
 
       openLink(url: url);
-    } else if (text.contains(Command.browser2)) {
-      final url = _getTextAfterCommand(text: text, command: Command.browser2);
+    } else if (text.contains("go to")) {
+      final url = _getTextAfterCommand(text: text, command: "go to");
 
       openLink(url: url);
-    } else if (text.contains(Command.about)) {
-    } else if (text.contains(Command.call)) {}
+    } else if (text.contains("what is app")) {
+      await player.setAsset("assets/about.mp3");
+
+      player.play();
+    }
+    // else if (text.contains(Command.call)) {}
   }
 
   static Future openLink({
@@ -104,28 +114,7 @@ printIfDebug(data) {
   if (kDebugMode) {
     print(data);
 
-
     //    for (int i = 0; i < relatives.lenght; i++) {}
 
   }
-}
-
-    
-
-class Command {
-
-    
-
-  static final all = [call, email, browser1, browser2, hello, about];
-
-
-
-  static const call = "call";
-
-  static const pills = "pills";
-  static const email = 'write email';
-  static const browser1 = 'open';
-  static const browser2 = 'go to';
-  static const hello = "Hi";
-  static const about = "What is Rehabis";
 }

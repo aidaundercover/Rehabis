@@ -247,12 +247,13 @@ class _LegsOneState extends State<LegsOne> {
             width: width * 0.92,
             child: Column(children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   textHeader(width * 0.6,
                       "Using 'Cubes' equipment user supposed to train the wrist and low-palm area"),
                   TextButton(
                       onPressed: () {
-                        startTimer();
+                        isRunning ? stopTimer(0, width) : startTimer();
                       },
                       child: Container(
                         width: width * 0.25,
@@ -262,7 +263,7 @@ class _LegsOneState extends State<LegsOne> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         alignment: Alignment.center,
-                        child: Text(isRunning ? "GO!" : "Start!",
+                        child: Text(isRunning ? "Done" : "Start!",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: "Ruberoid",

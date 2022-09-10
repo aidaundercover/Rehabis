@@ -3,6 +3,7 @@ import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/services/exercise_api.dart';
 import 'package:rehabis/views/exercises/attention/find_third_whhel.dart';
 import 'package:rehabis/views/exercises/attention/similiar_words.dart';
+import 'package:rehabis/views/exercises/core/cap.dart';
 import 'package:rehabis/views/exercises/cube/legs_one.dart';
 import 'package:rehabis/views/exercises/hands/diaganole.dart';
 import 'package:rehabis/views/exercises/hands/glove_one.dart';
@@ -156,7 +157,14 @@ List threeLeg = [];
 
 //Core
 
-List oneCore = [];
+List oneCore = [
+  {
+    'title': "Neck exercise",
+    "minutes": 5,
+    "page": NeckExercise(),
+    "skill": "Core"
+  },
+];
 
 List twoCore = [];
 

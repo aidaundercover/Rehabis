@@ -31,7 +31,9 @@ class _BreathingState extends State<Breathing> {
 
   void startVoiceOver() async {
     await player.setAsset('assets/inhale.mp3');
+
     player.play();
+    
     Timer.periodic(const Duration(milliseconds: 7500), (timer) {
       setState(() async {
         isInhale = !isInhale;

@@ -243,17 +243,16 @@ class _DiagonaleHandsState extends State<DiagonaleHands> {
     return Scaffold(
       appBar: exerciseAppbar("Exercise Wrists", context, "Cube", points,
           '$minutes : $seconds', "Arm mobility", 1),
-      backgroundColor: const Color.fromARGB(255, 248, 248, 248),
-      body: Center(
-        child: SizedBox(
-            width: width * 0.92,
-            child: SingleChildScrollView(
+      backgroundColor: Color.fromRGBO(248, 248, 248, 1),
+      body: SingleChildScrollView(
+        child: Center(
+          child: SizedBox(
+              width: width * 0.92,
               child: Column(children: [
                 textHeader(width,
                     "Using 'Cubes' equipment user supposed to train the wrist and low-palm area"),
-                
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
+                const Padding(
+                  padding: EdgeInsets.only(top: 10.0),
                   child: Text(
                     "Slide cube on diagonale",
                     textAlign: TextAlign.center,
@@ -263,7 +262,7 @@ class _DiagonaleHandsState extends State<DiagonaleHands> {
                 SizedBox(
                   height: 30,
                 ),
-            
+              
                 Stack(children: [
                   Container(
                     width: isPortrait ? width * 0.9 : width*0.5,
@@ -314,24 +313,29 @@ class _DiagonaleHandsState extends State<DiagonaleHands> {
                       ],
                     ),
                   ),
-                  AnimatedPositioned(
-                    curve: Curves.easeInCubic,
-                    duration: const Duration(milliseconds: 750),
-                    right: isPressed ? width * 0.45 : 0,
-                    top: isPressed ? 0 : width * 0.45,
-                    child: Container(
-                      width: width * 0.45,
-                      height:  width * 0.45,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          gradient: LinearGradient(colors: [
-                            Color.fromRGBO(244, 173, 255, 1.0),
-                            Color.fromRGBO(200, 186, 255, 1.0)
-                          ])),
+                  SizedBox(
+                    width: isPortrait ? width * 0.9 : width * 0.5,
+                    height: isPortrait ? width * 0.9 : width * 0.5,
+                    child: AnimatedAlign(
+                      curve: Curves.easeInCubic,
+                      alignment:  isPressed ? Alignment.bottomLeft : Alignment.topRight,
+                      duration: const Duration(milliseconds: 750),
+                      // right: isPressed ? width * 0.45 : 0,
+                      // top: isPressed ? 0 : width * 0.45,
+                      child: Container(
+                        width: width * 0.45,
+                        height:  width * 0.45,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: LinearGradient(colors: [
+                              Color.fromRGBO(244, 173, 255, 1.0),
+                              Color.fromRGBO(200, 186, 255, 1.0)
+                            ])),
+                      ),
                     ),
                   )
-                ])]),
-            )
-              )));
+                ])])
+                )),
+      ));
   }
 }

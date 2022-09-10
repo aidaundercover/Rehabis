@@ -195,7 +195,9 @@ class _ExercisesChartState extends State<ExercisesChart> {
               children: [
                 colorShow(deepPurple, "Cap"),
                 colorShow(deepPink, "Gloves"),
-                colorShow(orange, "Cubes")
+                colorShow(orange, "Cubes"),
+                colorShow(deepPurple, "Cognitive"),
+                
               ],
             ),
           ),

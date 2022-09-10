@@ -15,11 +15,13 @@ class AuthActionButton extends StatefulWidget {
       {Key? key,
       required this.onPressed,
       required this.isLogin,
-      required this.reload});
+      required this.reload,
+      required this.context});
   final Future _initializeControllerFuture;
   final Function onPressed;
   final bool isLogin;
   final Function reload;
+  BuildContext context;
 
   @override
   _AuthActionButtonState createState() => _AuthActionButtonState();
@@ -78,77 +80,99 @@ Future<User?> _predictUser() async {
 }
 
 class _AuthActionButtonState extends State<AuthActionButton> {
-
-  
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
+    var width = MediaQuery.of(widget.context).size.width;
     return SizedBox(
-      width: width*0.8,
+      width: width * 0.8,
       height: 100,
       child: Center(
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: InkWell(
-              onTap: () async {
-                try {
-                  // Ensure that the camera is initialized.
-                  await widget._initializeControllerFuture;
-                  // onShot event (takes the image and predict output)
-                  bool faceDetected = await widget.onPressed();
-          
-                  if (faceDetected) {
-                    if (widget.isLogin) {
-                      var user = await _predictUser();
-                      print("NullIssue======${user?.name}");
-                      if (user != null) {
-                        predictedUser = user;
-                      } else {
-                        predictedUser = null;
-                      }
+            onTap: () async {
+              try {
+                // Ensure that the camera is initialized.
+                await widget._initializeControllerFuture;
+                // onShot event (takes the image and predict output)
+                bool faceDetected = await widget.onPressed();
+
+                if (faceDetected) {
+                  if (widget.isLogin) {
+                    var user = await _predictUser();
+                    print("NullIssue======${user?.name}");
+                    if (user != null) {
+                      predictedUser = user;
+                    } else {
+                      predictedUser = null;
                     }
-          
-                    PersistentBottomSheetController bottomSheetController =
-                        Scaffold.of(context).showBottomSheet(
-                            (context) => signSheet(context, predictedUser, width));
-                    bottomSheetController.closed.whenComplete(() => widget.reload());
                   }
-                } catch (e) {
-                  // If an error occurs, log the error to the console.
-                  print("dataFromdatabaseAuth1==$e");
+
+                  PersistentBottomSheetController bottomSheetController =
+                      Scaffold.of(context).showBottomSheet((context) =>
+                          signSheet(widget.context, predictedUser, width));
+                  bottomSheetController.closed
+                      .whenComplete(() => widget.reload());
                 }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: primaryColor.withOpacity(0.3),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: primaryColor.withOpacity(0.1),
-                      blurRadius: 1,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-                width: MediaQuery.of(context).size.width * 0.7,
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'CAPTURE',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(Icons.camera_alt, color: Colors.white)
-                  ],
-                ),
+              } catch (e) {
+                // If an error occurs, log the error to the console.
+                print("dataFromdatabaseAuth1==$e");
+
+                showDialog(
+                    context: widget.context,
+                    builder: (context) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Dialog(
+                          child: Container(
+                            width: 200,
+                            height: 80,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                            ),
+                            alignment: Alignment.center,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text("Error occured! Try again", style: TextStyle(
+                                fontSize: 20,
+                                color: primaryColor, fontWeight: FontWeight.bold, fontFamily: 'Inter'),),
+                            ),
+                          ),
+                        ),
+                      );
+                    });
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: primaryColor.withOpacity(0.3),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: primaryColor.withOpacity(0.1),
+                    blurRadius: 1,
+                    offset: Offset(0, 2),
+                  ),
+                ],
               ),
-            
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+              width: MediaQuery.of(widget.context).size.width * 0.7,
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    'CAPTURE',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Icon(Icons.camera_alt, color: Colors.white)
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -187,7 +211,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                           keyboardType: TextInputType.number,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       SizedBox(
                         width: width * 0.7,
                         child: AppTextField(
@@ -205,8 +229,9 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                       child: AppButton(
                         text: 'LOGIN',
                         onPressed: () async {
-                          _signIn(context);
+                          _signIn(widget.context);
                         },
+                        mainContext: widget.context,
                         icon: Icon(
                           Icons.login,
                           color: Colors.white,
@@ -218,8 +243,9 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                           width: width * 0.55,
                           child: AppButton(
                             text: 'SIGN UP',
+                            mainContext: widget.context,
                             onPressed: () async {
-                              await _signUp(context);
+                              await _signUp(widget.context);
                             },
                             icon: Icon(
                               Icons.person_add,

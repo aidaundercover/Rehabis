@@ -7,26 +7,27 @@ import 'package:rehabis/views/auth/sign_in.dart';
 import 'package:rehabis/views/auth/sign_up.dart';
 
 class CameraHeader extends StatefulWidget {
-  const CameraHeader(this.title,
-      {Key? key, required this.onBackPressed, required this.text})
+  CameraHeader(this.title,
+      {Key? key, required this.onBackPressed, required this.text, required this.mainContext})
       : super(key: key);
   final String title;
   final void Function()? onBackPressed;
   final String text;
+  BuildContext mainContext;
 
   @override
   State<CameraHeader> createState() => _CameraHeaderState();
 }
 
 class _CameraHeaderState extends State<CameraHeader> {
-  FaceNetService _faceNetService = FaceNetService.faceNetService;
-  MLKitService _mlKitService = MLKitService();
+  final FaceNetService _faceNetService = FaceNetService.faceNetService;
+  final MLKitService _mlKitService = MLKitService();
   bool loading = false;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(widget.mainContext).size.width,
       height: 150,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -59,10 +60,16 @@ class _CameraHeaderState extends State<CameraHeader> {
           ),
           TextButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(widget.mainContext).push(MaterialPageRoute(
                     builder: (context) => widget.text == 'Sign In'
-                        ? SignIn(cameraDescription: cameraDescription)
-                        : SignUp(cameraDescription: cameraDescription)));
+                        ? SignIn(
+                            cameraDescription: cameraDescription,
+                            mainContext: widget.mainContext,
+                          )
+                        : SignUp(
+                            cameraDescription: cameraDescription,
+                            mainContext: widget.mainContext,
+                          )));
               },
               child: Container(
                 alignment: Alignment.center,
@@ -77,5 +84,4 @@ class _CameraHeaderState extends State<CameraHeader> {
       ),
     );
   }
-
 }

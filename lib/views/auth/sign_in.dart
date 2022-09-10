@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:rehabis/globalVars.dart';
-import 'package:rehabis/models/user_model.dart';
+import 'package:rehabis/main.dart';
 import 'package:rehabis/services/camera_service.dart';
 import 'package:rehabis/services/facenet_service.dart';
 import 'package:rehabis/services/ml_kit_service.dart';
+import 'package:rehabis/views/auth/sign_up.dart';
 import 'package:rehabis/widgets/FacePainter.dart';
 import 'package:rehabis/widgets/auth_action_button.dart';
 import 'package:rehabis/widgets/camera_header.dart';
@@ -17,11 +18,11 @@ import 'package:rxdart/rxdart.dart';
 
 class SignIn extends StatefulWidget {
   final CameraDescription cameraDescription;
+  final mainContext;
 
-  const SignIn({
-    Key? key,
-    required this.cameraDescription,
-  }) : super(key: key);
+  const SignIn(
+      {Key? key, required this.cameraDescription, required this.mainContext})
+      : super(key: key);
 
   @override
   SignInState createState() => SignInState();
@@ -48,19 +49,26 @@ class SignInState extends State<SignIn> {
   Face? faceDetected;
 
   _onBackPressed() {
-    if (mounted) {
-      Navigator.of(context).pop();
-    }
+    startup();
+
+    Navigator.of(context).pop();
+    
   }
 
+  // @override
+  // void didChangeDependencies() {
+  //   // TODO: implement didChangeDependencies
+  //   super.didChangeDependencies();
+
+  //   widget.dependOnInheritedWidgetOfExactType();
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (mounted) {
       _start();
-    }
+    
   }
 
   @override
@@ -68,39 +76,71 @@ class SignInState extends State<SignIn> {
     final double mirror = math.pi;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: Stack(
-        children: [
-          FutureBuilder(
-              future: _initializeControllerFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (pictureTaked) {
-                    return Container(
-                      width: width,
-                      height: height,
-                      child: Transform(
-                          alignment: Alignment.center,
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: Image.file(File(imagePath)),
-                          ),
-                          transform: Matrix4.rotationY(mirror)),
-                    );
-                  } else {
-                    bool isPortrait = MediaQuery.of(context).orientation ==
-                        Orientation.portrait;
-                    return isPortrait
-                        ? Transform.scale(
-                            scale: 1.0,
-                            child: AspectRatio(
+
+    if (_cameraService.cameraController.value.isInitialized) {
+      return Scaffold(
+        body: Stack(
+          children: [
+            FutureBuilder(
+                future: _initializeControllerFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (pictureTaked) {
+                      return Container(
+                        width: width,
+                        height: height,
+                        child: Transform(
+                            alignment: Alignment.center,
+                            transform: Matrix4.rotationY(mirror),
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: Image.file(File(imagePath)),
+                            )),
+                      );
+                    } else {
+                      bool isPortrait = MediaQuery.of(context).orientation ==
+                          Orientation.portrait;
+                      return isPortrait
+                          ? Transform.scale(
+                              scale: 1.0,
+                              child: AspectRatio(
+                                aspectRatio:
+                                    MediaQuery.of(context).size.aspectRatio,
+                                child: OverflowBox(
+                                  alignment: Alignment.center,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitHeight,
+                                    child: Container(
+                                      width: width,
+                                      height: width *
+                                          _cameraService.cameraController.value
+                                              .aspectRatio,
+                                      child: Stack(
+                                        fit: StackFit.expand,
+                                        children: <Widget>[
+                                          CameraPreview(
+                                              _cameraService.cameraController),
+                                          CustomPaint(
+                                            painter: FacePainter(
+                                                isPortrait: true,
+                                                face: faceDetected,
+                                                imageSize: imageSize),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : AspectRatio(
                               aspectRatio:
-                                  MediaQuery.of(context).size.aspectRatio,
+                                  MediaQuery.of(widget.mainContext).size.aspectRatio,
                               child: OverflowBox(
                                 alignment: Alignment.center,
                                 child: FittedBox(
-                                  fit: BoxFit.fitHeight,
-                                  child: Container(
+                                  fit: BoxFit.fill,
+                                  child: SizedBox(
                                     width: width,
                                     height: width *
                                         _cameraService
@@ -112,7 +152,7 @@ class SignInState extends State<SignIn> {
                                             _cameraService.cameraController),
                                         CustomPaint(
                                           painter: FacePainter(
-                                              isPortrait: true,
+                                              isPortrait: false,
                                               face: faceDetected,
                                               imageSize: imageSize),
                                         )
@@ -121,61 +161,41 @@ class SignInState extends State<SignIn> {
                                   ),
                                 ),
                               ),
-                            ),
-                          )
-                        : AspectRatio(
-                            aspectRatio:
-                                MediaQuery.of(context).size.aspectRatio,
-                            child: OverflowBox(
-                              alignment: Alignment.center,
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: SizedBox(
-                                  width: width,
-                                  height: width *
-                                      _cameraService
-                                          .cameraController.value.aspectRatio,
-                                  child: Stack(
-                                    fit: StackFit.expand,
-                                    children: <Widget>[
-                                      CameraPreview(
-                                          _cameraService.cameraController),
-                                      CustomPaint(
-                                        painter: FacePainter(
-                                            isPortrait: false,
-                                            face: faceDetected,
-                                            imageSize: imageSize),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
+                            );
+                    }
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
                   }
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              }),
-          CameraHeader("LOGIN", onBackPressed: _onBackPressed, text: "Sign Up")
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: !_bottomSheetVisible
-          ? AuthActionButton(
-              _initializeControllerFuture,
-              onPressed: onShot,
-              isLogin: true,
-              reload: _reload,
+                }),
+            CameraHeader(
+              "LOGIN",
+              onBackPressed: _onBackPressed,
+              text: "Sign Up",
+              mainContext: widget.mainContext,
             )
-          : Container(
-              // padding: EdgeInsets.all(10),
-              // decoration: BoxDecoration(
-              //   color: Colors.white
-              // ),
-              // child: Text("User was not identified", style: TextStyle(color: primaryColor, fontFamily: 'Inter')),
-              ),
-    );
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: !_bottomSheetVisible
+            ? AuthActionButton(
+                _initializeControllerFuture,
+                onPressed: onShot,
+                isLogin: true,
+                reload: _reload,
+                context: widget.mainContext,
+              )
+            : Container(
+                // padding: EdgeInsets.all(10),
+                // decoration: BoxDecoration(
+                //   color: Colors.white
+                // ),
+                // child: Text("User was not identified", style: TextStyle(color: primaryColor, fontFamily: 'Inter')),
+                ),
+      );
+    }
+    else {
+      return Center(child: CircularProgressIndicator(color: primaryColor));
+    }
   }
 
   @override
@@ -183,7 +203,8 @@ class SignInState extends State<SignIn> {
     // TODO: implement dispose
     super.dispose();
     // Dispose of the controller when the widget is disposed.
-    _cameraService.dispose();
+    // if (!mounted) _cameraService.dispose();
+    _cameraService.cameraController.dispose();
   }
 
   void _start() async {
@@ -276,7 +297,6 @@ class SignInState extends State<SignIn> {
       return true;
     }
   }
-
 
   _reload() {
     mounted

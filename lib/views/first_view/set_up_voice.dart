@@ -154,7 +154,7 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
                             width: width * 0.4,
                             child: SubstringHighlight(
                               text: text,
-                              terms: Command.all,
+                              terms: all,
                               textStyle: TextStyle(
                                   fontSize: 27.0,
                                   color: Colors.black,
@@ -177,7 +177,7 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
                       alignment: Alignment.center,
                       child: SubstringHighlight(
                         text: text,
-                        terms: Command.all,
+                        terms: all,
                         textStyle: TextStyle(
                             fontSize: 27.0,
                             color: Colors.black,
@@ -205,7 +205,7 @@ class _SetVoiceAssistantState extends State<SetVoiceAssistant> {
 
         if (!isListening) {
           Future.delayed(Duration(milliseconds: 500), () {
-            Utils.scanText(text);
+            Utils.scanText(text, player);
           });
         }
       });

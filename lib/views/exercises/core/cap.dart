@@ -6,14 +6,14 @@ import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/services/exercise_api.dart';
 import 'package:rehabis/views/exercises/exerciseWidgets.dart';
 
-class ExerciseThree extends StatefulWidget {
-  const ExerciseThree({Key? key}) : super(key: key);
+class NeckExercise extends StatefulWidget {
+  const NeckExercise({Key? key}) : super(key: key);
 
   @override
-  State<ExerciseThree> createState() => _ExerciseThreeState();
+  State<NeckExercise> createState() => _NeckExerciseState();
 }
 
-class _ExerciseThreeState extends State<ExerciseThree> {
+class _NeckExerciseState extends State<NeckExercise> {
   late int points;
   late int pressed;
 
@@ -27,7 +27,6 @@ class _ExerciseThreeState extends State<ExerciseThree> {
   bool isPressed = false;
   int count = 0;
   final controller = ConfettiController();
-
 
   void updateStarCount(Object? data) {
     setState(() {
@@ -44,8 +43,6 @@ class _ExerciseThreeState extends State<ExerciseThree> {
       count++;
     });
   }
-
-
 
   @override
   void initState() {
@@ -71,6 +68,7 @@ class _ExerciseThreeState extends State<ExerciseThree> {
   @override
   void dispose() {
     // TODO: implement dispose
+    controller.dispose();
     super.dispose();
   }
 
@@ -121,8 +119,8 @@ class _ExerciseThreeState extends State<ExerciseThree> {
         final minutes = twoDigits(duration.inMinutes.remainder(60));
         final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-        uploadExercise('None', points, '$minutes : $seconds',
-            'Find a third wheel', "Attention", 1);
+        uploadExercise(
+            'None', points, '$minutes : $seconds', 'Neck Exercise', "Core", 1);
 
         showDialog(
             context: (context),
@@ -139,113 +137,117 @@ class _ExerciseThreeState extends State<ExerciseThree> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(width: 4, color: Colors.purple)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                          child: Text("Well done!",
-                              style: TextStyle(
-                                  color: deepPurple,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Inter"))),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 13.0),
-                        child: Row(
-                          children: [
-                            Text("Execution time:",
+                  child: Stack(children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                            child: Text("Well done!",
                                 style: TextStyle(
-                                  color: deepPurple,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text("$minutes: $seconds",
-                                style: TextStyle(
-                                  color: deepPurple,
-                                  fontSize: 15,
-                                ))
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 13.0),
-                        child: Row(
-                          children: [
-                            Text("Number of errors:",
-                                style: TextStyle(
-                                  color: deepPurple,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text("$errors",
-                                style: TextStyle(
-                                  color: deepPurple,
-                                  fontSize: 15,
-                                ))
-                          ],
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            child: Container(
-                              width: 100,
-                              height: 35,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: Colors.purple.shade200),
-                              child: Row(
-                                children: const [
-                                  Text("Restart",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: Colors.white)),
-                                  Icon(Icons.replay, color: Colors.white)
-                                ],
+                                    color: deepPurple,
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Inter"))),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 13.0),
+                          child: Row(
+                            children: [
+                              Text("Execution time:",
+                                  style: TextStyle(
+                                    color: deepPurple,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              const SizedBox(
+                                width: 5,
                               ),
-                            ),
-                            onPressed: () async {
-                              Navigator.of(context).pop();
-                              isRunning = true;
-
-                              startTimer();
-                            },
+                              Text("$minutes: $seconds",
+                                  style: TextStyle(
+                                    color: deepPurple,
+                                    fontSize: 15,
+                                  ))
+                            ],
                           ),
-                          const SizedBox(width: 7),
-                          TextButton(
-                            child: Container(
-                              width: 100,
-                              height: 35,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: Colors.purple.shade200),
-                              child: Row(
-                                children: [
-                                  Text("Exit",
-                                      style:
-                                          const TextStyle(color: Colors.white)),
-                                  Icon(Icons.exit_to_app, color: Colors.white)
-                                ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 13.0),
+                          child: Row(
+                            children: [
+                              Text("Number of errors:",
+                                  style: TextStyle(
+                                    color: deepPurple,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              const SizedBox(
+                                width: 5,
                               ),
+                              Text("$errors",
+                                  style: TextStyle(
+                                    color: deepPurple,
+                                    fontSize: 15,
+                                  ))
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              child: Container(
+                                width: 100,
+                                height: 35,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7),
+                                    color: Colors.purple.shade200),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text("Restart",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.white)),
+                                    Icon(Icons.replay, color: Colors.white)
+                                  ],
+                                ),
+                              ),
+                              onPressed: () async {
+                                Navigator.of(context).pop();
+
+                                startTimer();
+                              },
                             ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      )
-                    ],
-                  ),
+                            const SizedBox(width: 7),
+                            TextButton(
+                              child: Container(
+                                width: 100,
+                                height: 35,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7),
+                                    color: Colors.purple.shade200),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("Exit",
+                                        style: const TextStyle(
+                                            color: Colors.white)),
+                                    Icon(Icons.exit_to_app, color: Colors.white)
+                                  ],
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    ConfettiWidget(confettiController: controller)
+                  ]),
                 ),
               );
             });
@@ -253,13 +255,10 @@ class _ExerciseThreeState extends State<ExerciseThree> {
         duration = Duration();
         points = 0;
         pressed = 0;
-
       });
     }
   }
 
-
-  
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -279,7 +278,7 @@ class _ExerciseThreeState extends State<ExerciseThree> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 textHeader(width * 0.7,
-                    'The exercise helps with an attention and a logic, in order to execue an exercise one should be able to identify the exceeding element of a group'),
+                    'The exercise most likely to dissolve itching and stagnation in the area of neck, upper shoulders and head'),
                 TextButton(
                     onPressed: () {
                       startTimer();
@@ -321,13 +320,11 @@ class _ExerciseThreeState extends State<ExerciseThree> {
         child: SizedBox(
             width: width * 0.92,
             child: Column(children: [
-              textHeader(width,
-                  "Using 'Cubes' equipment user supposed to train the wrist and low-palm area"),
               SizedBox(
                 height: height * 0.14,
               ),
               const Text(
-                "Press cubes with both hands in turn",
+                "Turn your neck to the left, then to the right",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontFamily: "Inter", fontSize: 27),
               ),
@@ -336,48 +333,25 @@ class _ExerciseThreeState extends State<ExerciseThree> {
               ),
               Stack(children: [
                 Container(
-                  width: width * 0.9,
+                  width: width * 0.88,
                   height: height * 0.4,
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(width: 3,),
-                      shape: BoxShape.circle,
+                      border: Border.all(
+                        width: 3,
                       ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        width: width * 0.35,
-                        child: Text(
-                          "Press LEFT cube",
-                          style: TextStyle(
-                              color: Colors.grey.shade500,
-                              fontSize: 15,
-                              fontFamily: "Inter"),
-                        ),
-                      ),
-                      SizedBox(
-                        width: width * 0.35,
-                        child: Text(
-                          "Press RIGHT cube",
-                          style: TextStyle(
-                              color: Colors.grey.shade500,
-                              fontSize: 15,
-                              fontFamily: "Inter"),
-                        ),
-                      )
-                    ],
-                  ),
+                      borderRadius: BorderRadius.circular(150)),
                 ),
                 AnimatedPositioned(
                   curve: Curves.easeInCubic,
-                  duration: const Duration(milliseconds: 450),
-                  left: isPressed ? width * 0.45 : 0,
+                  duration: const Duration(milliseconds: 2000),
+                  left: isPressed ? width * 0.53 : 0,
+                  right: !isPressed ? width * 0.08 : 0,
                   child: Container(
                     width: width * 0.45,
                     height: height * 0.4,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        shape: BoxShape.circle,
                         gradient: LinearGradient(colors: [
                           Color.fromRGBO(244, 173, 255, 1.0),
                           Color.fromRGBO(200, 186, 255, 1.0)
@@ -394,7 +368,7 @@ class _ExerciseThreeState extends State<ExerciseThree> {
     final seconds = twoDigits(duration.inSeconds.remainder(60));
 
     return Scaffold(
-      appBar: exerciseAppbar('Find a Third Wheel', context, 'None', points,
+      appBar: exerciseAppbar('Neck Exercise', context, 'None', points,
           '$minutes : $seconds', "Attention", 1),
       persistentFooterButtons: [
         Center(

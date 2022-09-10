@@ -4,7 +4,6 @@ import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:rehabis/services/ml_kit_service.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/services/facenet_service.dart';
@@ -15,7 +14,6 @@ import 'package:rehabis/views/main/profile.dart';
 import 'package:rehabis/views/main/voice.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -23,7 +21,6 @@ Future<void> main() async {
     FlutterError.dumpErrorToConsole(details);
     if (kReleaseMode) exit(1);
   };
-
 
   runApp(MyApp());
 }
@@ -37,14 +34,19 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
+GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+FaceNetService _faceNetService = FaceNetService.faceNetService;
+MLKitService _mlKitService = MLKitService();
+
 class _MyAppState extends State<MyApp> {
-  FaceNetService _faceNetService = FaceNetService.faceNetService;
-  MLKitService _mlKitService = MLKitService();
+
 
   bool loading = false;
 
   void initState() {
     super.initState();
+
     startup();
   }
 
@@ -57,37 +59,36 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return !loading
         ? MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: isLoggedIn ? Main() : FirstView())
+            // scaffoldMessengerKey: scaffoldMessengerKey,
+            debugShowCheckedModeBanner: false,
+            home: isLoggedIn ? Main() : FirstView())
         : CircularProgressIndicator(
             color: secondPrimaryColor,
           );
   }
 
-  void startup() async {
-    _setLoading(true);
 
-    List<CameraDescription> cameras = await availableCameras();
+}
 
-    /// takes the front camera
-    cameraDescription = cameras.firstWhere(
-      (CameraDescription camera) =>
-          camera.lensDirection == CameraLensDirection.front,
-    );
 
-    // start the services
-    await _faceNetService.loadModel();
-    //  await _dataBaseService.loadDB();
-    _mlKitService.initialize();
 
-    _setLoading(false);
-  }
+void startup() async {
+  // _setLoading(true);
 
-  void _setLoading(bool value) {
-    setState(() {
-      loading = value;
-    });
-  }
+  List<CameraDescription> cameras = await availableCameras();
+
+  /// takes the front camera
+  cameraDescription = cameras.firstWhere(
+    (CameraDescription camera) =>
+        camera.lensDirection == CameraLensDirection.front,
+  );
+
+  // start the services
+  await _faceNetService.loadModel();
+  //  await _dataBaseService.loadDB();
+  _mlKitService.initialize();
+
+  // _setLoading(false);
 }
 
 class Main extends StatefulWidget {
