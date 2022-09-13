@@ -29,7 +29,7 @@ class _Voice extends State<Voice> {
   void initState() {
     player = AudioPlayer();
 
-    relatives = [];
+    relatives = {};
 
     super.initState();
 

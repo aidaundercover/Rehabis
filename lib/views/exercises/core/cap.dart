@@ -15,7 +15,6 @@ class NeckExercise extends StatefulWidget {
 
 class _NeckExerciseState extends State<NeckExercise> {
   late int points;
-  late int pressed;
 
   Duration duration = const Duration();
   Timer? timer;
@@ -57,12 +56,13 @@ class _NeckExerciseState extends State<NeckExercise> {
     });
 
     controller.addListener(() {
-      isPressed ? controller.play() : controller.stop();
+      isRunning = controller.state == ConfettiControllerState.playing;
     });
 
     super.initState();
     points = 0;
-    pressed = 0;
+
+    startTimer();
   }
 
   @override
@@ -84,9 +84,7 @@ class _NeckExerciseState extends State<NeckExercise> {
   void getError() {
     setState(() {
       if (points == 4) {
-      } else {
-        pressed++;
-      }
+      } else {}
     });
   }
 
@@ -254,7 +252,6 @@ class _NeckExerciseState extends State<NeckExercise> {
 
         duration = Duration();
         points = 0;
-        pressed = 0;
       });
     }
   }
@@ -277,37 +274,8 @@ class _NeckExerciseState extends State<NeckExercise> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                textHeader(width * 0.7,
+                textHeader(width,
                     'The exercise most likely to dissolve itching and stagnation in the area of neck, upper shoulders and head'),
-                TextButton(
-                    onPressed: () {
-                      startTimer();
-                    },
-                    child: Container(
-                      width: width * 0.25,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: isRunning ? deepPurple : primaryColor,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(isRunning ? "GO!" : "Start!",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "Ruberoid",
-                              fontSize: 19,
-                              shadows: [
-                                isRunning
-                                    ? Shadow(
-                                        offset: const Offset(3, 3),
-                                        color: Colors.white.withOpacity(0.3),
-                                        blurRadius: 5)
-                                    : const Shadow(
-                                        offset: Offset(3, 3),
-                                        color: Colors.transparent,
-                                        blurRadius: 5)
-                              ])),
-                    ))
               ],
             ),
           ],
@@ -318,7 +286,7 @@ class _NeckExerciseState extends State<NeckExercise> {
     Widget main() {
       return Center(
         child: SizedBox(
-            width: width * 0.92,
+            // width: width * 0.92,
             child: Column(children: [
               SizedBox(
                 height: height * 0.14,
@@ -333,7 +301,7 @@ class _NeckExerciseState extends State<NeckExercise> {
               ),
               Stack(children: [
                 Container(
-                  width: width * 0.88,
+                  width: width * 0.78,
                   height: height * 0.4,
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -343,12 +311,12 @@ class _NeckExerciseState extends State<NeckExercise> {
                       borderRadius: BorderRadius.circular(150)),
                 ),
                 AnimatedPositioned(
-                  curve: Curves.easeInCubic,
+                  curve: Curves.decelerate,
                   duration: const Duration(milliseconds: 2000),
                   left: isPressed ? width * 0.53 : 0,
-                  right: !isPressed ? width * 0.08 : 0,
+                  right: !isPressed ? width * 0.53 : 0,
                   child: Container(
-                    width: width * 0.45,
+                    // width: width * 0.45,
                     height: height * 0.4,
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
@@ -374,7 +342,12 @@ class _NeckExerciseState extends State<NeckExercise> {
         Center(
           child: TextButton(
             onPressed: () {
-              if (isRunning) stopTimer(4 - points, width);
+              if (isRunning) {
+                controller.play();
+                stopTimer(0, width);
+              } else {
+                controller.stop();
+              }
             },
             child: const Text(
               "STOP",

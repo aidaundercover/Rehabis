@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/services/exercise_api.dart';
 import 'package:rehabis/views/exercises/attention/find_third_whhel.dart';
+import 'package:rehabis/views/exercises/attention/findiandh.dart';
 import 'package:rehabis/views/exercises/attention/similiar_words.dart';
 import 'package:rehabis/views/exercises/core/cap.dart';
 import 'package:rehabis/views/exercises/cube/legs_one.dart';
@@ -10,7 +11,6 @@ import 'package:rehabis/views/exercises/hands/glove_one.dart';
 import 'package:rehabis/views/exercises/hands/hands.dart';
 import 'package:rehabis/views/exercises/logic/3d_thinking.dart';
 import 'package:rehabis/views/exercises/logic/ladybag.dart';
-import 'package:rehabis/views/exercises/logic/patterns.dart';
 import 'package:rehabis/views/exercises/logic/sentence_based.dart';
 import 'package:rehabis/views/exercises/logic/sorting.dart';
 import 'package:rehabis/views/exercises/logic/whats_more.dart';
@@ -74,25 +74,27 @@ List oneArm = [
   {
     'title': "Motorics",
     "minutes": 4,
-    "page": GloveOne(),
+    "page": const GloveOne(),
     "skill": "Arm mobility"
   },
+  
 ];
 
 List twoArm = [
   {
     'title': "Hands",
     "minutes": 4,
-    "page": HandsOneExrcise(),
+    "page": const HandsOneExrcise(),
     "skill": "Arm mobility"
   },
+
 ];
 
 List threeArm = [
   {
     'title': "Flexing elbow",
     "minutes": 4,
-    "page": DiagonaleHands(),
+    "page": const DiagonaleHands(),
     "skill": "Arm mobility"
   },
 ];
@@ -123,21 +125,21 @@ List twoProblem = [
     "page": SpaceThinking(),
     "skill": "Problem Solving"
   },
-  {
-    'title': "Sorting and Ordering",
-    "skill": "Problem Solving",
-    "minutes": 4,
-    "page": SortingExercise(),
-  },
+  // {
+  //   'title': "Sorting and Ordering",
+  //   "skill": "Problem Solving",
+  //   "minutes": 4,
+  //   "page": SortingExercise(),
+  // },
 ];
 
 List threeProblem = [
-  {
-    'title': "Word-based puzzle",
-    "minutes": 4,
-    "page": SentencedQuiz(),
-    "skill": "Problem Solving"
-  },
+  // {
+  //   'title': "Word-based puzzle",
+  //   "minutes": 4,
+  //   "page": SentencedQuiz(),
+  //   "skill": "Problem Solving"
+  // },
 ];
 
 //Leg mobility
@@ -181,7 +183,14 @@ List oneAttention = [
   },
 ];
 
-List twoAttention = [];
+List twoAttention = [
+  {
+    'title': "Where are they?",
+    "skill": "Attention",
+    "minutes": 3,
+    "page": const ExercizeOne(),
+  },
+];
 
 List threeAttention = [
   {
@@ -558,11 +567,13 @@ Widget headerExercise(double width, String text, int score) {
 }
 
 Widget textHeader(double width, String text) {
-  return SizedBox(
-    width: width * 0.9,
-    child: Text(
-      text,
-      style: TextStyle(color: Colors.grey.shade400, fontFamily: "Inter"),
+  return Center(
+    child: SizedBox(
+      width: width * 0.9,
+      child: Text(
+        text,
+        style: TextStyle(color: Colors.grey.shade400, fontFamily: "Inter", fontSize: 20),
+      ),
     ),
   );
 }

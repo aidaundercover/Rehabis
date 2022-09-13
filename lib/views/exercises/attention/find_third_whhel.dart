@@ -35,6 +35,7 @@ class _ExerciseThreeState extends State<ExerciseThree> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     controller.addListener(() {
       setState(() {
         isRunning = controller.state == ConfettiControllerState.playing;
@@ -49,6 +50,8 @@ class _ExerciseThreeState extends State<ExerciseThree> {
 
     points = 0;
     pressed = 0;
+
+    startTimer();
   }
 
   void getPoint() {
@@ -63,8 +66,7 @@ class _ExerciseThreeState extends State<ExerciseThree> {
   void getError() {
     setState(() {
       if (points == 4) {
-      } else {
-      }
+      } else {}
     });
   }
 
@@ -234,13 +236,6 @@ class _ExerciseThreeState extends State<ExerciseThree> {
 
         duration = Duration();
         points = 0;
-        pressed = 0;
-        isSelected = [
-          [false, false, false, false],
-          [false, false, false, false],
-          [false, false, false, false],
-          [false, false, false, false]
-        ];
       });
     }
   }
@@ -302,37 +297,37 @@ class _ExerciseThreeState extends State<ExerciseThree> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                textHeader(width * 0.7,
+                textHeader(width ,
                     'The exercise helps with an attention and a logic, in order to execue an exercise one should be able to identify the exceeding element of a group'),
-                TextButton(
-                    onPressed: () {
-                      startTimer();
-                    },
-                    child: Container(
-                      width: width * 0.25,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: isRunning ? deepPurple : primaryColor,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(isRunning ? "GO!" : "Start!",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "Ruberoid",
-                              fontSize: 19,
-                              shadows: [
-                                isRunning
-                                    ? Shadow(
-                                        offset: const Offset(3, 3),
-                                        color: Colors.white.withOpacity(0.3),
-                                        blurRadius: 5)
-                                    : const Shadow(
-                                        offset: Offset(3, 3),
-                                        color: Colors.transparent,
-                                        blurRadius: 5)
-                              ])),
-                    ))
+                // TextButton(
+                //     onPressed: () {
+                //       startTimer();
+                //     },
+                //     child: Container(
+                //       width: width * 0.25,
+                //       height: 40,
+                //       decoration: BoxDecoration(
+                //         color: isRunning ? deepPurple : primaryColor,
+                //         borderRadius: BorderRadius.circular(5),
+                //       ),
+                //       alignment: Alignment.center,
+                //       child: Text(isRunning ? "GO!" : "Start!",
+                //           style: TextStyle(
+                //               color: Colors.white,
+                //               fontFamily: "Ruberoid",
+                //               fontSize: 19,
+                //               shadows: [
+                //                 isRunning
+                //                     ? Shadow(
+                //                         offset: const Offset(3, 3),
+                //                         color: Colors.white.withOpacity(0.3),
+                //                         blurRadius: 5)
+                //                     : const Shadow(
+                //                         offset: Offset(3, 3),
+                //                         color: Colors.transparent,
+                //                         blurRadius: 5)
+                //               ])),
+                //     ))
               ],
             ),
           ],

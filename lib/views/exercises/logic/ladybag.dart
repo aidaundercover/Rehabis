@@ -54,6 +54,8 @@ class _LadyBagState extends State<LadyBag> {
 
     points = 0;
     pressed = 0;
+
+    startTimer();
   }
 
   void getPoint() {
@@ -101,8 +103,8 @@ class _LadyBagState extends State<LadyBag> {
         final minutes = twoDigits(duration.inMinutes.remainder(60));
         final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-        uploadExercise('None', points, '$minutes : $seconds',
-            'Find a Ladybag', "Attention", 1);
+        uploadExercise('None', points, '$minutes : $seconds', 'Find a Ladybag',
+            "Problem Solving", 1);
 
         showDialog(
             context: (context),
@@ -239,9 +241,7 @@ class _LadyBagState extends State<LadyBag> {
         duration = Duration();
         points = 0;
         pressed = 0;
-        isSelected = [
-          false, false, false
-        ];
+        isSelected = [false, false, false];
       });
     }
   }
@@ -250,6 +250,9 @@ class _LadyBagState extends State<LadyBag> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     Widget appBar() {
       return Padding(
@@ -264,37 +267,8 @@ class _LadyBagState extends State<LadyBag> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                textHeader(width * 0.7,
+                textHeader(width,
                     'The exercise helps with an attention and a logic, in order to execue an exercise one should be able to identify the exceeding element of a group'),
-                TextButton(
-                    onPressed: () {
-                      startTimer();
-                    },
-                    child: Container(
-                      width: width * 0.25,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: isRunning ? deepPurple : primaryColor,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(isRunning ? "GO!" : "Start!",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "Ruberoid",
-                              fontSize: 19,
-                              shadows: [
-                                isRunning
-                                    ? Shadow(
-                                        offset: const Offset(3, 3),
-                                        color: Colors.white.withOpacity(0.3),
-                                        blurRadius: 5)
-                                    : const Shadow(
-                                        offset: Offset(3, 3),
-                                        color: Colors.transparent,
-                                        blurRadius: 5)
-                              ])),
-                    ))
               ],
             ),
           ],
@@ -306,96 +280,96 @@ class _LadyBagState extends State<LadyBag> {
     final minutes = twoDigits(duration.inMinutes.remainder(60));
     final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: exerciseAppbar('Find a Ladybag', context, 'None', points,
           '$minutes : $seconds', "Attention", 1),
-      persistentFooterButtons: [
-        Center(
-          child: TextButton(
-            onPressed: () {
-              if (isRunning) {
-                controller.play();
-                stopTimer(4 - points, width);
-              } else {
-                controller.stop();
-              }
-            },
-            child: const Text(
-              "STOP",
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-            ),
-          ),
-        )
-      ],
+      // persistentFooterButtons: [
+      //   Center(
+      //     child: TextButton(
+      //       onPressed: () {
+
+      //       },
+      //       child: const Text(
+      //         "STOP",
+      //         style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+      //       ),
+      //     ),
+      //   )
+      // ],
       body: Center(
-        child: Column(
-          children: [
-            appBar(),
-            Text(
-              "Where is the ladybag?",
-              style: TextStyle(fontFamily: "Inter", fontSize: 23),
-            ),
-            Image.asset(
-              "assets/find_ladybag.png",
-              width: width * 0.8,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(
-                  isSelected.length,
-                  (index) => GestureDetector(
-                        onTap: () {
-                          for (int indexBtn = 0;
-                              indexBtn < isSelected.length;
-                              indexBtn++) {
-                            if (indexBtn == index) {
-                              isSelected[indexBtn] = !isSelected[indexBtn];
-                              if (isSelected[indexBtn]) {
-                                if (indexBtn == 1) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) =>
-                                          Dialog(child: Text("Well done!")));
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              appBar(),
+              Text(
+                "Where is the ladybag?",
+                style: TextStyle(fontFamily: "Inter", fontSize: 23),
+              ),
+              Image.asset(
+                "assets/find_ladybag.png",
+                width: isPortrait ? width * 0.8 : width * 0.23,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(
+                    isSelected.length,
+                    (index) => GestureDetector(
+                          onTap: () {
+                            for (int indexBtn = 0;
+                                indexBtn < isSelected.length;
+                                indexBtn++) {
+                              if (indexBtn == index) {
+                                isSelected[indexBtn] = !isSelected[indexBtn];
+                                if (isSelected[indexBtn]) {
+                                  if (indexBtn == 1) {
+                                    stopTimer(0, width);
+
+                                    if (isRunning) {
+                                      controller.play();
+                                      stopTimer(0, width);
+                                    } else {
+                                      controller.stop();
+                                    }
+                                  }
                                 }
+                              } else {
+                                isSelected[indexBtn] = false;
                               }
-                            } else {
-                              isSelected[indexBtn] = false;
                             }
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(0.01),
-                                    spreadRadius: 7,
-                                    blurRadius: 13,
-                                    offset: Offset(2, 3)),
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(0.05),
-                                    spreadRadius: 7,
-                                    blurRadius: 13,
-                                    offset: Offset(-2, -3)),
-                              ],
-                              color: isSelected[index]
-                                  ? secondPrimaryColor
-                                  : Color.fromARGB(255, 249, 249, 249)),
-                          alignment: Alignment.center,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 3),
-                          child: Image.asset(
-                            images[index],
-                            height: 49,
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(0.01),
+                                      spreadRadius: 7,
+                                      blurRadius: 13,
+                                      offset: Offset(2, 3)),
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(0.05),
+                                      spreadRadius: 7,
+                                      blurRadius: 13,
+                                      offset: Offset(-2, -3)),
+                                ],
+                                color: isSelected[index]
+                                    ? secondPrimaryColor
+                                    : Color.fromARGB(255, 249, 249, 249)),
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 3),
+                            child: Image.asset(
+                              images[index],
+                              height: 49,
+                            ),
                           ),
-                        ),
-                      )),
-            )
-          ],
+                        )),
+              )
+            ],
+          ),
         ),
       ),
     );

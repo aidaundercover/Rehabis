@@ -42,7 +42,12 @@ class Auth {
         }
       },
       "Events" : {},
-      "Relatives" : {}
+      // "Relatives" : {
+      //   '1' : {
+      //     'relation' : "None",
+      //     'number' : 'None'
+      //   }
+      // }
     });
 
     Fluttertoast.showToast(msg: "User registered successfully");
@@ -104,9 +109,9 @@ getBornDate(String iin) {
     int yearInt = int.parse(yearPerson);
 
     if (yearInt < 100 && yearInt > yearNow) {
-      bornDateGlobal = '19$yearInt-$month-$day';
+      bornDateGlobal = '19$yearPerson-$month-$day';
     } else {
-      bornDateGlobal = '20$yearInt-$month-$day';
+      bornDateGlobal = '20$yearPerson-$month-$day';
     }
   }
 }

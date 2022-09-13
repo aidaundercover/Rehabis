@@ -22,19 +22,20 @@ class AppTextField extends StatelessWidget {
       autofocus: autofocus,
       cursorColor: primaryColor,
       maxLength: labelText == 'IIN' ? 12 : 50,
-      
       validator: (value) {
         if (labelText == 'IIN') {
           int month = int.parse(value![2] + value[3]);
           int day = int.parse(value[4] + value[5]);
 
-          if ( value.length == 12) {
+          if (value.length == 12) {
             if (month > 0 && month < 13 && day > 0 && day < 32) {
             } else {
+              value = '';
               return 'IIN is not a valid';
             }
           } else {
-            return  'IIN consists of 12 characters';
+            value = '';
+            return 'IIN consists of 12 characters';
           }
         }
       },

@@ -53,8 +53,8 @@ class Utils {
 
 
       for (int i = 0; i < relatives.length; i++) {
-        if (text.contains("call ${relatives[i].relation}")) {
-          String number = relatives[i].number; //set the number here
+        if (text.contains("call ${relatives.elementAt(i).relation}")) {
+          String number = relatives.elementAt(i).number; //set the number here
           await FlutterPhoneDirectCaller.callNumber(number);
         }
       }
@@ -64,7 +64,14 @@ class Utils {
       final body = _getTextAfterCommand(text: text, command: "write email");
 
       openEmail(body: body);
-    } else if (text.contains("pills")) {
+    } else if (text.contains("weather")) {
+      await player.setAsset("assets/good_weather.mp3");
+      player.play();
+    } else if (text.contains("i feel bad")) {
+      await player.setAsset("assets/give_up.mp3");
+
+      player.play();
+    } else if (text.contains("medication")) {
       try {
         DatabaseReference ref = FirebaseDatabase.instance.ref("LR");
 

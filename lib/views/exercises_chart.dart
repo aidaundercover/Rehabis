@@ -44,15 +44,24 @@ class _ExercisesChartState extends State<ExercisesChart> {
 
     return SafeArea(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 50.0),
             child: ToggleButtons(
                 children: [
-                  Text("Today", style: style),
-                  Text("Last week", style: style),
-                  Text("Last month", style: style),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Today", style: style),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Last week", style: style),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Last month", style: style),
+                  ),
                 ],
                 isSelected: isSelected,
                 selectedColor: secondPrimaryColor.withOpacity(0.4),
@@ -101,30 +110,35 @@ class _ExercisesChartState extends State<ExercisesChart> {
                       
                     }
 
+
+
                     if (nextMarker["Equipment"] == "Cap") {
                       final mapre = Exercise(
-                          time, nextMarker["Count"], nextMarker["Time"]);
+                          time,  nextMarker["Count"], nextMarker["Date"],);
 
                       _chartDataHands.add(mapre);
                     }
 
                     if (nextMarker["Equipment"] == "Glove") {
                       final mapre = Exercise(
-                          time, nextMarker["Count"], nextMarker["Time"]);
+                          time, nextMarker["Count"],
+                        nextMarker["Date"],
+                      );
 
                       _chartDataLegs.add(mapre);
                     }
 
                     if (nextMarker["Equipment"] == "Cube") {
                       final mapre = Exercise(
-                          key, nextMarker["Count"], nextMarker["Time"]);
+                          key, nextMarker["Count"], nextMarker["Date"],
+                      );
 
                       _chartDataCore.add(mapre);
                     }
 
                     if (nextMarker["Equipment"] == "None") {
                       final mapre = Exercise(
-                          key, nextMarker["Count"], nextMarker["Time"]);
+                          key, nextMarker["Count"], nextMarker["Date"],);
 
                       _cognitivedData.add(mapre);
                     }
@@ -159,7 +173,7 @@ class _ExercisesChartState extends State<ExercisesChart> {
                               yValueMapper: (Exercise exercises, _) =>
                                   exercises.count),
                           LineSeries<Exercise, String>(
-                              dataSource: _chartDataLegs,
+                              dataSource: _chartDataCore,
                               color: deepPink,
                               enableTooltip: true,
                               xValueMapper: (Exercise exercises, _) =>
@@ -167,7 +181,7 @@ class _ExercisesChartState extends State<ExercisesChart> {
                               yValueMapper: (Exercise exercises, _) =>
                                   exercises.count),
                           LineSeries<Exercise, String>(
-                              dataSource: _chartDataCore,
+                              dataSource: _cognitivedData,
                               color: orange,
                               enableTooltip: true,
                               xValueMapper: (Exercise exercises, _) =>
@@ -196,7 +210,7 @@ class _ExercisesChartState extends State<ExercisesChart> {
                 colorShow(deepPurple, "Cap"),
                 colorShow(deepPink, "Gloves"),
                 colorShow(orange, "Cubes"),
-                colorShow(deepPurple, "Cognitive"),
+                colorShow(primaryColor, "Cognitive"),
                 
               ],
             ),
@@ -207,22 +221,7 @@ class _ExercisesChartState extends State<ExercisesChart> {
   }
 }
 
-List<Exercise> getChartData() {
-  final List<Exercise> chartData = <Exercise>[
-    Exercise("Hands", 13, "04.30.2022 11:03"),
-    Exercise("Hands", 3, "04.30.2022 11:02"),
-    Exercise("Hands", 7, "04.30.2022 11:01"),
-  ];
 
-  DatabaseReference starCountRef =
-      FirebaseDatabase.instance.ref('Users/123456789012/Trainings/');
-  starCountRef.onValue.listen((DatabaseEvent event) {
-    final data = event.snapshot.value as Exercise;
-    chartData.add(data);
-  });
-
-  return chartData;
-}
 
 class Exercise {
   final String bodyPart;

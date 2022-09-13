@@ -34,6 +34,19 @@ final CameraService _cameraService = CameraService();
 final TextEditingController _nameController = TextEditingController(text: '');
 final TextEditingController _iinController = TextEditingController(text: '');
 
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+bool validateAndSave() {
+  final FormState form = _formKey.currentState!;
+  if (form.validate()) {
+    print('Form is valid');
+    return true;
+  } else {
+    print('Form is invalid');
+    return false;
+  }
+}
+
 User? predictedUser;
 
 Future _signUp(context) async {
@@ -133,9 +146,14 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                             alignment: Alignment.center,
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child: Text("Error occured! Try again", style: TextStyle(
-                                fontSize: 20,
-                                color: primaryColor, fontWeight: FontWeight.bold, fontFamily: 'Inter'),),
+                              child: Text(
+                                "Error occured! Try again",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Inter'),
+                              ),
                             ),
                           ),
                         ),
@@ -198,63 +216,69 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                       style: TextStyle(fontSize: 20),
                     ))
                   : Container(),
-          Column(
-            children: [
-              widget.isLogin
-                  ? Container()
-                  : Column(children: [
-                      SizedBox(
-                        width: width * 0.7,
-                        child: AppTextField(
-                          controller: _iinController,
-                          labelText: "IIN",
-                          keyboardType: TextInputType.number,
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                widget.isLogin
+                    ? Container()
+                    : Column(children: [
+                        SizedBox(
+                          width: width * 0.7,
+                          child: AppTextField(
+                            controller: _iinController,
+                            labelText: "IIN",
+                            keyboardType: TextInputType.number,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: width * 0.7,
-                        child: AppTextField(
-                          controller: _nameController,
-                          labelText: "Your Name",
-                        ),
-                      )
-                    ]),
-              SizedBox(height: 10),
-              Divider(),
-              SizedBox(height: 10),
-              widget.isLogin && predictedUser != null
-                  ? SizedBox(
-                      width: width * 0.55,
-                      child: AppButton(
-                        text: 'LOGIN',
-                        onPressed: () async {
-                          _signIn(widget.context);
-                        },
-                        mainContext: widget.context,
-                        icon: Icon(
-                          Icons.login,
-                          color: Colors.white,
-                        ),
-                      ),
-                    )
-                  : !widget.isLogin
-                      ? SizedBox(
-                          width: width * 0.55,
-                          child: AppButton(
-                            text: 'SIGN UP',
-                            mainContext: widget.context,
-                            onPressed: () async {
-                              await _signUp(widget.context);
-                            },
-                            icon: Icon(
-                              Icons.person_add,
-                              color: Colors.white,
-                            ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          width: width * 0.7,
+                          child: AppTextField(
+                            controller: _nameController,
+                            labelText: "Your Name",
                           ),
                         )
-                      : Container(),
-            ],
+                      ]),
+                SizedBox(height: 10),
+                Divider(),
+                SizedBox(height: 10),
+                widget.isLogin && predictedUser != null
+                    ? SizedBox(
+                        width: width * 0.55,
+                        child: AppButton(
+                          text: 'LOGIN',
+                          onPressed: () async {
+                            if (validateAndSave())
+                              _signIn(widget.context);
+                            else {}
+                          },
+                          mainContext: widget.context,
+                          icon: Icon(
+                            Icons.login,
+                          ),
+                        ),
+                      )
+                    : !widget.isLogin
+                        ? SizedBox(
+                            width: width * 0.55,
+                            child: AppButton(
+                              text: 'SIGN UP',
+                              mainContext: widget.context,
+                              onPressed: () async {
+                                if (validateAndSave()) {
+                                  await _signUp(widget.context);
+                                }
+                              },
+                              icon: Icon(
+                                Icons.person_add,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        : Container(),
+              ],
+            ),
           ),
         ],
       ),

@@ -62,63 +62,177 @@ class _ReminderState extends State<Reminder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-      decoration: BoxDecoration(color: secondaryColor.withOpacity(0.1)),
-      child: Column(
-        children: [
-          TextFormField(
-            controller: days,
-            keyboardType: TextInputType.number,
-          ),
-          ToggleButtons(children: [
-            Text('Every Day'),
-            Text('Every 2 days'),
-            Text('Every 3 days'),
-          ], isSelected: isSelected),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                _selectTime(context);
-                showTime = true;
-              },
-              child: const Text('Timer Picker'),
-            ),
-          ),
-          showTime
-              ? Center(child: Text(getTime(selectedTime)))
-              : const SizedBox(),
-          TextButton(
-              onPressed: () {
-                NotificationApi.showScheduledNotification(
-                    title: "Its time for streching up!",
-                    time: selectedTime,
-                    days: int.parse(days.text),
-                    body:
-                        "The instensity of your exercising will Directly affect your rehab duration!",
-                    payload: "rehabis.com");
-                Scaffold.of(context).showBottomSheet((context) => Container(
-                      height: 10,
-                      decoration: BoxDecoration(),
-                      alignment: Alignment.center,
-                      child: Text("Notification Set"),
-                    ));
-              },
-              child: Text("Show  Notification")),
-          TextButton(onPressed: () {
-              DatabaseHelper _dataBaseHelper = DatabaseHelper.instance;
-              _dataBaseHelper.deleteAll();
-          }, child: Text('Clear Databse',), ),
-          TextButton(onPressed: () {
-              // ExerciseApi.uploadExercise('equipment', 33, "time", "t", "skill", 2);
-          }, child: Text('Uplaod exercise test',), )
-        ],
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        centerTitle: true,
+        title:  Text('Set Notifications', style: TextStyle(fontFamily: 'Inter', color: Colors.black.withOpacity(0.8)),),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
-        )
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+        decoration: BoxDecoration(color: secondaryColor.withOpacity(0.1)),
+        child: Column(
+          children: [
+            SizedBox(height: 30,),
+            Text('Set Reminders for exerising, to not forget '),
+            TextFormField(
+              controller: days,
+              keyboardType: TextInputType.number,
+            ),
+            ToggleButtons(children: [
+              Text('Every Day'),
+              Text('Every 2 days'),
+              Text('Every 3 days'),
+            ], isSelected: isSelected),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  _selectTime(context);
+                  showTime = true;
+                },
+                child: const Text('Timer Picker'),
+              ),
+            ),
+            showTime
+                ? Center(child: Text(getTime(selectedTime)))
+                : const SizedBox(),
+            TextButton(
+                onPressed: () {
+                  NotificationApi.showScheduledNotification(
+                      title: "Its time for streching up!",
+                      time: selectedTime,
+                      days: int.parse(days.text),
+                      body:
+                          "The instensity of your exercising will Directly affect your rehab duration!",
+                      payload: "rehabis.com");
+                  Scaffold.of(context).showBottomSheet((context) => Container(
+                        height: 10,
+                        decoration: BoxDecoration(),
+                        alignment: Alignment.center,
+                        child: Text("Notification Set"),
+                      ));
+                },
+                child: Text("Show  Notification")),
+            TextButton(onPressed: () {
+                DatabaseHelper _dataBaseHelper = DatabaseHelper.instance;
+                _dataBaseHelper.deleteAll();
+            }, child: Text('Clear Databse',), ),
+            TextButton(onPressed: () {
+                // ExerciseApi.uploadExercise('equipment', 33, "time", "t", "skill", 2);
+            }, child: Text('Uplaod exercise test',), )
+          ],
+        ),
+          )
+          ],
+        ),
+      ),
+    );
+  }
+
+  //WIDGETS//
+
+   Widget contactCard(
+      double width, double height, int n, String number, String person) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: Center(
+        child: Container(
+          width: width * 0.9,
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(3),
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(3, 3),
+                  color: Colors.black.withOpacity(0.02),
+                  spreadRadius: 15,
+                  blurRadius: 15,
+                ),
+                BoxShadow(
+                    offset: Offset(-3, -3),
+                    color: Colors.black.withOpacity(0.02),
+                    spreadRadius: 7,
+                    blurRadius: 15,
+                    blurStyle: BlurStyle.outer)
+              ]),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Person $n",
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 17,
+                    color: Colors.grey,
+                  ),
+                ),
+                Row(
+                  children: [
+                    GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                            child: Text(
+                          '${person.toUpperCase()}',
+                          style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 18,
+                              color: primaryColor),
+                        ))),
+                    IconButton(
+                        onPressed: () {
+                          showMenu(
+                              context: context,
+                              position: RelativeRect.fromLTRB(
+                                  width * 0.7, height * 0.5, 0, 0),
+                              items: [
+                                PopupMenuItem<String>(
+                                  value: '_value',
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      relatives.remove('_value');
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                        Text(
+                                          'Delete',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                // PopupMenuItem<int>(
+                                //   value: 1,
+                                //   child: Text('Working a lot less'),
+                                // ),
+                                // PopupMenuItem<int>(
+                                //   value: 1,
+                                //   child: Text('Working a lot smarter'),
+                                // ),
+                              ]);
+                        },
+                        icon: const Icon(
+                          Icons.more_vert,
+                          color: Colors.grey,
+                        )),
+                  ],
+                )
+              ],
+            ),
+          ]),
+        ),
       ),
     );
   }

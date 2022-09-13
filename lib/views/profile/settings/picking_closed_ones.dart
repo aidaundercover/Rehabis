@@ -1,11 +1,6 @@
-import 'dart:async';
-import 'dart:typed_data';
-
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
-import 'package:lottie/lottie.dart';
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/models/Relative.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,8 +19,7 @@ String tempPhoneNumber = '';
 
 class _PickingClosedOnesState extends State<PickingClosedOnes> {
   List<Contact>? contacts;
-  DatabaseReference ref =
-      FirebaseDatabase.instance.ref('Users/$iinGlobal/Relatives');
+  DatabaseReference ref = FirebaseDatabase.instance.ref('Users/$iinGlobal/');
 
   List<DropdownMenuItem<String>> items = [
     const DropdownMenuItem(
@@ -56,20 +50,20 @@ class _PickingClosedOnesState extends State<PickingClosedOnes> {
     }
   }
 
-  void loadData() async {
-    ref.get();
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     getContact();
   }
 
   Widget contactCard(
-      double width, double height, int n, String number, String person) {
+    double width,
+    double height,
+    int n,
+    String number,
+    String person,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Center(
@@ -81,13 +75,13 @@ class _PickingClosedOnesState extends State<PickingClosedOnes> {
               borderRadius: BorderRadius.circular(3),
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(3, 3),
+                  offset: const Offset(3, 3),
                   color: Colors.black.withOpacity(0.02),
                   spreadRadius: 15,
                   blurRadius: 15,
                 ),
                 BoxShadow(
-                    offset: Offset(-3, -3),
+                    offset: const Offset(-3, -3),
                     color: Colors.black.withOpacity(0.02),
                     spreadRadius: 7,
                     blurRadius: 15,
@@ -129,11 +123,16 @@ class _PickingClosedOnesState extends State<PickingClosedOnes> {
                                   value: _value,
                                   child: GestureDetector(
                                     onTap: () {
-                                      relatives.remove(_value);
+                                      setState(() {
+                                        relatives.remove(Relative(
+                                            number: number, relation: person));
+
+                                        ref.child('Relatives/$_value').remove();
+                                      });
                                     },
                                     child: Row(
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.delete,
                                           color: Colors.red,
                                         ),
@@ -388,17 +387,15 @@ class _PickingClosedOnesState extends State<PickingClosedOnes> {
                                                       if (tempPhoneNumber
                                                               .isNotEmpty &&
                                                           relation.isNotEmpty) {
-                                                        relatives.add({
-                                                          _value: Relative(
-                                                              number:
-                                                                  tempPhoneNumber,
-                                                              relation:
-                                                                  relation)
-                                                        });
-
+                                                        relatives.add(Relative(
+                                                            number:
+                                                                tempPhoneNumber,
+                                                            relation:
+                                                                relation));
 
                                                         await ref
-                                                            .child(_value)
+                                                            .child(
+                                                                'Relatives/$_value')
                                                             .set({
                                                           'number':
                                                               tempPhoneNumber,
@@ -438,46 +435,75 @@ class _PickingClosedOnesState extends State<PickingClosedOnes> {
             },
             child: Icon(Icons.add)),
         body: SingleChildScrollView(
-          child: StreamBuilder(
-              stream: ref.onValue,
-              builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
-                if (snapshot.hasData) {
-                  final myRealatives = Map<String, dynamic>.from(
-                      snapshot.data!.snapshot.value as Map<dynamic, dynamic>);
-        
-                  myRealatives.forEach((key, value) {
-                    final nextRel = Map<String, dynamic>.from(value);
-                    final rel = Relative(
-                        number: nextRel['number'], relation: nextRel['relation']);
-                    relatives.add(rel);
-                  });
-        
-                  return Column(
-                      children: List.generate(
-                          relatives.length,
-                          (index) => contactCard(
-                              width,
-                              height,
-                              index + 1,
-                              relatives[index].number,
-                              relatives[index].relation)));
-                } else if(snapshot.hasError) {
-                  return const Center(
-                      child: Text("There is no emergency contacts so far.",
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontFamily: 'Inter',
-                              fontSize: 25)));
-                } else { 
-                  return const Center(
-                      child: Text("There is no emergency contacts so far.",
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontFamily: 'Inter',
-                              fontSize: 25)));
-                }
-              }),
-        ));
+            child: StreamBuilder(
+                stream: ref.onValue,
+                builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
+                  if (snapshot.hasData) {
+                    final user = Map<String, dynamic>.from(
+                        snapshot.data!.snapshot.value as Map<dynamic, dynamic>);
+                    if (user.containsKey('Relatives')) {
+                      return StreamBuilder(
+                          stream: ref.child('Relatives').onValue,
+                          builder:
+                              (context, AsyncSnapshot<DatabaseEvent> snapshot) {
+                            if (snapshot.hasData) {
+                              final myRealatives = Map<dynamic, dynamic>.from(
+                                  snapshot.data!.snapshot.value
+                                      as Map<dynamic, dynamic>);
+
+                              myRealatives.forEach((key, value) {
+                                final nextRel = Map<String, dynamic>.from(value);
+                                final rel = Relative(
+                                    number: nextRel['number'],
+                                    relation: nextRel['relation']);
+                                relatives.add(rel);
+                              });
+
+                              // for (int i = 0; i < myRealatives.length; i++) {
+                               
+                              // }
+
+                              return Column(
+                                  children: List.generate(
+                                      relatives.length,
+                                      (index) => contactCard(
+                                          width,
+                                          height,
+                                          index + 1,
+                                          relatives.elementAt(index).number,
+                                          relatives
+                                              .elementAt(index)
+                                              .relation)));
+                            } else if (snapshot.hasError) {
+                              return const Center(
+                                  child: Text(
+                                      "There is no emergency contacts so far.",
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontFamily: 'Inter',
+                                          fontSize: 25)));
+                            } else {
+                              return const Center(
+                                  child: Text(
+                                      "There is no emergency contacts so far.",
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontFamily: 'Inter',
+                                          fontSize: 25)));
+                            }
+                          });
+                    } else {
+                      return const Center(
+                          child: Text("There is no emergency contacts so far.",
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Inter',
+                                  fontSize: 25)));
+                    }
+                  } else {
+                    return CircularProgressIndicator(color: primaryColor);
+                  }
+                })));
     //             ));,
   }
 }

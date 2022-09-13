@@ -1,45 +1,98 @@
 import 'dart:async';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'dart:core';
 import 'package:confetti/confetti.dart';
-import 'package:flutter/material.dart';
-import 'package:rehabis/database/getData.dart';
+import "package:flutter/material.dart";
 import 'package:rehabis/globalVars.dart';
-import 'package:rehabis/services/exercise_api.dart';
-import 'package:rehabis/widgets/audio_player.dart';
 import 'package:rehabis/views/exercises/exerciseWidgets.dart';
+import 'package:rehabis/views/exercises/exercises_main.dart';
 
-class ExerciseTwo extends StatefulWidget {
-  const ExerciseTwo({Key? key}) : super(key: key);
+import '../../../services/exercise_api.dart';
+
+class ExercizeOne extends StatefulWidget {
+  const ExercizeOne({Key? key}) : super(key: key);
 
   @override
-  State<ExerciseTwo> createState() => _ExerciseTwoState();
+  State<ExercizeOne> createState() => _ExercizeOneState();
 }
 
-class _ExerciseTwoState extends State<ExerciseTwo> {
-  late int points;
-  late int pressed;
+class _ExercizeOneState extends State<ExercizeOne> {
+  int points = 0;
+  int pressed = 0;
+
+  List<int> selectedItems = [];
   final controller = ConfettiController();
 
-  Duration duration = const Duration();
+  List<String> letters = const <String>[
+    "h",
+    "h",
+    "i",
+    "j",
+    "f",
+    "l",
+    "f",
+    "k",
+    "f",
+    "j",
+    "i",
+    "f",
+    "f",
+    "l",
+    "l",
+    "f",
+    "i",
+    "j",
+    "k",
+    "h",
+    "j",
+    "f",
+    "i",
+    "h",
+    "t",
+    "i",
+    "l",
+    "i",
+    "f",
+    "h",
+    "k",
+    "g",
+    "h",
+    "l",
+    "i",
+    "h",
+    "l",
+    "h",
+    "k",
+    "j",
+    "i",
+    "h",
+    "i",
+    "i",
+    "h",
+    "g",
+    "r",
+    "i",
+    "g",
+    "h",
+    "g",
+    "r",
+    "i",
+    "g",
+    "h",
+    "i",
+  ];
+
+  /// TIMER IMPLEMENTING ///
+  Duration duration = Duration();
   Timer? timer;
   bool isRunning = false;
 
-  List<List<bool>> isSelected = [];
+  
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    controller.dispose();
 
-  void getPoint() {
-    setState(() {
-      if (points == 4) {
-      } else {
-        points++;
-      }
-    });
-  }
-
-  void getError() {
-    setState(() {
-      if (points == 4) {
-      } else {}
-    });
+    super.dispose();
   }
 
   void addTime() {
@@ -68,8 +121,7 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
       final minutes = twoDigits(duration.inMinutes.remainder(60));
       final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-      uploadExercise('None', points, '$minutes : $seconds', 'Similiar sounds',
-          "Attention", 3);
+      uploadExercise('None', points, '$minutes : $seconds', 'Where are they?', "Attention", 2);
 
       showDialog(
           context: (context),
@@ -201,38 +253,21 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
       duration = Duration();
       points = 0;
       pressed = 0;
-      isSelected = [
-        [false, false, false, false],
-        [false, false, false, false],
-        [false, false, false, false],
-        [false, false, false, false]
-      ];
+      selectedItems = [];
     });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    controller.dispose();
-    super.dispose();
   }
 
   @override
   void initState() {
     // TODO: implement initState
-
     super.initState();
+
     controller.addListener(() {
       setState(() {
         isRunning = controller.state == ConfettiControllerState.playing;
       });
     });
-    isSelected = [
-      [false, false, false, false],
-      [false, false, false, false],
-      [false, false, false, false],
-      [false, false, false, false]
-    ];
+    selectedItems = [];
 
     points = 0;
     pressed = 0;
@@ -255,12 +290,109 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
             SizedBox(
               height: 7,
             ),
+            textHeader(width,
+                'The exercise helps with an attention and a logic, in order to execue an exercise one should be able to identify the exceeding element of a group'),
+          ],
+        ),
+      );
+    }
+
+    Widget mainWidget() {
+      return SingleChildScrollView(
+        child: GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 14, mainAxisSpacing: 4),
+            itemCount: letters.length,
+            itemBuilder: (BuildContext context, int index) {
+              bool isPressed = false;
+              return Padding(
+                padding: const EdgeInsets.only(left: 5.0, right: 5),
+                child: SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      isPressed = true;
+                      setState(() {
+                        // pressed++;
+      
+                        if (isRunning) {
+                          if (selectedItems.contains(index)) {
+                          } else {
+                            selectedItems.add(index);
+                          }
+                          if (letters[index] == "i" || letters[index] == "h") {
+                            points++;
+                          } else
+                            pressed++;
+      
+                          if (points == 21) {
+                            stopTimer(0, width);
+                          }
+                        }
+                      });
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: selectedItems.contains(index)
+                            ? MaterialStateProperty.all(primaryColor)
+                            : MaterialStateProperty.all(Colors.white),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: BorderSide(color: primaryColor))),
+                        shadowColor: MaterialStateProperty.all(
+                            Colors.black.withOpacity(0.15))),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        letters[index],
+                        style: selectedItems.contains(index)
+                            ? TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white)
+                            : TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: primaryColor),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }),
+      );
+    }
+
+    Widget timerWidget() {
+      String twoDigits(int n) => n.toString().padLeft(2, '0');
+      final minutes = twoDigits(duration.inMinutes.remainder(60));
+      final seconds = twoDigits(duration.inSeconds.remainder(60));
+
+      return SizedBox(
+        width: width * 0.94,
+        child: Row(
+          children: [
+            SizedBox(
+              width: width * 0.55,
+              child: Text(
+                "Выделите все символы i и h как можно быстрее",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    color: Color.fromARGB(255, 82, 82, 82), fontSize: 17),
+              ),
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                textHeader(width,
-                    'The exercise helps with an attention and a logic, in order to execue an exercise one should be able to identify the exceeding element of a group'),
-                
+                buildTimeCard(minutes.toString(), "Минуты"),
+                const SizedBox(
+                  width: 7,
+                ),
+                buildTimeCard(seconds.toString(), "Секунды")
               ],
             ),
           ],
@@ -268,127 +400,20 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
       );
     }
 
-    Widget main() {
-      return SizedBox(
-          width: MediaQuery.of(context).orientation == Orientation.landscape
-              ? width * 0.4
-              : width * 0.7,
-          // height: MediaQuery.of(context).orientation == Orientation.landscape
-          //     ? height * 0.6
-          //     : height * 0.75,
-          child: CarouselSlider(
-            options: CarouselOptions(
-                height:
-                    MediaQuery.of(context).orientation == Orientation.portrait
-                        ? height * 0.6
-                        : height * 0.9,
-                clipBehavior: Clip.antiAlias,
-                enlargeCenterPage: true,
-                enableInfiniteScroll: true,
-                autoPlay: false),
-            items: List.generate(
-                similiarWordsData.length,
-                (index) => Container(
-                    width: width * 0.8,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: const Color.fromARGB(255, 248, 248, 248),
-                        boxShadow: [
-                          BoxShadow(
-                              offset: const Offset(3, 4),
-                              color: Colors.black.withOpacity(0.17),
-                              blurRadius: 5),
-                        ]),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        AudioPlay(
-                            audioAsset: similiarWordsData[index]['audioFile']),
-                        SizedBox(
-                          child: GridView.builder(
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10),
-                              itemCount: 4,
-                              itemBuilder: (BuildContext context, int i) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        pressed++;
-
-                                        if (isRunning) {
-                                          for (int indexBtn = 0;
-                                              indexBtn < isSelected.length;
-                                              indexBtn++) {
-                                            if (indexBtn == i) {
-                                              isSelected[index][indexBtn] =
-                                                  !isSelected[index][indexBtn];
-                                              if (isSelected[index][indexBtn]) {
-                                                if (indexBtn ==
-                                                    similiarWordsData[index]
-                                                        ["right"]) {
-                                                  getPoint();
-                                                }
-                                              }
-                                            } else {
-                                              isSelected[index][indexBtn] =
-                                                  false;
-                                            }
-                                          }
-                                        }
-                                      });
-                                    },
-                                    child: Container(
-                                      // width: width * 0.3,
-                                      height: height * 0.25,
-                                      decoration: BoxDecoration(
-                                          color: isSelected[index][i]
-                                              ? primaryColor.withOpacity(0.6)
-                                              : Colors.white,
-                                          border: Border.all(
-                                              width: 1,
-                                              color: isSelected[index][i]
-                                                  ? Colors.white
-                                                  : Colors.grey.shade600),
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-
-                                      child: Center(
-                                        child: Text(
-                                            similiarWordsData[index]['options']
-                                                [i]["title"],
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontFamily: "Roboto",
-                                                fontSize: 19)),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }),
-                        ),
-                      ],
-                    ))),
-          ));
-    }
-
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final minutes = twoDigits(duration.inMinutes.remainder(60));
     final seconds = twoDigits(duration.inSeconds.remainder(60));
 
     return Scaffold(
+      appBar: exerciseAppbar('Where are they?', context, 'None', points,
+          '$minutes : $seconds', "Attention", 2),
       persistentFooterButtons: [
         Center(
           child: TextButton(
             onPressed: () {
               if (isRunning) {
                 controller.play();
-                stopTimer(4 - points, width);
+                stopTimer(56 - points, width);
               } else {
                 controller.stop();
               }
@@ -400,42 +425,21 @@ class _ExerciseTwoState extends State<ExerciseTwo> {
           ),
         )
       ],
-      appBar: exerciseAppbar('Similiar Words', context, 'None', points,
-          '$minutes : $seconds', "Attention", 3),
       body: SingleChildScrollView(
         child: Column(
           children: [
             appBar(),
-            const SizedBox(
+            SizedBox(
               height: 20,
             ),
-            main(),
+            // timerWidget(),
+            SizedBox(
+              height: 10,
+            ),
+            mainWidget()
           ],
         ),
       ),
-      // bottomNavigationBar: isRunning
-      //     ? GestureDetector(
-      //         onTap: () {
-      //           startTimer();
-      //         },
-      //         child: Container(
-      //           decoration: BoxDecoration(
-      //             color: Color.fromARGB(255, 191, 43, 255),
-      //           ),
-      //           width: width,
-      //           height: 50,
-      //           alignment: Alignment.center,
-      //           child: const Text(
-      //             "Завершить",
-      //             style: TextStyle(
-      //                 color: Colors.white,
-      //                 fontWeight: FontWeight.bold,
-      //                 fontSize: 15,
-      //                 fontFamily: 'Inter'),
-      //           ),
-      //         ),
-      //       )
-      //     : Container(),
     );
   }
 }

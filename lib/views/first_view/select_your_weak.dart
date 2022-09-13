@@ -42,6 +42,8 @@ class _SelectWeaknessState extends State<SelectWeakness> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -107,6 +109,7 @@ class _SelectWeaknessState extends State<SelectWeakness> {
                   ),
                 ),
                 SizedBox(
+                  height: height*1.1,
                     child: ListView.builder(
                         itemCount: _selected.length,
                         scrollDirection: Axis.vertical,
@@ -152,6 +155,7 @@ class _SelectWeaknessState extends State<SelectWeakness> {
                 //   height: 50,
                 // )
               ),
+              SizedBox(height: 50)
            ] ),
           ),
         

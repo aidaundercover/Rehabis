@@ -53,10 +53,11 @@ class _DiagonaleHandsState extends State<DiagonaleHands> {
     });
 
     controller.addListener(() {
-      isPressed ? controller.play() : controller.stop();
+      isRunning ? controller.play() : controller.stop();
     });
 
     super.initState();
+    startTimer();
   }
 
   void addTime() {
@@ -88,8 +89,8 @@ class _DiagonaleHandsState extends State<DiagonaleHands> {
         final minutes = twoDigits(duration.inMinutes.remainder(60));
         final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-        uploadExercise('None', points, '$minutes : $seconds',
-            'Find a third wheel', "Attention", 1);
+        uploadExercise('Cube', points, '$minutes : $seconds',
+            'Flexing Elbow', "Arm Mobility", 1);
 
         showDialog(
             context: (context),
@@ -241,101 +242,127 @@ class _DiagonaleHandsState extends State<DiagonaleHands> {
     final seconds = twoDigits(duration.inSeconds.remainder(60));
 
     return Scaffold(
-      appBar: exerciseAppbar("Exercise Wrists", context, "Cube", points,
-          '$minutes : $seconds', "Arm mobility", 1),
-      backgroundColor: Color.fromRGBO(248, 248, 248, 1),
-      body: SingleChildScrollView(
-        child: Center(
-          child: SizedBox(
-              width: width * 0.92,
-              child: Column(children: [
-                textHeader(width,
-                    "Using 'Cubes' equipment user supposed to train the wrist and low-palm area"),
-                const Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    "Slide cube on diagonale",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontFamily: "Inter", fontSize: 27),
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-              
-                Stack(children: [
-                  Container(
-                    width: isPortrait ? width * 0.9 : width*0.5,
-                    height: isPortrait ? width * 0.9 : width * 0.5,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(width: 3, color: Colors.grey.shade500),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: isPortrait ? width * 0.35 : width*0.15,
-                              child: Text(
-                                "Press RIGHT cube",
-                                style: TextStyle(
-                                    color: Colors.grey.shade500,
-                                    fontSize: 15,
-                                    fontFamily: "Inter"),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height:width * 0.6,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              SizedBox(
-                                width: isPortrait
-                                        ? width * 0.35
-                                        : width * 0.15,
-                                
-                                child: Text(
-                                  "Press LEFT cube",
-                                  style: TextStyle(
-                                      color: Colors.grey.shade500,
-                                      fontSize: 15,
-                                      fontFamily: "Inter"),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: isPortrait ? width * 0.9 : width * 0.5,
-                    height: isPortrait ? width * 0.9 : width * 0.5,
-                    child: AnimatedAlign(
-                      curve: Curves.easeInCubic,
-                      alignment:  isPressed ? Alignment.bottomLeft : Alignment.topRight,
-                      duration: const Duration(milliseconds: 750),
-                      // right: isPressed ? width * 0.45 : 0,
-                      // top: isPressed ? 0 : width * 0.45,
-                      child: Container(
-                        width: width * 0.45,
-                        height:  width * 0.45,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            gradient: LinearGradient(colors: [
-                              Color.fromRGBO(244, 173, 255, 1.0),
-                              Color.fromRGBO(200, 186, 255, 1.0)
-                            ])),
+        appBar: exerciseAppbar("Flexing elbow", context, "Cube", points,
+            '$minutes : $seconds', "Arm mobility", 1),
+        backgroundColor: Color.fromRGBO(248, 248, 248, 1),
+        persistentFooterButtons: [
+          Center(
+            child: TextButton(
+              onPressed: () {
+                if (isRunning) {
+                  controller.play();
+                  stopTimer(0, width);
+                } else {
+                  controller.stop();
+                }
+              },
+              child: const Text(
+                "STOP",
+                style:
+                    TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+            ),
+          )
+        ],
+        body: SingleChildScrollView(
+          child: Center(
+              child: SizedBox(
+                  width: width * 0.96,
+                  child: Column(children: [
+                    textHeader(width,
+                        "Using 'Cubes' equipment user supposed to train the wrist and low-palm area"),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "Slide cube on diagonale",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontFamily: "Inter", fontSize: 27),
                       ),
                     ),
-                  )
-                ])])
-                )),
-      ));
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Stack(children: [
+                      Container(
+                        width: isPortrait ? width * 0.9 : width * 0.5,
+                        height: isPortrait ? width * 0.9 : width * 0.5,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                                width: 3, color: Colors.grey.shade500),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top : 30.0, left: 30),
+                                  child: SizedBox(
+                                    width:
+                                        isPortrait ? width * 0.35 : width * 0.15,
+                                    child: Text(
+                                      "Press RIGHT cube",
+                                      style: TextStyle(
+                                          color: Colors.grey.shade500,
+                                          fontSize: 15,
+                                          fontFamily: "Inter"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: width * 0.45,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Center(
+                                    child: SizedBox(
+                                      width: isPortrait
+                                          ? width * 0.35
+                                          : width * 0.15,
+                                      child: Text(
+                                        "Press LEFT cube",
+                                        style: TextStyle(
+                                            color: Colors.grey.shade500,
+                                            fontSize: 15,
+                                            fontFamily: "Inter"),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: isPortrait ? width * 0.9 : width * 0.5,
+                        height: isPortrait ? width * 0.9 : width * 0.5,
+                        child: AnimatedAlign(
+                          curve: Curves.easeInCubic,
+                          alignment: isPressed
+                              ? Alignment.bottomLeft
+                              : Alignment.topRight,
+                          duration: const Duration(milliseconds: 750),
+                          // right: isPressed ? width * 0.45 : 0,
+                          // top: isPressed ? 0 : width * 0.45,
+                          child: Container(
+                            width: width * 0.25,
+                            height: width * 0.25,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                gradient: LinearGradient(colors: [
+                                  Color.fromRGBO(244, 173, 255, 1.0),
+                                  Color.fromRGBO(200, 186, 255, 1.0)
+                                ])),
+                          ),
+                        ),
+                      )
+                    ])
+                  ]))),
+        ));
   }
 }

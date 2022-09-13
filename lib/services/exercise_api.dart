@@ -20,6 +20,7 @@ uploadExercise(String equipment, int count, String time, String type,
       "Type": type,
       'Skill': skill,
       'level': level,
+      'Date' : DateFormat('yyyy-MM-dd-hh-mm').format(DateTime.now())
     };
 
     await ref.set(training);

@@ -63,7 +63,6 @@ List _questions = [
 ];
 
 class _SpaceThinkingState extends State<SpaceThinking> {
-
   late int points;
   late int pressed;
   final controller = ConfettiController();
@@ -72,7 +71,7 @@ class _SpaceThinkingState extends State<SpaceThinking> {
   Timer? timer;
   bool isRunning = false;
 
-    @override
+  @override
   void dispose() {
     // TODO: implement dispose
     controller.dispose();
@@ -97,6 +96,7 @@ class _SpaceThinkingState extends State<SpaceThinking> {
 
     points = 0;
     pressed = 0;
+    startTimer();
   }
 
   void getPoint() {
@@ -111,13 +111,11 @@ class _SpaceThinkingState extends State<SpaceThinking> {
   void getError() {
     setState(() {
       if (points == 4) {
-      } else {
-      }
+      } else {}
     });
   }
 
-
-   void addTime() {
+  void addTime() {
     const addSeconds = 1;
 
     setState(() {
@@ -146,8 +144,8 @@ class _SpaceThinkingState extends State<SpaceThinking> {
         final minutes = twoDigits(duration.inMinutes.remainder(60));
         final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-        uploadExercise('None', points, '$minutes : $seconds',
-            '3D Thinking', "Problem Solving", 2);
+        uploadExercise('None', points, '$minutes : $seconds', '3D Thinking',
+            "Problem Solving", 2);
 
         showDialog(
             context: (context),
@@ -293,17 +291,13 @@ class _SpaceThinkingState extends State<SpaceThinking> {
       });
     }
   }
-  
-
-
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-
-      Widget appBar() {
+    Widget appBar() {
       return Padding(
         padding: const EdgeInsets.only(left: 20.0),
         child: Column(
@@ -314,39 +308,31 @@ class _SpaceThinkingState extends State<SpaceThinking> {
               height: 7,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                textHeader(width * 0.7,
+                textHeader(width*0.6,
                     'The exercise helps with an attention and a logic, in order to execue an exercise one should be able to identify the exceeding element of a group'),
-                TextButton(
-                    onPressed: () {
-                      startTimer();
-                    },
-                    child: Container(
-                      width: width * 0.25,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: isRunning ? deepPurple : primaryColor,
-                        borderRadius: BorderRadius.circular(5),
+                TextButton(onPressed: () {
+                        if (isRunning) {
+                          controller.play();
+                          stopTimer(4, width);
+                        } else {
+                          controller.stop();
+                        }
+                      }, child: Container(
+                  width: width*0.14,
+                  height: 40,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(13),
+                    color: primaryColor,
+                    
+                  ),                      child: const Text(
+                        "STOP",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
-                      alignment: Alignment.center,
-                      child: Text(isRunning ? "GO!" : "Start!",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "Ruberoid",
-                              fontSize: 19,
-                              shadows: [
-                                isRunning
-                                    ? Shadow(
-                                        offset: const Offset(3, 3),
-                                        color: Colors.white.withOpacity(0.3),
-                                        blurRadius: 5)
-                                    : const Shadow(
-                                        offset: Offset(3, 3),
-                                        color: Colors.transparent,
-                                        blurRadius: 5)
-                              ])),
-                    ))
+                ))
               ],
             ),
           ],
@@ -354,52 +340,33 @@ class _SpaceThinkingState extends State<SpaceThinking> {
       );
     }
 
-
-     String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
     final minutes = twoDigits(duration.inMinutes.remainder(60));
     final seconds = twoDigits(duration.inSeconds.remainder(60));
 
+    bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Scaffold(
         appBar: exerciseAppbar('3D Thinking', context, 'None', points,
-          '$minutes : $seconds', "Attention", 2),
+            '$minutes : $seconds', "Attention", 2),
         backgroundColor: backgroundColor,
-        persistentFooterButtons: [
-          Center(
-            child: TextButton(
-              onPressed: () {
-                if (isRunning) {
-                  controller.play();
-                  stopTimer(4 - points, width);
-                } else {
-                  controller.stop();
-                }
-              },
-              child: const Text(
-                "STOP",
-                style:
-                    TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-              ),
-            ),
-          )
-        ],
         body: SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             appBar(),
-            SizedBox(
-              height: 20,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             Center(
               child: SizedBox(
-                  height: height * 0.5,
-                  width: width * 0.96,
+                  height:  isPortrait ? height * 0.5 : height ,
+                  width: width * 0.8,
                   child: ListWheelScrollView.useDelegate(
                       perspective: 0.003,
                       diameterRatio: 1.9,
-                      physics: FixedExtentScrollPhysics(),
-                      itemExtent: height * 0.4,
-                      squeeze: 0.99,
+                      physics: const FixedExtentScrollPhysics(),
+                      itemExtent: isPortrait ? height * 0.4 : height*0.5,
+                      squeeze: 1.1,
                       childDelegate: ListWheelChildLoopingListDelegate(
                           children: List.generate(
                               _questions.length,
@@ -415,7 +382,7 @@ class _SpaceThinkingState extends State<SpaceThinking> {
                                               blurRadius: 20,
                                               spreadRadius: 10)
                                         ]),
-                                    width: width * 0.9,
+                                    width: isPortrait ?  width * 0.9 : width*0.4,
                                     child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
@@ -518,7 +485,8 @@ class _SpaceThinkingState extends State<SpaceThinking> {
                           ),
                         ),
                       )),
-                ))
+                )),
+          SizedBox(height: 100,)
           ]),
         ));
   }

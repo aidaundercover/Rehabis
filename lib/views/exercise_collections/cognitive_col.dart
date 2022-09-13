@@ -10,6 +10,10 @@ class CognitiveCol extends StatefulWidget {
 class _CognitiveColState extends State<CognitiveCol> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Column(
+        
+      ),
+    );
   }
 }

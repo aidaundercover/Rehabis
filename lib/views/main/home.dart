@@ -9,7 +9,7 @@ import 'package:rehabis/widgets/audio_player.dart';
 import 'package:rehabis/views/exercises/exercises_main.dart';
 import 'package:rehabis/views/exercises/attention/find_third_whhel.dart';
 import 'package:rehabis/views/exercises/attention/similiar_words.dart';
-import 'package:rehabis/views/exercises/hands/findiandh.dart';
+import 'package:rehabis/views/exercises/attention/findiandh.dart';
 import 'package:rehabis/views/prediction/test_for_prediction.dart';
 
 class HomePage extends StatefulWidget {

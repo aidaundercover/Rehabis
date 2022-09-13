@@ -1,5 +1,12 @@
+import 'dart:async';
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:rehabis/database/getData.dart';
+import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/views/exercises/exerciseWidgets.dart';
+import 'package:rehabis/models/memory_tile.dart';
+
+import '../../../services/exercise_api.dart';
 
 class MatchingGame extends StatefulWidget {
   const MatchingGame({Key? key}) : super(key: key);
@@ -11,15 +18,15 @@ class MatchingGame extends StatefulWidget {
 class _MatchingGameState extends State<MatchingGame> {
   List<MemoryTile> gridViewTiles = [];
   List<MemoryTile> questionPairs = [];
-  final controller = ConfettiController();
+  final confettiController = ConfettiController();
 
   Duration duration = const Duration();
   Timer? timer;
   bool isRunning = false;
 
-
-@override
+  @override
   void dispose() {
+    // ignore: todo
     // TODO: implement dispose
     super.dispose();
     confettiController.dispose();
@@ -31,14 +38,16 @@ class _MatchingGameState extends State<MatchingGame> {
     super.initState();
     confettiController.addListener(() {
       setState(() {
-        points == 800
+        isRunning
             ? ConfettiControllerState.playing
             : ConfettiControllerState.stopped;
+        // points == 800 ? stopTimer(0, width) : () {};
       });
+
+      points == 800 ? stopTimer(0, 1200) : () {};
     });
     reStart();
     points = 0;
-
   }
 
   void addTime() {
@@ -70,8 +79,8 @@ class _MatchingGameState extends State<MatchingGame> {
         final minutes = twoDigits(duration.inMinutes.remainder(60));
         final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-        uploadExercise('None', points, '$minutes : $seconds',
-            'Find a third wheel', "Attention", 1);
+        uploadExercise(
+            'None', points, '$minutes : $seconds', 'Memory Game', "Memory", 1);
 
         showDialog(
             context: (context),
@@ -199,14 +208,14 @@ class _MatchingGameState extends State<MatchingGame> {
                       ],
                     ),
                     Center(
-                        child: ConfettiWidget(confettiController: controller))
+                        child: ConfettiWidget(
+                            confettiController: confettiController))
                   ]),
                 ),
               );
             });
 
         duration = Duration();
-        p
       });
     }
   }
@@ -214,6 +223,8 @@ class _MatchingGameState extends State<MatchingGame> {
   void reStart() {
     myPairs = getPairs();
     myPairs.shuffle();
+
+    startTimer();
 
     gridViewTiles = myPairs;
     Future.delayed(const Duration(seconds: 5), () {
@@ -231,8 +242,13 @@ class _MatchingGameState extends State<MatchingGame> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+
     return Scaffold(
-      appBar: exerciseAppbar("Matching Game", context),
+      appBar: exerciseAppbar("Matching Game", context, 'None', points,
+          '$minutes : $seconds', 'Memory', 3),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -265,14 +281,45 @@ class _MatchingGameState extends State<MatchingGame> {
                             ),
                           ],
                         )
-                      : Container(),
+                      : Column(
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  points = 0;
+                                  reStart();
+                                });
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 200,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: primaryColor,
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                child: const Text(
+                                  "Replay",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                 ],
               ),
               // SizedBox(child: GridView.count(crossAxisCount: 4)),
-        
+
               Container(
                 height: height * 0.8,
-                width: width * 0.95,
+                width:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? width * 0.95
+                        : width * 0.34,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
                 child: Column(
                   children: <Widget>[
@@ -282,7 +329,6 @@ class _MatchingGameState extends State<MatchingGame> {
                     points != 800
                         ? GridView(
                             shrinkWrap: true,
-                            //physics: ClampingScrollPhysics(),
                             scrollDirection: Axis.vertical,
                             gridDelegate:
                                 SliverGridDelegateWithMaxCrossAxisExtent(
@@ -298,36 +344,7 @@ class _MatchingGameState extends State<MatchingGame> {
                               );
                             }),
                           )
-                        : Container(
-                            child: Column(
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    points = 0;
-                                    reStart();
-                                  });
-                                },
-                                child: Container(
-                                  height: 50,
-                                  width: 200,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: primaryColor,
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  child: const Text(
-                                    "Replay",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 17,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ),                             
-                            ],
-                          ))
+                        : Container()
                   ],
                 ),
               ),

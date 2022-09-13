@@ -171,13 +171,16 @@ class _SignUpState extends State<SignUp> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: !_bottomSheetVisible
-              ? AuthActionButton(
-                  _initializeControllerFuture,
-                  onPressed: mounted ? onShot : () {},
-                  isLogin: false,
-                  reload: _reload,
-                  context: widget.mainContext,
-                )
+              ? Padding(
+                padding: const EdgeInsets.only(left: 100.0),
+                child: AuthActionButton(
+                    _initializeControllerFuture,
+                    onPressed: mounted ? onShot : () {},
+                    isLogin: false,
+                    reload: _reload,
+                    context: widget.mainContext,
+                  ),
+              )
               : Container());
     } else {
       return Center(child: CircularProgressIndicator(color: primaryColor));

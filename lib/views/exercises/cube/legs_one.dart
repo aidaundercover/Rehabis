@@ -14,7 +14,6 @@ class LegsOne extends StatefulWidget {
   State<LegsOne> createState() => _LegsOneState();
 }
 
-
 class _LegsOneState extends State<LegsOne> {
   int handPosition = 1;
   bool isPressed = false;
@@ -58,6 +57,7 @@ class _LegsOneState extends State<LegsOne> {
     });
 
     super.initState();
+    startTimer();
   }
 
   void addTime() {
@@ -89,8 +89,8 @@ class _LegsOneState extends State<LegsOne> {
         final minutes = twoDigits(duration.inMinutes.remainder(60));
         final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-        uploadExercise('None', points, '$minutes : $seconds',
-            'Find a third wheel', "Attention", 1);
+        uploadExercise('Cube', points, '$minutes : $seconds',
+            'Foot Exercise', "Leg Mobility", 1);
 
         showDialog(
             context: (context),
@@ -241,6 +241,24 @@ class _LegsOneState extends State<LegsOne> {
     return Scaffold(
       appBar: exerciseAppbar("Exercise Wrists", context, "Cube", points,
           '$minutes : $seconds', "Arm mobility", 1),
+      persistentFooterButtons: [
+        Center(
+          child: TextButton(
+            onPressed: () {
+              if (isRunning) {
+                controller.play();
+                stopTimer(0, width);
+              } else {
+                controller.stop();
+              }
+            },
+            child: const Text(
+              "STOP",
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+          ),
+        )
+      ],
       backgroundColor: const Color.fromARGB(255, 248, 248, 248),
       body: Center(
         child: SizedBox(
@@ -249,37 +267,8 @@ class _LegsOneState extends State<LegsOne> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  textHeader(width * 0.6,
+                  textHeader(width,
                       "Using 'Cubes' equipment user supposed to train the wrist and low-palm area"),
-                  TextButton(
-                      onPressed: () {
-                        isRunning ? stopTimer(0, width) : startTimer();
-                      },
-                      child: Container(
-                        width: width * 0.25,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: isRunning ? deepPurple : primaryColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(isRunning ? "Done" : "Start!",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Ruberoid",
-                                fontSize: 19,
-                                shadows: [
-                                  isRunning
-                                      ? Shadow(
-                                          offset: const Offset(3, 3),
-                                          color: Colors.white.withOpacity(0.3),
-                                          blurRadius: 5)
-                                      : const Shadow(
-                                          offset: Offset(3, 3),
-                                          color: Colors.transparent,
-                                          blurRadius: 5)
-                                ])),
-                      ))
                 ],
               ),
               SizedBox(

@@ -21,7 +21,6 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
   Duration duration = const Duration();
   Timer? timer;
   bool isRunning = false;
-
   final controller = ConfettiController();
 
   void updateStarCount(Object? data) {
@@ -46,6 +45,8 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
 
     points = 0;
 
+    startTimer();
+
     DatabaseReference starCountRef = FirebaseDatabase.instance.ref('LR/');
     starCountRef.onValue.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
@@ -53,7 +54,7 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
     });
 
     controller.addListener(() {
-      isPressed ? controller.play() : controller.stop();
+      isRunning ? controller.play() : controller.stop();
     });
 
     super.initState();
@@ -79,34 +80,34 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
   }
 
   void stopTimer(int errors, double width) {
-    if (mounted) {
-      setState(() async {
-        timer?.cancel();
-        isRunning = false;
+    setState(() {
+      timer?.cancel();
+      isRunning = false;
 
-        String twoDigits(int n) => n.toString().padLeft(2, '0');
-        final minutes = twoDigits(duration.inMinutes.remainder(60));
-        final seconds = twoDigits(duration.inSeconds.remainder(60));
+      String twoDigits(int n) => n.toString().padLeft(2, '0');
+      final minutes = twoDigits(duration.inMinutes.remainder(60));
+      final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-        uploadExercise('None', points, '$minutes : $seconds',
-            'Find a third wheel', "Attention", 1);
+      uploadExercise("Cube", points ,
+          '$minutes : $seconds', 'Exercise Wrists', "Arm mobility", 1);
 
-        showDialog(
-            context: (context),
-            builder: (_) {
-              return Dialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                child: Container(
-                  height: 210,
-                  width:
-                      MediaQuery.of(context).orientation == Orientation.portrait
-                          ? width * 0.8
-                          : width * 0.6,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 4, color: Colors.purple)),
-                  child: Column(
+      showDialog(
+          context: (context),
+          builder: (_) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                height: 300,
+                width:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? width * 0.8
+                        : width * 0.5,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(width: 4, color: Colors.purple)),
+                child: Stack(children: [
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -171,7 +172,8 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
                                   borderRadius: BorderRadius.circular(7),
                                   color: Colors.purple.shade200),
                               child: Row(
-                                children: const [
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
                                   Text("Restart",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white)),
@@ -179,10 +181,8 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
                                 ],
                               ),
                             ),
-                            onPressed: () async {
+                            onPressed: () {
                               Navigator.of(context).pop();
-                              isRunning = true;
-
                               startTimer();
                             },
                           ),
@@ -191,18 +191,18 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
                             child: Container(
                               width: 100,
                               height: 35,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text("Exit",
+                                      style: TextStyle(color: Colors.white)),
+                                  Icon(Icons.exit_to_app, color: Colors.white)
+                                ],
+                              ),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(7),
                                   color: Colors.purple.shade200),
-                              child: Row(
-                                children: [
-                                  Text("Exit",
-                                      style:
-                                          TextStyle(color: Colors.white)),
-                                  Icon(Icons.exit_to_app, color: Colors.white)
-                                ],
-                              ),
                             ),
                             onPressed: () {
                               Navigator.of(context).pop();
@@ -213,21 +213,21 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
                       )
                     ],
                   ),
-                ),
-              );
-            });
-
-        duration = Duration();
-        points = 0;
-        
-      });
-    }
+                  Center(child: ConfettiWidget(confettiController: controller))
+                ]),
+              ),
+            );
+          });
+      duration = Duration();
+      points = 0;
+    });
   }
-
 
   @override
   void dispose() {
     // TODO: implement dispose
+    controller.dispose();
+
     super.dispose();
   }
 
@@ -241,8 +241,26 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
     final seconds = twoDigits(duration.inSeconds.remainder(60));
 
     return Scaffold(
-      appBar: exerciseAppbar(
-          "Exercise Wrists", context, "Cube", points, '$minutes : $seconds', "Arm mobility", 1),
+      appBar: exerciseAppbar("Exercise Wrists", context, "Cube", points,
+          '$minutes : $seconds', "Arm mobility", 1),
+            persistentFooterButtons: [
+        Center(
+          child: TextButton(
+            onPressed: () {
+              if (isRunning) {
+                controller.play();
+                stopTimer(0, width);
+              } else {
+                controller.stop();
+              }
+            },
+            child: const Text(
+              "STOP",
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+          ),
+        )
+      ],
       backgroundColor: const Color.fromARGB(255, 248, 248, 248),
       body: Center(
         child: SizedBox(
@@ -251,37 +269,37 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  textHeader(width*0.6,
+                  textHeader(width,
                       "Using 'Cubes' equipment user supposed to train the wrist and low-palm area"),
-                  TextButton(
-                      onPressed: () {
-                        startTimer();
-                      },
-                      child: Container(
-                        width: width * 0.25,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: isRunning ? deepPurple : primaryColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(isRunning ? "GO!" : "Start!",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Ruberoid",
-                                fontSize: 19,
-                                shadows: [
-                                  isRunning
-                                      ? Shadow(
-                                          offset: const Offset(3, 3),
-                                          color: Colors.white.withOpacity(0.3),
-                                          blurRadius: 5)
-                                      : const Shadow(
-                                          offset: Offset(3, 3),
-                                          color: Colors.transparent,
-                                          blurRadius: 5)
-                                ])),
-                      ))
+                  // TextButton(
+                  //     onPressed: () {
+                  //       startTimer();
+                  //     },
+                  //     child: Container(
+                  //       width: width * 0.25,
+                  //       height: 40,
+                  //       decoration: BoxDecoration(
+                  //         color: isRunning ? deepPurple : primaryColor,
+                  //         borderRadius: BorderRadius.circular(5),
+                  //       ),
+                  //       alignment: Alignment.center,
+                  //       child: Text(isRunning ? "GO!" : "Start!",
+                  //           style: TextStyle(
+                  //               color: Colors.white,
+                  //               fontFamily: "Ruberoid",
+                  //               fontSize: 19,
+                  //               shadows: [
+                  //                 isRunning
+                  //                     ? Shadow(
+                  //                         offset: const Offset(3, 3),
+                  //                         color: Colors.white.withOpacity(0.3),
+                  //                         blurRadius: 5)
+                  //                     : const Shadow(
+                  //                         offset: Offset(3, 3),
+                  //                         color: Colors.transparent,
+                  //                         blurRadius: 5)
+                  //               ])),
+                  //     ))
                 ],
               ),
               SizedBox(
@@ -295,7 +313,6 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
               SizedBox(
                 height: 30,
               ),
-
               Stack(children: [
                 Container(
                   width: width * 0.9,
@@ -346,7 +363,6 @@ class _HandsOneExrciseState extends State<HandsOneExrcise> {
                   ),
                 )
               ])
-
             ])),
       ),
     );
