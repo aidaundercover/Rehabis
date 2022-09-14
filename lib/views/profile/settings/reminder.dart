@@ -92,8 +92,12 @@ class _ReminderState extends State<Reminder> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
+                  
                   _selectTime(context);
-                  showTime = true;
+
+                  setState(() {
+                    showTime = true;
+                  });
                 },
                 child: const Text('Timer Picker'),
               ),

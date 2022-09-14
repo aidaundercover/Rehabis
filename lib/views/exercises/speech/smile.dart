@@ -30,13 +30,18 @@ class _SmileyState extends State<Smiley> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    points = 0;
     controller.addListener(() {
       setState(() {
         isRunning = controller.state == ConfettiControllerState.playing;
+
+        if (!isStarted) {
+          Timer.periodic(Duration(seconds: 6), (timer) {
+            points++;
+          });
+        }
       });
     });
-    points = 0;
-
   }
 
   void addTime() {
@@ -61,6 +66,7 @@ class _SmileyState extends State<Smiley> {
   void stopTimer(int errors, double width) {
     if (mounted) {
       setState(() async {
+        isStarted = false;
         timer?.cancel();
         isRunning = false;
 
@@ -231,7 +237,11 @@ class _SmileyState extends State<Smiley> {
         onPressed: () {
           setState(() {
             isStarted = !isStarted;
-            startTimer();
+
+            if (!isStarted) {
+              stopTimer(0, width);
+            } else
+              startTimer();
           });
         },
         child: Padding(
@@ -255,14 +265,15 @@ class _SmileyState extends State<Smiley> {
         ),
       ),
       appBar: exerciseAppbar('Exercise "Smiley"', context, 'None', points,
-        '$minutes : $seconds', 'Speech', 1),
+          '$minutes : $seconds', 'Speech', 1),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: [
-              headerExercise(
-              width,"It's better to use a mirror or selfie camera for this exercise. It is a simple speech therapy exercise that helps improve oral motor skills.",
-                  score),
+              textHeader(
+                width,
+                "It's better to use a mirror or selfie camera for this exercise. It is a simple speech therapy exercise that helps improve oral motor skills.",
+              ),
               isStarted
                   ? LottieBuilder.asset(
                       'assets/smiley.json',
@@ -313,9 +324,9 @@ class _SmileyState extends State<Smiley> {
                                     children: [
                                       Icon(Icons.tips_and_updates,
                                           color: Colors.yellow.withOpacity(0.6),
-                                          size: width * 0.1),
+                                          size: 40),
                                       SizedBox(
-                                          width: 30,
+                                          // width: 30,
                                           child: Text(
                                               "Keep doing this for as long as you can. The mirror provides feedback that is important for tracking progress.",
                                               style: TextStyle(

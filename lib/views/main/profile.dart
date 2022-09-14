@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import 'package:rehabis/globalVars.dart';
 import 'package:rehabis/main.dart';
 import 'package:rehabis/views/auth/sign_in.dart';
+import 'package:rehabis/views/first_view/fisrt_view.dart';
 import 'package:rehabis/views/profile/about.dart';
 import 'package:rehabis/views/profile/goals.dart';
 import 'package:rehabis/views/profile/settings.dart';
@@ -297,7 +298,7 @@ class _ProfileMainState extends State<ProfileMain> {
                 heightGlobal = 0;
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
-                        SignIn(cameraDescription: cameraDescription, mainContext: context,)));
+                        FirstView()));
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 30.0),

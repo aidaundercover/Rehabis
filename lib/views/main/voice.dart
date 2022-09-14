@@ -29,24 +29,24 @@ class _Voice extends State<Voice> {
   void initState() {
     player = AudioPlayer();
 
-    relatives = {};
+    // relatives = {};
 
     super.initState();
 
-    FirebaseDatabase.instance
-        .ref("User/$iinGlobal/Realtives")
-        .onValue
-        .listen((event) {
-      var myR = Map<String, dynamic>.from(
-          event.snapshot.value as Map<dynamic, dynamic>);
+    // FirebaseDatabase.instance
+    //     .ref("User/$iinGlobal/Realtives")
+    //     .onValue
+    //     .listen((event) {
+    //   var myR = Map<String, dynamic>.from(
+    //       event.snapshot.value as Map<dynamic, dynamic>);
 
-      myR.forEach((key, value) => setState(() {
-            final nextMarker = Map<String, dynamic>.from(value);
-            relatives.add(Relative(
-                relation: nextMarker['relation'],
-                number: nextMarker["number"]));
-          }));
-    });
+    //   myR.forEach((key, value) => setState(() {
+    //         final nextMarker = Map<String, dynamic>.from(value);
+    //         relatives.add(Relative(
+    //             relation: nextMarker['relation'],
+    //             number: nextMarker["number"]));
+    //       }));
+    // });
   }
 
   @override

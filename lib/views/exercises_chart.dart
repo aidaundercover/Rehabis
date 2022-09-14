@@ -113,6 +113,7 @@ class _ExercisesChartState extends State<ExercisesChart> {
 
 
                     if (nextMarker["Equipment"] == "Cap") {
+
                       final mapre = Exercise(
                           time,  nextMarker["Count"], nextMarker["Date"],);
 
@@ -219,6 +220,44 @@ class _ExercisesChartState extends State<ExercisesChart> {
       ),
     );
   }
+
+  getDateChart(String date, int i) {
+
+    String result = '';
+    if(isSelected[0]) {
+      i = 1;
+    } else if(isSelected[0]) {
+      i = 2;
+    } else if(isSelected[0]) {
+      i = 3;
+    } else {
+      i = 4;
+    }
+
+    switch(i){
+      case 1: { 
+          //today
+          result = date[0] + date[1];
+          return result;
+      }
+      case 2: { 
+          //last week
+          result = date[0] + date[1];
+          return result;
+      }
+      case 3: { 
+          //last month
+          result = date[0] + date[1];
+          return result;
+      }
+      case 4: {
+          //just
+          result = date;
+          return result;
+      }
+    }
+  
+}
 }
 
 

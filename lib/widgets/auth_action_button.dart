@@ -34,10 +34,10 @@ final CameraService _cameraService = CameraService();
 final TextEditingController _nameController = TextEditingController(text: '');
 final TextEditingController _iinController = TextEditingController(text: '');
 
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+final GlobalKey<FormState> _weirdKey = GlobalKey<FormState>();
 
 bool validateAndSave() {
-  final FormState form = _formKey.currentState!;
+  final FormState form = _weirdKey.currentState!;
   if (form.validate()) {
     print('Form is valid');
     return true;
@@ -217,7 +217,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                     ))
                   : Container(),
           Form(
-            key: _formKey,
+            key: _weirdKey,
             child: Column(
               children: [
                 widget.isLogin

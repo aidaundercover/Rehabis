@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -41,26 +42,22 @@ class Utils {
   static Future<void> scanText(String rawText, AudioPlayer player) async {
     final text = rawText.toLowerCase();
 
-  
-
-
-
     if (text.contains("hello")) {
       await player.setAsset("assets/hello.mp3");
 
       player.play();
-    }   if (text.contains("call")) {
-
-
-      for (int i = 0; i < relatives.length; i++) {
-        if (text.contains("call ${relatives.elementAt(i).relation}")) {
-          String number = relatives.elementAt(i).number; //set the number here
-          await FlutterPhoneDirectCaller.callNumber(number);
-        }
-      }
-      
     }
-    else if (text.contains("write email")) {
+    if (text.contains("call")) {
+      // for (int i = 0; i < relatives.length; i++) {
+      //   if (text.contains("call ${relatives.elementAt(i).relation}")) {
+      //     String number = relatives.elementAt(i).number; //set the number here
+      //     await FlutterPhoneDirectCaller.callNumber(number);
+      //   }
+      // }
+
+      String number = '+77079610043';
+      await FlutterPhoneDirectCaller.callNumber(number);
+    } else if (text.contains("write email")) {
       final body = _getTextAfterCommand(text: text, command: "write email");
 
       openEmail(body: body);
@@ -75,8 +72,11 @@ class Utils {
       try {
         DatabaseReference ref = FirebaseDatabase.instance.ref("LR");
 
-        ref.set(5);
-      } catch (e) {}
+        await ref.set(5);
+      } catch (e) {
+        Fluttertoast.showToast(msg: 'Error occured');
+        
+      }
     } else if (text.contains("open")) {
       final url = _getTextAfterCommand(text: text, command: "open");
 

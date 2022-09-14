@@ -447,7 +447,7 @@ class _PickingClosedOnesState extends State<PickingClosedOnes> {
                           builder:
                               (context, AsyncSnapshot<DatabaseEvent> snapshot) {
                             if (snapshot.hasData) {
-                              final myRealatives = Map<dynamic, dynamic>.from(
+                              final myRealatives = Map<String, dynamic>.from(
                                   snapshot.data!.snapshot.value
                                       as Map<dynamic, dynamic>);
 
